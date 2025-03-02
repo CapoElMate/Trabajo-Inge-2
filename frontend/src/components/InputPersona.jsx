@@ -1,12 +1,13 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
+import { getPersonas } from "./ListPersona.jsx"
 
-
-function InputPersona({personas, setPersonas}) {
-
+function InputPersona({ setPersonas}) {
     
     const [nombre, setNombre] = useState("");
     const [edad, setEdad] = useState("");
 
+
+    //cuando termino de escribir:
     const onSubmitForm = async (e) => {
         e.preventDefault();
 
@@ -17,28 +18,19 @@ function InputPersona({personas, setPersonas}) {
             const response = await fetch("http://localhost:5069/api/Personas", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, name, age })
+                body: JSON.stringify({ id, name, age })  //id name y age deben tener esos nombres de variables para que se formateen correctamente.
             });
 
+            //tambien borro los campos de entrada
             setEdad("");
             setNombre("");
-            
-                const responseTwo = await fetch("http://localhost:5069/api/Personas");
-                const jsonData = await responseTwo.json();
 
-                setPersonas(Array.isArray(jsonData) ? jsonData : []); //garantiza que setPersonas siempre reciba un array, asi despues lo puedo mapear con .map()
-                console.log(jsonData);
-
-
-            console.log(JSON.stringify({ id, name, age }));
-            console.log(responseTwo);
+            //hago un getPersonas para actualizar los datos en la pagina.
+            getPersonas(setPersonas)
         }
         catch (err) {
             console.error(err.message);
         }
-
-
-
     };
 
 
@@ -75,17 +67,6 @@ function InputPersona({personas, setPersonas}) {
 
     );
 }
-
-
-const styles = {
-    grid: {
-        display: "grid",
-        gridTemplateColumns: "repeat(3,auto)", // Dos columnas de tamaño automático
-        alignItems: "center", // Centra verticalmente
-        gap: "20px",
-    },
-    padding: { padding: "20px" },
-};
 
 
 export default InputPersona
