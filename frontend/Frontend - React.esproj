@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.2191419">
   <PropertyGroup>
-    <StartupCommand>HOST=0.0.0.0 npm run start</StartupCommand>
+    <StartupCommand>npm run dev</StartupCommand>
     <JavaScriptTestRoot>src\</JavaScriptTestRoot>
     <JavaScriptTestFramework>Vitest</JavaScriptTestFramework>
     <!-- Allows the build (or compile) script located on package.json to run on Build -->
