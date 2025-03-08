@@ -4,7 +4,7 @@ using PruebaApiRest.Context;
 
 
 
-var builder = WebApplication.CreateBuilder(args);
+var builder = WebApplication.CreateBuilder(new WebApplicationOptions() { EnvironmentName = "Development", ApplicationName = "ApiREST- .NET" }); ;
 
 //configuracion para poder hacer request desde localHost:
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:63342") // Permite el origen de tu frontend
+                          policy.AllowAnyOrigin() // Permite el origen de tu frontend
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
@@ -43,6 +43,25 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    using (var scope = app.Services.CreateScope())
+
+    {
+
+        var services = scope.ServiceProvider;
+
+        var context = services.GetRequiredService<AppDBContext>();
+
+        if (context.Database.GetPendingMigrations().Any())
+
+        {
+
+            context.Database.Migrate();
+
+        }
+
+    }
+
 }
 
 app.UseHttpsRedirection();

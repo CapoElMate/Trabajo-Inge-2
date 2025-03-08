@@ -1,0 +1,54 @@
+services:
+  dotnet.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=5069
+      - ASPNETCORE_HTTPS_PORTS=7220
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=1234
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/prueba.pfx #quizas luego tengo que poner el cert en la carpeta https
+    container_name: dotnet.api
+    # image: dotnet.api
+    build:
+      context: .
+      dockerfile: /PruebaApiRest/Dockerfile
+    ports:
+      - "5069:5069"
+      - "7220:7220"
+    volumes:
+      - ~/.aspnet/https:/https:ro
+    depends_on:
+      database.server:
+        condition: service_healthy
+
+
+  database.server:
+    stdin_open: true
+    tty: true
+    environment:
+        ACCEPT_EULA: "Y"
+        SA_PASSWORD: SuperPassword123
+    # mssql server image isn't available for arm64 architecture, so we use azure-sql instead
+    image: mcr.microsoft.com/azure-sql-edge:1.0.4
+    # If you really want to use MS SQL Server, uncomment the following line
+    #image: mcr.microsoft.com/mssql/server
+    restart: always
+    healthcheck:
+        test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperPassword123 -Q 'SELECT 1' || exit 1"]
+        interval: 10s
+        retries: 10
+        start_period: 10s
+        timeout: 3s   
+    #para que no se le sume 1000 al id cada vez que inicio la bdd correr: 
+    #correr el comando: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P SuperPassword123 -Q 'ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE = OFF;' -la primera vez que corre la bdd
+  
+    
+  react.client:
+    build:
+      context: ./frontreact
+      dockerfile: /Dockerfile
+    # image: react.client
+    container_name: react.client
+    ports:
+      - "55205:55205"
+    depends_on: 
+      - dotnet.api
