@@ -26,7 +26,7 @@ function EditPersona({ persona, setPersonas }) {
             console.log(JSON.stringify(body)); //las hago JSON
 
             //hago una consulta http asincronica con el metodo PUT (editar)
-            const editPersona = await fetch(`http://localhost:5069/api/Personas/${id}`, {
+            const editPersona = await fetch(`/api/Personas/${id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body) //le paso los datos en JSON

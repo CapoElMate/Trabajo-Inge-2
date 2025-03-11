@@ -1,0 +1,16 @@
+version: "2"
+authtoken: 2dWjG9e9Vf8wlq6hcl4vxA9MQQ3_jwWMe7u8qmH84DguxsnH
+tunnels:
+  frontend-react:
+    addr: http://react.client:55205
+    proto: http
+    hostname: pumped-asp-enjoyed.ngrok-free.app
+
+
+  api-dotnet:
+    addr: http://dotnet.api:5069
+    proto: http
+    hostname: pumped-asp-enjoyed.ngrok-free.app
+    
+    
+    

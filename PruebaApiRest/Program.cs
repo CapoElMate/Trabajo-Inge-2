@@ -64,7 +64,7 @@ if (app.Environment.IsDevelopment())
 
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection(); //comento temporalmente para probarloo
 
 app.UseAuthorization();
 

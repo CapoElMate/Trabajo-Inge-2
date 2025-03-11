@@ -1,0 +1,12 @@
+# client.toml
+
+[client]
+remote_addr = "equipo48.duckdns.org:2333" # The address of the server. The port must be the same with the port in `server.bind_addr`
+
+[client.back.http]
+token = "MbSqXcn2rqdM3FsJNu7ZmHzAVd39sbqp" # Token that is used to authenticate the client for the service. Change to an arbitrary value.
+bind_addr = "127.0.0.1:5069" # `5069` specifies the port that exposes `my_nas_ssh` to the Internet
+
+[client.front.http]
+token = "MbSqXcn2rqdM3FsJNu7ZmHzAVd39sbqp" # Token that is used to authenticate the client for the service. Change to an arbitrary value.
+bind_addr = "127.0.0.1:55205" # `55205` specifies the port that exposes `my_nas_ssh` to the Internet

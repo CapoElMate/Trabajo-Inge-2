@@ -5,9 +5,14 @@ import plugin from '@vitejs/plugin-react';
 export default defineConfig({
     plugins: [plugin()],
     server: {
+        https: false,
+        host: true,
         port: 55205,
         strictPort: true,
-        host: true,
-        origin: "http://0.0.0.0:55205",
+        allowedHosts: true,
+        proxy: {
+            '/api': 'http://equipo48.duckdns.org:5069'
+        }
+
     }
 })
