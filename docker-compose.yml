@@ -16,6 +16,7 @@ services:
       - "7220:7220"
     volumes:
       - ~/.aspnet/https:/https:ro
+      - /sqlite-data:/app/data  
         
   react.client:
     build:
