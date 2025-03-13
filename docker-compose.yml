@@ -10,7 +10,7 @@ services:
     # image: dotnet.api
     build:
       context: .
-      dockerfile: /PruebaApiRest/Dockerfile
+      dockerfile: ./PruebaApiRest/Dockerfile
     ports:
       - "5069:5069"
       - "7220:7220"
