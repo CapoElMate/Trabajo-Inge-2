@@ -21,7 +21,7 @@ services:
   react.client:
     build:
       context: ./frontreact
-      dockerfile: /Dockerfile
+      dockerfile: ./Dockerfile
     container_name: react.client
     ports:
       - "55205:55205"
