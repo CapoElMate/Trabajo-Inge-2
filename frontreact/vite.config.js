@@ -9,5 +9,6 @@ export default defineConfig({
         strictPort: true,
         host: true,
         origin: "http://0.0.0.0:55205",
+        allowedHosts: true,
     }
 })
