@@ -13,7 +13,7 @@ function DeletePersona({ persona, personas, setPersonas }){
         console.log(personas);
 
         try {
-            const deletePersona = await fetch(`http://capoelmate.com.ar:5069/api/Personas/${id}`, {
+            const deletePersona = await fetch(`http://localhost:5069/api/Personas/${id}`, {
                 method: "DELETE"
             });
 
