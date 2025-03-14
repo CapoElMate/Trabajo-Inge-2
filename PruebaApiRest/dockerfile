@@ -28,6 +28,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-run sleep 9999
+ENTRYPOINT ["sleep", "9999"]
 
-ENTRYPOINT ["dotnet", "ApiREST- .NET.dll"]
+# ENTRYPOINT ["dotnet", "ApiREST- .NET.dll"]
