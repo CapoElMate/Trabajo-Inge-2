@@ -28,6 +28,6 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
-run dotnet dev-certs https
+run sleep 9999
 
 ENTRYPOINT ["dotnet", "ApiREST- .NET.dll"]
