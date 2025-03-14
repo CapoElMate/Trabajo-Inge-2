@@ -37,7 +37,7 @@ function InputPersona({ setPersonas}) {
 
     return (
         <Fragment>
-            <h2>Input persona: </h2>
+            <h2>Input: </h2>
             <div>
 
                 <span>
