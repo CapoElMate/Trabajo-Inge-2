@@ -30,4 +30,5 @@ COPY --from=publish /app/publish .
 
 run dotnet dev-certs https
 
+
 ENTRYPOINT ["dotnet", "ApiREST- .NET.dll"]
