@@ -1,8 +1,6 @@
 import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
-import dotenv from 'dotenv';
 
-dotenv.config();
 
 const puerto = process.env.VITE_APP_PUERTO;
 const protocolo = process.env.VITE_APP_PROTOCOLO;
