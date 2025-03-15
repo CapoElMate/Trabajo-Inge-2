@@ -2,9 +2,6 @@ import React, { Fragment, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-import dotenv from 'dotenv';
-
-
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
 const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
