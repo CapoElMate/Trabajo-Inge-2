@@ -1,6 +1,11 @@
 import React, { Fragment, useState } from "react";
 import { getPersonas } from "./ListPersona.jsx"
 
+const puerto = import.meta.env.VITE_APP_PUERTO_API;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const direccion = import.meta.env.VITE_APP_DIRECCION_API;
+
+
 function InputPersona({ setPersonas}) {
     
     const [nombre, setNombre] = useState("");
@@ -15,7 +20,7 @@ function InputPersona({ setPersonas}) {
             const id = 0;
             const age = edad;
             const name = nombre;
-            const response = await fetch("http://localhost:5069/api/Personas", {
+            const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, name, age })  //id name y age deben tener esos nombres de variables para que se formateen correctamente.

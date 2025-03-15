@@ -4,12 +4,16 @@ import EditPersona from "./EditPersona.jsx";
 
 import DeletePersona from "./DeletePersona.jsx";
 
+const puerto = import.meta.env.VITE_APP_PUERTO_API;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const direccion = import.meta.env.VITE_APP_DIRECCION_API;
+
 //list personas es de las mas importantes, se encarga de mostrar y actualizar las personas, ademas de eliminarlas.
 
 //uso export para poder usar getPersonas en otros archivos.
 export const getPersonas = async (setPersonas) => {
     try {
-        const response = await fetch("http://localhost:5069/api/Personas"); //pido GET de todos, me lo devuelve en json
+        const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`); //pido GET de todos, me lo devuelve en json
         const jsonData = await response.json();
 
         setPersonas(Array.isArray(jsonData) ? jsonData : []); //garantiza que setPersonas siempre reciba un array, asi despues lo puedo mapear con .map()

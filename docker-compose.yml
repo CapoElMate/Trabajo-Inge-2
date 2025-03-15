@@ -25,9 +25,11 @@ services:
       dockerfile: ./Dockerfile
     container_name: react.client
     ports:
-      - "55205:55205"
+      - "${VITE_APP_PUERTO}:${VITE_APP_PUERTO}"
     volumes:
       - ./frontreact:/app  
       - /app/node_modules  
     depends_on: 
       - dotnet.api
+    env_file:
+      - ./.env

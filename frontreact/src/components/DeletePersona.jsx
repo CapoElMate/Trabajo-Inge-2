@@ -2,6 +2,10 @@
 //importar con "import DeletePersona from "./DeletePersona.jsx";"
 //y llamar con: "<DeletePersona persona={persona} personas={personas} setPersonas={setPersonas} />"
 
+const puerto = import.meta.env.VITE_APP_PUERTO_API;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const direccion = import.meta.env.VITE_APP_DIRECCION_API;
+
 //pido como referencia esto para actualizarlo.
 function DeletePersona({ persona, personas, setPersonas }){
     
@@ -13,7 +17,7 @@ function DeletePersona({ persona, personas, setPersonas }){
         console.log(personas);
 
         try {
-            const deletePersona = await fetch(`http://localhost:5069/api/Personas/${id}`, {
+            const deletePersona = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/${id}`, {
                 method: "DELETE"
             });
 
