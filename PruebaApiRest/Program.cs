@@ -14,7 +14,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.AllowAnyOrigin() // Permite el origen de tu frontend
+                          policy.WithOrigins("https://capoelmate.com.ar",
+                                             "http://capoelmate.com.ar",
+                                             "https://www.capoelmate.com.ar",
+                                             "http://www.capoelmate.com.ar",
+                                             "https://localhost:5173",
+                                             "http://localhost:5173") // Permite el origen de tu frontend
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
