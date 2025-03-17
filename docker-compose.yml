@@ -28,7 +28,7 @@ services:
       - "${VITE_APP_PUERTO}:${VITE_APP_PUERTO}"
     volumes:
       - ./frontreact:/app  
-      - /app/node_modules  
+      - /app/node_modules    
     depends_on: 
       - dotnet.api
     env_file:
