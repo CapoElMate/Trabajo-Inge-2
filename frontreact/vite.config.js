@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
-
+import fs from 'fs';
 
 const puerto = process.env.VITE_APP_PUERTO;
 const protocolo = process.env.VITE_APP_PROTOCOLO;
