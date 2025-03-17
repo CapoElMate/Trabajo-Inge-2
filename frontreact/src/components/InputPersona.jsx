@@ -2,7 +2,7 @@ import React, { Fragment, useState } from "react";
 import { getPersonas } from "./ListPersona.jsx"
 
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
-const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
 
 

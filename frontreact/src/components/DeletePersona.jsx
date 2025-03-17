@@ -3,7 +3,7 @@
 //y llamar con: "<DeletePersona persona={persona} personas={personas} setPersonas={setPersonas} />"
 
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
-const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
 
 //pido como referencia esto para actualizarlo.

@@ -5,7 +5,7 @@ import EditPersona from "./EditPersona.jsx";
 import DeletePersona from "./DeletePersona.jsx";
 
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
-const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
 
 //list personas es de las mas importantes, se encarga de mostrar y actualizar las personas, ademas de eliminarlas.

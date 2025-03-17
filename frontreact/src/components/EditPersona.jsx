@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
-const protocolo = import.meta.env.VITE_APP_PROTOCOLO;
+const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
 
 import { getPersonas } from "./ListPersona.jsx"
