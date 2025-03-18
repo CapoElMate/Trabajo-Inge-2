@@ -21,7 +21,8 @@ builder.Services.AddCors(options =>
                                              "https://localhost:5173",
                                              "http://localhost:5173") // Permite el origen de tu frontend
                                 .AllowAnyHeader()
-                                .AllowAnyMethod();
+                                .AllowAnyMethod()
+                                .AllowCredentials();
                       });
 });
 
