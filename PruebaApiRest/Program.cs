@@ -14,7 +14,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.SetIsOriginAllowed(_ => true) // Permite el origen de tu frontend
+                          policy.AllowAnyOrigin() // Permite el origen de tu frontend
                                 .AllowAnyHeader()
                                 .AllowAnyMethod();
                       });
