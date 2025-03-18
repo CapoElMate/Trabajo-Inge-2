@@ -14,12 +14,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("https://capoelmate.com.ar",
-                                             "http://capoelmate.com.ar",
-                                             "https://www.capoelmate.com.ar",
-                                             "http://www.capoelmate.com.ar",
-                                             "https://localhost:5173",
-                                             "http://localhost:5173") // Permite el origen de tu frontend
+                          policy.SetIsOriginAllowed(_ => true) // Permite el origen de tu frontend
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -42,11 +37,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-app.UseCors(MyAllowSpecificOrigins); //configuracion para poder hacer request desde localHost 2
 
-// Añade este middleware para manejar OPTIONS
 app.Use(async (context, next) =>
 {
+    // Agrega encabezados CORS directamente a cada respuesta
+    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+
     // Manejo especial para solicitudes OPTIONS (preflight)
     if (context.Request.Method == "OPTIONS")
     {
@@ -58,6 +56,8 @@ app.Use(async (context, next) =>
     await next();
 });
 
+
+app.UseCors(MyAllowSpecificOrigins); //configuracion para poder hacer request desde localHost 2
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
