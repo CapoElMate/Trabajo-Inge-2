@@ -18,7 +18,8 @@ function DeletePersona({ persona, personas, setPersonas }){
 
         try {
             const deletePersona = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/${id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                credentials: 'include',
             });
 
             setPersonas(personas.filter(persona => persona.id !== id));

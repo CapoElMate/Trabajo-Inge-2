@@ -22,6 +22,7 @@ function InputPersona({ setPersonas}) {
             const name = nombre;
             const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
                 method: "POST",
+                credentials: 'include',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, name, age })  //id name y age deben tener esos nombres de variables para que se formateen correctamente.
             });

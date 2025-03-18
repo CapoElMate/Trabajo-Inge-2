@@ -13,7 +13,9 @@ const direccion = import.meta.env.VITE_APP_DIRECCION_API;
 //uso export para poder usar getPersonas en otros archivos.
 export const getPersonas = async (setPersonas) => {
     try {
-        const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`); //pido GET de todos, me lo devuelve en json
+        const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
+            credentials: 'include'
+        }); //pido GET de todos, me lo devuelve en json
         const jsonData = await response.json();
 
         setPersonas(Array.isArray(jsonData) ? jsonData : []); //garantiza que setPersonas siempre reciba un array, asi despues lo puedo mapear con .map()
