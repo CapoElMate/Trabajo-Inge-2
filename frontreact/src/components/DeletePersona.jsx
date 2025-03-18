@@ -5,6 +5,7 @@
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
 const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
+const usoHTTPS = import.meta.env.VITE_APP_USAR_HTTPS;
 
 //pido como referencia esto para actualizarlo.
 function DeletePersona({ persona, personas, setPersonas }){
@@ -19,7 +20,7 @@ function DeletePersona({ persona, personas, setPersonas }){
         try {
             const deletePersona = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/${id}`, {
                 method: "DELETE",
-                credentials: 'include',
+                credentials: usoHTTPS === 'true' ? 'include' : false,
             });
 
             setPersonas(personas.filter(persona => persona.id !== id));

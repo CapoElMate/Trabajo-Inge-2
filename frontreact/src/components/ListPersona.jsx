@@ -7,6 +7,7 @@ import DeletePersona from "./DeletePersona.jsx";
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
 const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
+const usoHTTPS = import.meta.env.VITE_APP_USAR_HTTPS;
 
 //list personas es de las mas importantes, se encarga de mostrar y actualizar las personas, ademas de eliminarlas.
 
@@ -14,7 +15,7 @@ const direccion = import.meta.env.VITE_APP_DIRECCION_API;
 export const getPersonas = async (setPersonas) => {
     try {
         const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
-            credentials: 'include'
+            credentials: usoHTTPS === 'true' ? 'include' : false,
         }); //pido GET de todos, me lo devuelve en json
         const jsonData = await response.json();
 

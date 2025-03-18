@@ -19,6 +19,6 @@ export default defineConfig({
         https: usoHTTPS === 'true' ? {
             key: fs.readFileSync('/app/certificados/cloudflare-key.pem'),
             cert: fs.readFileSync('/app/certificados/cloudflare-cert.pem'),
-        } : false
+        } : false,
     }
 })

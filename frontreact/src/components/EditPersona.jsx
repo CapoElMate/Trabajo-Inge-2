@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
 const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
+const usoHTTPS = import.meta.env.VITE_APP_USAR_HTTPS;
+
 
 import { getPersonas } from "./ListPersona.jsx"
 function EditPersona({ persona, setPersonas }) {
@@ -32,7 +34,7 @@ function EditPersona({ persona, setPersonas }) {
             //hago una consulta http asincronica con el metodo PUT (editar)
             const editPersona = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/${id}`, {
                 method: "PUT",
-                credentials: 'include',
+                credentials: usoHTTPS === 'true' ? 'include' : false,
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body) //le paso los datos en JSON
             });

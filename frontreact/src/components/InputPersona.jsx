@@ -4,7 +4,7 @@ import { getPersonas } from "./ListPersona.jsx"
 const puerto = import.meta.env.VITE_APP_PUERTO_API;
 const protocolo = import.meta.env.VITE_APP_PROTOCOLO_API;
 const direccion = import.meta.env.VITE_APP_DIRECCION_API;
-
+const usoHTTPS = import.meta.env.VITE_APP_USAR_HTTPS;
 
 function InputPersona({ setPersonas}) {
     
@@ -23,6 +23,9 @@ function InputPersona({ setPersonas}) {
             const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
                 method: "POST",
                 credentials: 'include',
+
+                credentials: usoHTTPS === 'true' ? 'include' : false,
+
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, name, age })  //id name y age deben tener esos nombres de variables para que se formateen correctamente.
             });
