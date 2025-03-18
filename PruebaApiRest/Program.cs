@@ -16,8 +16,7 @@ builder.Services.AddCors(options =>
                       {
                           policy.SetIsOriginAllowed(_ => true) // Permite el origen de tu frontend
                                 .AllowAnyHeader()
-                                .AllowAnyMethod()
-                                .AllowCredentials();
+                                .AllowAnyMethod();
                       });
 });
 
