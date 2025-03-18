@@ -44,6 +44,21 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 app.UseCors(MyAllowSpecificOrigins); //configuracion para poder hacer request desde localHost 2
 
+// Añade este middleware para manejar OPTIONS
+app.Use(async (context, next) =>
+{
+    // Manejo especial para solicitudes OPTIONS (preflight)
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 200;
+        await context.Response.CompleteAsync();
+        return;
+    }
+
+    await next();
+});
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

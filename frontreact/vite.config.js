@@ -14,7 +14,7 @@ export default defineConfig({
         port: Number(puerto),
         strictPort: true,
         host: true,
-        origin: "${protocolo}://0.0.0.0:${puerto}",
+        origin: `${protocolo}://0.0.0.0:${puerto}`,
         allowedHosts: true,
         https: usoHTTPS === 'true' ? {
             key: fs.readFileSync('/app/certificados/cloudflare-key.pem'),
