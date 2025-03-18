@@ -15,7 +15,7 @@ const usoHTTPS = import.meta.env.VITE_APP_USAR_HTTPS;
 export const getPersonas = async (setPersonas) => {
     try {
         const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
-            credentials: usoHTTPS === 'true' ? 'include' : false,
+            ...(usoHTTPS === 'true' && { credentials: 'include' }), //esta linea se encarga de cargar la propiedad credentials include si uso https
         }); //pido GET de todos, me lo devuelve en json
         const jsonData = await response.json();
 

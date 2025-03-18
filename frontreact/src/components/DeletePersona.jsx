@@ -20,7 +20,7 @@ function DeletePersona({ persona, personas, setPersonas }){
         try {
             const deletePersona = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/${id}`, {
                 method: "DELETE",
-                credentials: usoHTTPS === 'true' ? 'include' : false,
+                ...(usoHTTPS === 'true' && { credentials: 'include' }), //esta linea se encarga de cargar la propiedad credentials include si uso https
             });
 
             setPersonas(personas.filter(persona => persona.id !== id));

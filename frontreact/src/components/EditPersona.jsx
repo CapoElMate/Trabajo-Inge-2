@@ -34,7 +34,7 @@ function EditPersona({ persona, setPersonas }) {
             //hago una consulta http asincronica con el metodo PUT (editar)
             const editPersona = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/${id}`, {
                 method: "PUT",
-                credentials: usoHTTPS === 'true' ? 'include' : false,
+                ...(usoHTTPS === 'true' && { credentials: 'include' }), //esta linea se encarga de cargar la propiedad credentials include si uso https
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(body) //le paso los datos en JSON
             });

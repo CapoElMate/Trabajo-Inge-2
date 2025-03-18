@@ -22,7 +22,7 @@ function InputPersona({ setPersonas}) {
             const name = nombre;
             const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
                 method: "POST",
-                credentials: usoHTTPS === 'true' ? 'include' : false,
+                ...(usoHTTPS === 'true' && { credentials: 'include' }), //esta linea se encarga de cargar la propiedad credentials include si uso https
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ id, name, age })  //id name y age deben tener esos nombres de variables para que se formateen correctamente.
             });
