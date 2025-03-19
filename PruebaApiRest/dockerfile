@@ -15,6 +15,9 @@ COPY ["PruebaApiRest/ApiREST- .NET.csproj", "PruebaApiRest/"]
 
 RUN dotnet restore "PruebaApiRest/ApiREST- .NET.csproj"
 
+COPY /PruebaApiRest/certificados/ /app/certificados/
+RUN chmod 600 /app/certificados/cert-https-dotnet.key
+RUN chmod 600 /app/certificados/cert-https-dotnet.pem
 COPY . .
 
 WORKDIR "/src/PruebaApiRest"
