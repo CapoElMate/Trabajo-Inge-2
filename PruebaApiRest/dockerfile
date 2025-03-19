@@ -5,6 +5,11 @@ WORKDIR /app
 EXPOSE 5069
 EXPOSE 7220
 
+RUN \ 
+  apt update && \
+  apt install -y ca-certificates && \
+  update-ca-certificates
+
 RUN mkdir -p /app/data  # Crear la carpeta para SQLite
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
