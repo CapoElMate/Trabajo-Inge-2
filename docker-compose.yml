@@ -5,7 +5,7 @@ services:
       - ASPNETCORE_HTTP_PORTS=5069
       - ASPNETCORE_HTTPS_PORTS=7220
       - ASPNETCORE_Kestrel__Certificates__Default__Password=1234
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/cert-https-dotnet.pfx #quizas luego tengo que poner el cert en la carpeta https
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/prueba.pfx #quizas luego tengo que poner el cert en la carpeta https
     container_name: dotnet.api
     # image: dotnet.api
     build:
