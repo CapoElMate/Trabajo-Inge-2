@@ -49,12 +49,6 @@ function InputPersona({ setPersonas}) {
                 <span>
                     <form onSubmit={onSubmitForm}>
 
-                        <p class="mt-3 mb-0">   edad: </p>
-                        <input
-                            type="number"
-                            className="form-control"
-                            value={edad}
-                            onChange={e => setEdad(e.target.value)} />
 
                         <p class="mt-3 mb-0">   nombre: </p>
                         <input
@@ -62,6 +56,13 @@ function InputPersona({ setPersonas}) {
                             className="form-control"
                             value={nombre}
                             onChange={e => setNombre(e.target.value)} />
+
+                        <p class="mt-3 mb-0">   edad: </p>
+                        <input
+                            type="number"
+                            className="form-control"
+                            value={edad}
+                            onChange={e => setEdad(e.target.value)} />
 
                         <button class="mt-3">Ingresar</button>
 
