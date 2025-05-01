@@ -20,5 +20,10 @@ export default defineConfig({
             key: fs.readFileSync('/app/certificados/cloudflare-key.pem'),
             cert: fs.readFileSync('/app/certificados/cloudflare-cert.pem'),
         } : false,
+        watch: {
+            usePolling: true,
+            interval: 100,
+        }
     }
+    
 })
