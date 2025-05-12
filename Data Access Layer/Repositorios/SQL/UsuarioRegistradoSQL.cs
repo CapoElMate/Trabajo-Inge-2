@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data_Access_Layer.Interfaces;
 using Domain_Layer.Entidades;
-using Domain_Layer.Interfaces;
 
-namespace Data_Access_Layer.Repositorios
+namespace Data_Access_Layer.Repositorios.SQL
 {
-    public class UsuarioRegistradoRepository: IUsuarioRegistradoRepository
+    public class UsuarioRegistradoSQL: IUsuarioRegistradoRepository
     {
         public UsuarioRegistrado get()
         {
