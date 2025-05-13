@@ -1,22 +1,22 @@
 services:
-  dotnet.api:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=5069
-      - ASPNETCORE_HTTPS_PORTS=7220
-      - ASPNETCORE_Kestrel__Certificates__Default__Password=1234
-      - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/prueba.pfx #quizas luego tengo que poner el cert en la carpeta https
-    container_name: dotnet.api
-    # image: dotnet.api
-    build:
-      context: .
-      dockerfile: ./PruebaApiRest/Dockerfile
-    ports:
-      - "5069:5069"
-      - "7220:7220"
-    volumes:
-      - ./PruebaApiRest/certificados/:/app/certificados:ro
-      - /sqlite-data:/app/data  
+  # dotnet.api:
+  #   environment:
+  #     - ASPNETCORE_ENVIRONMENT=Development
+  #     - ASPNETCORE_HTTP_PORTS=5069
+  #     - ASPNETCORE_HTTPS_PORTS=7220
+  #     - ASPNETCORE_Kestrel__Certificates__Default__Password=1234
+  #     - ASPNETCORE_Kestrel__Certificates__Default__Path=/app/certificados/prueba.pfx #quizas luego tengo que poner el cert en la carpeta https
+  #   container_name: dotnet.api
+  #   image: dotnet.api
+  #   build:
+  #     context: .
+  #     dockerfile: ./PruebaApiRest/Dockerfile
+  #   ports:
+  #     - "5069:5069"
+  #     - "7220:7220"
+  #   volumes:
+  #     - ./PruebaApiRest/certificados/:/app/certificados:ro
+  #     - /sqlite-data:/app/data  
 
         
   react.client:
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./frontreact:/app  
       - /app/node_modules    
-    depends_on: 
-      - dotnet.api
+    # depends_on: 
+    #   - dotnet.api
     env_file:
       - ./.env
