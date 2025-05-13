@@ -14,5 +14,10 @@ namespace Bussines_Logic_Layer.Services
         {
             _usuarioRegistradoRepository = usuarioRegistradoRepository;
         }
+
+        public string getName()
+        {
+            return "";
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace Data_Access_Layer.Repositorios.SQL
         {
             return null;
         }
+
         public void update(UsuarioRegistrado usuarioRegistrado)
         {
 
