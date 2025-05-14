@@ -1,23 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 
-using Data_Access_Layer;
-using Domain_Layer.Entidades;
-using System.Diagnostics;
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API_Layer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioRegistradoController : ControllerBase
+    public class PrubeaController : ControllerBase
     {
-        //NOTA: le paso el contecto de aplication para que me permita acceder a la base de datos.
-        private readonly ApplicationDbContext _context;
-        public UsuarioRegistradoController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
+        // GET: api/<PrubeaController>
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -48,6 +39,5 @@ namespace API_Layer.Controllers
         public void Delete(int id)
         {
         }
-
     }
 }
