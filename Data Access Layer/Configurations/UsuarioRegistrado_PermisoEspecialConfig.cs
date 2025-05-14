@@ -13,7 +13,7 @@ namespace Data_Access_Layer.Configurations
     {
         public void Configure(EntityTypeBuilder<UsuarioRegistrado_PermisoEspecial> builder)
         {
-            builder.HasKey(x => new { x.UsuarioRegistradoDNI, x.PermisoEspecialId });
+            builder.HasKey(x => new { x.UsuarioRegistradoDNI, x.Permiso });
 
             builder.HasOne(x => x.UsuarioRegistrado)
                 .WithMany(u => u.PermisosEspeciales)
@@ -21,7 +21,7 @@ namespace Data_Access_Layer.Configurations
 
             builder.HasOne(x => x.PermisoEspecial)
                 .WithMany(p => p.UsuariosRegistrados)
-                .HasForeignKey(x => x.PermisoEspecialId);
+                .HasForeignKey(x => x.Permiso);
         }
     }
 }

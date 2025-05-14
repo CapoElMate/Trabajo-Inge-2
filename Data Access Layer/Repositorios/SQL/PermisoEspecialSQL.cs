@@ -32,7 +32,7 @@ namespace Data_Access_Layer.Repositorios.SQL
             var existingPermisoEspecial = _context.Set<PermisoEspecial>().FirstOrDefault(pE => pE.Permiso == permisoEspecial.Permiso);
             if (existingPermisoEspecial != null)
             {
-                existingPermisoEspecial.Maquinaria = permisoEspecial.Maquinaria;
+                //existingPermisoEspecial.Maquinaria = permisoEspecial.Maquinaria;
                 existingPermisoEspecial.UsuariosRegistrados = permisoEspecial.UsuariosRegistrados;
 
                 _context.SaveChanges();
