@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    internal class Maquina
+    public class Maquina
     {
     }
 }

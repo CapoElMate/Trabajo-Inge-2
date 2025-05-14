@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    public class Rol
+    public class Permiso
     {
-        public int idRol { get; set; }
+        public int idPermiso { get; set; }
         public string Nombre { get; set; } = null!;
-        public ICollection<Permiso> Permisos { get; set; } = new List<Permiso>();
+        public string Descripcion { get; set; } = null!;
+        public ICollection<Rol> Roles { get; set; } = new List<Rol>();
     }
 }
