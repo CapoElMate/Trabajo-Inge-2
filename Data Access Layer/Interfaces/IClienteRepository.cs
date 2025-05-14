@@ -7,11 +7,11 @@ using Domain_Layer.Entidades;
 
 namespace Data_Access_Layer.Interfaces
 {
-    public interface IUsuarioRegistradoRepository
+    public interface IClienteRepository
     {
-        public UsuarioRegistrado get(string dni = "", string email = "");
-        public void update(UsuarioRegistrado usuarioRegistrado);
+        public Cliente get(string dni = "", string email = "");
+        public void update(Cliente cliente);
         public void delete(string dni = "", string email = "");
-        public void create(UsuarioRegistrado usuarioRegistrado);
+        public void create(Cliente cliente);
     }
 }

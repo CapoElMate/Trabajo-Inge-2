@@ -23,7 +23,10 @@ namespace Data_Access_Layer
         }
 
         public DbSet<UsuarioRegistrado> UsuariosRegistrados => Set<UsuarioRegistrado>();
-
-        //Add-Migration InitialCreate -OutputDir Data Access Layer/Migrations
+        public DbSet<Cliente> Cliente => Set<Cliente>();
+        public DbSet<Empleado> Empleado => Set<Empleado>();
+        public DbSet<Rol> Rol => Set<Rol>();
+        public DbSet<Permiso> Permiso => Set<Permiso>();
+        public DbSet<PermisoEspecial> PermisoEspeciales => Set<PermisoEspecial>();
     }
 }
