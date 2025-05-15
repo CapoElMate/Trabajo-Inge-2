@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { useState } from 'react';
-
-
+import axios from 'axios';
 
 import './App.css';
 
@@ -18,6 +17,13 @@ function App() {
     //personas es como una variable que cuando modifico con la funcion setPersonas(), se actualiza graficamente el cuadro.
     const [personas, setPersonas] = useState([]);
 
+    axios.get('http://localhost:5000/api/Prubea')
+    .then(response => {
+        console.log('Respuesta:', response.data);
+    })
+    .catch(error => {
+        console.error('Hubo un error:', error);
+    });
 
     return (
         <Fragment>
@@ -28,6 +34,7 @@ function App() {
         
         </Fragment>
     );
+
 }
 
 export default App
