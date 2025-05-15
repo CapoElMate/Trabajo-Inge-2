@@ -10,12 +10,43 @@ builder.WebHost.ConfigureKestrel(options =>
     options.ListenLocalhost(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
 });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin() // Permite el origen de tu frontend
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+                      });
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+app.Use(async (context, next) =>
+{
+    // Agrega encabezados CORS directamente a cada respuesta
+    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+
+    // Manejo especial para solicitudes OPTIONS (preflight)
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.StatusCode = 200;
+        await context.Response.CompleteAsync();
+        return;
+    }
+
+    await next();
+});
 
 if (app.Environment.IsDevelopment())
 {
@@ -31,5 +62,6 @@ if (app.Environment.IsDevelopment())
     }
 }
 
+app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();
 app.Run();
