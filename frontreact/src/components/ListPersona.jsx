@@ -14,13 +14,13 @@ const usoHTTPS = import.meta.env.VITE_APP_USAR_HTTPS;
 //uso export para poder usar getPersonas en otros archivos.
 export const getPersonas = async (setPersonas) => {
     try {
-        const response = await fetch(`${protocolo}://${direccion}:${puerto}/api/Personas/`, {
+        const response = await fetch(`http://localhost:5000/api/UsuarioRegistrado`, {
             ...(usoHTTPS === 'true' && { credentials: 'include' }), //esta linea se encarga de cargar la propiedad credentials include si uso https
         }); //pido GET de todos, me lo devuelve en json
         const jsonData = await response.json();
 
-        setPersonas(Array.isArray(jsonData) ? jsonData : []); //garantiza que setPersonas siempre reciba un array, asi despues lo puedo mapear con .map()
-        console.log(jsonData);
+        setPersonas(Array.isArray(jsonData) ? jsonData : [jsonData]); //garantiza que setPersonas siempre reciba un array, asi despues lo puedo mapear con .map()
+        console.log(jsonData + "es array? " + Array.isArray(jsonData));
 
     } catch (err) {
         console.error(err.message);
@@ -44,28 +44,26 @@ function ListaPersonas({ personas, setPersonas }) {
                 <table class="table mt-5 text-center">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Edad</th>
-                            <th scope="col">Eliminar</th>
-                            <th scope="col">Editar</th>
+                            <th scope="col">DNI</th>
+                            <th scope="col">nombre</th>
+                            <th scope="col">apellido</th>
                         </tr>
                     </thead>
                     <tbody>
                         
                         {personas.map(persona => (
                             <tr>
-                                <td scope="row">{persona.id}</td>
-                                <td>{persona.name}</td>
-                                <td>{persona.age}</td>
+                                <td scope="row">{persona.dni}</td>
+                                <td>{persona.nombre}</td>
+                                <td>{persona.apellido}</td>
 
-                                <td>
-                                    <div>
-                                        <DeletePersona persona={persona} personas={personas} setPersonas={setPersonas} />
-                                    </div>                                    
-                                </td>
+                                {/*<td>*/}
+                                {/*    <div>*/}
+                                {/*        <DeletePersona persona={persona} personas={personas} setPersonas={setPersonas} />*/}
+                                {/*    </div>                                    */}
+                                {/*</td>*/}
                                 
-                                <td> <EditPersona persona={persona} setPersonas={setPersonas} /> </td>
+                                {/*<td> <EditPersona persona={persona} setPersonas={setPersonas} /> </td>*/}
                             </tr>
                         ))}
                     </tbody>

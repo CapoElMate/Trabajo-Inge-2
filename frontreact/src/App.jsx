@@ -17,18 +17,12 @@ function App() {
     //personas es como una variable que cuando modifico con la funcion setPersonas(), se actualiza graficamente el cuadro.
     const [personas, setPersonas] = useState([]);
 
-    axios.get('http://localhost:5000/api/Prubea')
-    .then(response => {
-        console.log('Respuesta:', response.data);
-    })
-    .catch(error => {
-        console.error('Hubo un error:', error);
-    });
 
     return (
         <Fragment>
             <div classname="container">
-                <InputPersona setPersonas={setPersonas}/>
+                {/*<InputPersona setPersonas={setPersonas}/>*/}
+                <h2>Lista Usuarios Registrados</h2>
                 <ListaPersonas personas={personas} setPersonas={setPersonas} />
             </div>
         

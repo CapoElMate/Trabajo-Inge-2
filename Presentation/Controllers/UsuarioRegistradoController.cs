@@ -4,6 +4,8 @@ using System;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using System.Diagnostics;
+using Newtonsoft.Json;
+
 
 namespace API_Layer.Controllers
 {
@@ -19,16 +21,31 @@ namespace API_Layer.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<UsuarioRegistrado> Get()
         {
-            return new string[] { "value1", "value2" };
+
+            //hardcodeo los valores que devuelve el Controler    
+
+            UsuarioRegistrado ur1 =  new UsuarioRegistrado("pepe@gmail.com", "1122234", "a", false, "pepe", "gomez",
+                20, "221-1111111", "calle", "altura", "dpto", "calle 1 y calle 2", true);
+
+            UsuarioRegistrado ur2 = new UsuarioRegistrado("maria@gmail.com", "1122233", "b", false, "maria", "perez",
+                50, "221-1111111", "calle", "altura", "dpto", "calle 1 y calle 2", true);
+
+            List<UsuarioRegistrado> usuarios = new List<UsuarioRegistrado>();
+
+            usuarios.Add(ur1);
+            //usuarios.Add(ur2);
+
+            return usuarios;
         }
 
         // GET api/<PrubeaController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public UsuarioRegistrado Get(int id)
         {
-            return "value";
+            return new UsuarioRegistrado("pepe@gmail.com", id.ToString(), "a", false, "pepe", "mujica",
+                20, "221-1111111", "calle", "altura", "dpto", "calle 1 y calle 2", true); ;
         }
 
         // POST api/<PrubeaController>
