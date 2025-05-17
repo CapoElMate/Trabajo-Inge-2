@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    internal class Reembolso
+    public class Reembolso
     {
+        public int idReembolso { get; set; }
+        public int DNICliente { get; set; }
+        public string Status { get; set; } = null!;
+        public double Monto { get; set; }
+        public string Motivo { get; set; } = null!;
+        public Cliente Cliente { get; set; }
     }
 }

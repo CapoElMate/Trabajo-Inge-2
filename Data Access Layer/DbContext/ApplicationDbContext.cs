@@ -8,6 +8,16 @@ namespace Data_Access_Layer
     {
         //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Data Access Layer/Migrations"
         //update-database -Project "Data Access Layer" -StartupProject "API Layer"
+
+        /*
+         Entidades con ID Compuesto:
+            - Reembolso
+            - InfoAsentada
+            - Comentario
+            - Respuesta
+            - Archivo
+            - Recargo
+         */
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }

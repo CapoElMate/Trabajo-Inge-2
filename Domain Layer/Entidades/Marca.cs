@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    public class TipoMaquina
+    public class Marca
     {
         [Key]
-        public string Tipo { get; set; }
-        List<Maquina> Maquinas { get; set; } = new List<Maquina>();
+        public string MarcaName { get; set; }
+        public ICollection<Modelo> Modelos { get; set; } = new List<Modelo>();
     }
 }

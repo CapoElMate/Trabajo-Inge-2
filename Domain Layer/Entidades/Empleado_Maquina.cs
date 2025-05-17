@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    internal class Empleado_Maquina
+    public class Empleado_Maquina
     {
+        public DateTime fecInicio { get; set; }
+        public DateTime fecFin { get; set; }
+
+        public int nroEmpleado { get; set; }
+        public Empleado empleado { get; set; } = null!;
+        public int idMaquina { get; set; }
+        public Maquina maquina { get; set; } = null!;
     }
 }

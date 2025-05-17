@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    public class Ubicacion
+    public class PoliticaDeCancelacion
     {
         [Key]
-        public string UbicacionName { get; set; }
+        public string Politica { get; set; } = null!;
+        public string Descripcion { get; set; } = null!;
         public ICollection<Publicacion> Publicaciones { get; set; } = new List<Publicacion>();
-        public ICollection<Devolucion> Devoluciones { get; set; } = new List<Devolucion>();
     }
 }
