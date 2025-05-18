@@ -13,11 +13,11 @@ namespace Data_Access_Layer.Configurations
     {
         public void Configure(EntityTypeBuilder<Empleado_Maquina> builder)
         {
-            builder.HasKey(x => new { x.NroEmpleado, x.IdMaquina});
+            builder.HasKey(x => new { x.DNIEmpleado, x.IdMaquina});
 
             builder.HasOne(x => x.Empleado)
                 .WithMany(e => e.Empleado_Maquinas)
-                .HasForeignKey(x => x.NroEmpleado);
+                .HasForeignKey(x => x.DNIEmpleado);
             builder.HasOne(x => x.Maquina)
                 .WithMany(m => m.Empleado_Maquinas)
                 .HasForeignKey(x => x.IdMaquina);
