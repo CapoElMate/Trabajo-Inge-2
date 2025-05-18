@@ -9,6 +9,24 @@ namespace Domain_Layer.Entidades
 {
     public class UsuarioRegistrado
     {
+
+        public UsuarioRegistrado(string email, string dNI, string passwordHash, bool isDeleted, string nombre, string apellido, int edad, string telefono, string calle, string altura, string? dpto, string entreCalles, bool mailVerificado)
+        {
+            Email = email;
+            DNI = dNI;
+            this.passwordHash = passwordHash;
+            this.isDeleted = isDeleted;
+            Nombre = nombre;
+            Apellido = apellido;
+            Edad = edad;
+            Telefono = telefono;
+            Calle = calle;
+            Altura = altura;
+            Dpto = dpto;
+            EntreCalles = entreCalles;
+            this.mailVerificado = mailVerificado;
+        }
+
         public string Email { get; set; } = null!;
         [StringLength(8, MinimumLength = 6)]
         public string DNI { get; set; } = null!;
