@@ -6,25 +6,9 @@ namespace Data_Access_Layer
 {
     public class ApplicationDbContext : DbContext
     {
-        //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Data Access Layer/Migrations"
+        //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Migrations"
         //update-database -Project "Data Access Layer" -StartupProject "API Layer"
-        //Add-Migration add rest of the entities and configurations -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Migrations"
-        /*
-         Entidades con ID Compuesto:
-            - Reembolso .
-            - InfoAsentada .
-            - Comentario .
-            - Respuesta .
-            - Archivo .
-            - Recargo .
-            - Marca .
-          A desarrollar en este sprint:
-            - Usurio Registrado, Cliente, Empleado, Rol, Permisos -> Ready
-            - Reserva, Pago, TipoEntrega -> Ready
-            - Maquina, Empleado_Maquina,PermisosEspeciales, Marca, Modelo, TagMaquina, TipoMaquina -> Ready
-            - Publicacion, Ubicacion, Archivos, PoliticaDeCancelación, TagPublicacion -> Ready
-            - Alquiler, Reembolso -> Ready
-         */
+        
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
