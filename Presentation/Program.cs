@@ -33,9 +33,9 @@ var app = builder.Build();
 app.Use(async (context, next) =>
 {
     // Agrega encabezados CORS directamente a cada respuesta
-    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+    //context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+    //context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    //context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
 
     // Manejo especial para solicitudes OPTIONS (preflight)
     if (context.Request.Method == "OPTIONS")
@@ -46,6 +46,12 @@ app.Use(async (context, next) =>
     }
 
     await next();
+});
+
+app.Use(async (context, next) =>
+{
+    await next();
+    Console.WriteLine($"{context.Response.StatusCode} {context.Request.Method} {context.Request.Method}");
 });
 
 if (app.Environment.IsDevelopment())
