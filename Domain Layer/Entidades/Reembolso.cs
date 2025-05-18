@@ -14,5 +14,6 @@ namespace Domain_Layer.Entidades
         public double Monto { get; set; }
         public string Motivo { get; set; } = null!;
         public Cliente Cliente { get; set; }
+        public Alquiler Alquiler { get; set; }
     }
 }

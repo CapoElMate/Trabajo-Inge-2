@@ -20,6 +20,6 @@ namespace Domain_Layer.Entidades
         public PoliticaDeCancelacion PoliticaDeCancelacion { get; set; } = null!;
         public Ubicacion Ubicacion { get; set; } = null!;
         public ICollection<Reserva> Reservas { get; set; } = new List<Reserva>();
-        public ICollection<Archivo> Archivos { get; set; } = new List<Archivo>();
+        //Tiene lista de archivos con patron polimorfico.
     }
 }

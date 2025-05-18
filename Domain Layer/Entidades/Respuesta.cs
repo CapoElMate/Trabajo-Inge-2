@@ -11,7 +11,6 @@ namespace Domain_Layer.Entidades
     {
         [Key]
         public int idRespuesta { get; set; }
-        public int nroEmpleado { get; set; }
         public DateTime fec { get; set; }
         public string Contenido { get; set; } = null!;
         public bool isDeleted { get; set; }

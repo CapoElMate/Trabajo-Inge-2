@@ -8,12 +8,12 @@ namespace Domain_Layer.Entidades
 {
     public class Empleado_Maquina
     {
-        public DateTime fecInicio { get; set; }
-        public DateTime fecFin { get; set; }
+        public DateTime FecInicio { get; set; }
+        public DateTime FecFin { get; set; }
 
-        public int nroEmpleado { get; set; }
-        public Empleado empleado { get; set; } = null!;
-        public int idMaquina { get; set; }
-        public Maquina maquina { get; set; } = null!;
+        public int NroEmpleado { get; set; }
+        public Empleado Empleado { get; set; } = null!;
+        public int IdMaquina { get; set; }
+        public Maquina Maquina { get; set; } = null!;
     }
 }

@@ -14,5 +14,6 @@ namespace Domain_Layer.Entidades
         public string Contenido { get; set; } = null!;
         public Alquiler Alquiler { get; set; }
         public Empleado Empleado { get; set; }
+        //Tiene lista de archivos con patron polimorfico.
     }
 }

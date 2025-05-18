@@ -17,7 +17,7 @@ namespace Domain_Layer.Entidades
         public double montoTotal { get; set; }
         public string Calle { get; set; } = null!;
         public string Altura { get; set; } = null!;
-        public string? Dpto { get; set; } = null!;
+        public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
         public TipoEntrega TipoEntrega { get; set; } = null!;
         public Pago Pago { get; set; } = null!;

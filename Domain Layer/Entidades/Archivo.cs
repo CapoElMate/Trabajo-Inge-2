@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain_Layer.ValueObjects;
 
 namespace Domain_Layer.Entidades
 {
@@ -10,7 +11,7 @@ namespace Domain_Layer.Entidades
     {
         public int idArchivo { get; set; }
         public int EntidadID { get; set; }
-        public string TipoEntidad { get; set; } = null!;
+        public TipoEntidadArchivo TipoEntidad { get; set; }
         public string Nombre { get; set; } = null!;
         public string Descripcion { get; set; } = null!;
         public string TipoContenido { get; set; } = null!;

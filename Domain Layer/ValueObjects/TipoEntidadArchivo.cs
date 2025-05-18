@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain_Layer.Entidades
+namespace Domain_Layer.ValueObjects
 {
-    internal class Suceso
+    public enum TipoEntidadArchivo
     {
+        Publicacion = 1,
+        Maquinaria = 2
     }
 }

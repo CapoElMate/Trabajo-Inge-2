@@ -18,7 +18,7 @@ namespace Domain_Layer.Entidades
         public Empleado Empleado { get; set; } = null!;
         public ICollection<InfoAsentada>? InfoAsentada { get; set; } = new List<InfoAsentada>();
         public Devolucion Devolucion { get; set; } = null!;
-        public ICollection<Archivo>? Archivos { get; set; } = new List<Archivo>();
         public Reserva Reserva { get; set; } = null!;
+        //Tiene lista de archivos con patron polimorfico.
     }
 }

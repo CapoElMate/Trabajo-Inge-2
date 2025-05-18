@@ -12,5 +12,6 @@ namespace Domain_Layer.Entidades
         [Key]
         public string ModeloName { get; set; } = null!;
         public string MarcaName { get; set; } = null!;
+        public Marca Marca { get; set; } = null!;
     }
 }

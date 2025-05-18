@@ -12,7 +12,7 @@ namespace Domain_Layer.Entidades
     {
         public int idRecargo { get; set; }
         public int idDevolucion { get; set; }
-        public string status { get; set; }
+        public string Status { get; set; } = null!;
         public double Total { get; set; }
         public string Descripcion { get; set; }
         public Devolucion Devolucion { get; set; }
