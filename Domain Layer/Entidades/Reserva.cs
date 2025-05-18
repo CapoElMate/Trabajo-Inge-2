@@ -19,10 +19,15 @@ namespace Domain_Layer.Entidades
         public string Altura { get; set; } = null!;
         public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
+        public string Entrega { get; set; } = null!;
         public TipoEntrega TipoEntrega { get; set; } = null!;
+        public int nroPago { get; set; }
         public Pago Pago { get; set; } = null!;
+        public int idAlquiler { get; set; }
         public Alquiler? Alquiler { get; set; }
+        public string DNI { get; set; }
         public Cliente Cliente { get; set; } = null!;
+        public int idPublicacion { get; set; }
         public Publicacion Publicacion { get; set; } = null!;
     }
 }

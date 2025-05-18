@@ -8,7 +8,7 @@ namespace Data_Access_Layer
     {
         //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Data Access Layer/Migrations"
         //update-database -Project "Data Access Layer" -StartupProject "API Layer"
-
+        //Add-Migration add rest of the entities and configurations -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Migrations"
         /*
          Entidades con ID Compuesto:
             - Reembolso .
@@ -39,32 +39,32 @@ namespace Data_Access_Layer
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public DbSet<Alquiler> Alquiler => Set<Alquiler>();
-        public DbSet<Archivo> Archivo => Set<Archivo>();
-        public DbSet<Cliente> Cliente => Set<Cliente>();
-        public DbSet<Comentario> Comentario => Set<Comentario>();
-        public DbSet<Devolucion> Devolucion => Set<Devolucion>();
-        public DbSet<Empleado> Empleado => Set<Empleado>();
+        public DbSet<Alquiler> Alquileres => Set<Alquiler>();
+        public DbSet<Archivo> Archivos => Set<Archivo>();
+        public DbSet<Cliente> Clientes => Set<Cliente>();
+        public DbSet<Comentario> Comentarios => Set<Comentario>();
+        public DbSet<Devolucion> Devoluciones => Set<Devolucion>();
+        public DbSet<Empleado> Empleados => Set<Empleado>();
         public DbSet<Empleado_Maquina> Empleado_Maquina => Set<Empleado_Maquina>();
         public DbSet<InfoAsentada> InfoAsentada => Set<InfoAsentada>();
-        public DbSet<Maquina> Maquina => Set<Maquina>();
-        public DbSet<Marca> Marca => Set<Marca>();
-        public DbSet<Modelo> Modelo => Set<Modelo>();
-        public DbSet<Pago> Pago => Set<Pago>();
-        public DbSet<Permiso> Permiso => Set<Permiso>();
-        public DbSet<PermisoEspecial> PermisoEspecial => Set<PermisoEspecial>();
-        public DbSet<PoliticaDeCancelacion> PoliticaDeCancelacion => Set<PoliticaDeCancelacion>();
-        public DbSet<Publicacion> Publicacion => Set<Publicacion>();
-        public DbSet<Recargo> Recargo => Set<Recargo>();
-        public DbSet<Reembolso> Reembolso => Set<Reembolso>();
-        public DbSet<Reserva> Reserva => Set<Reserva>();
-        public DbSet<Respuesta> Respuesta => Set<Respuesta>();
-        public DbSet<Rol> Rol => Set<Rol>();
-        public DbSet<TagMaquina> TagMaquina => Set<TagMaquina>();
-        public DbSet<TagPublicacion> TagPublicacion => Set<TagPublicacion>();
-        public DbSet<TipoEntrega> TipoEntrega => Set<TipoEntrega>();
-        public DbSet<TipoMaquina> TipoMaquina => Set<TipoMaquina>();
-        public DbSet<Ubicacion> Ubicacion => Set<Ubicacion>();
+        public DbSet<Maquina> Maquinas => Set<Maquina>();
+        public DbSet<Marca> Marcas => Set<Marca>();
+        public DbSet<Modelo> Modelos => Set<Modelo>();
+        public DbSet<Pago> Pagos => Set<Pago>();
+        public DbSet<Permiso> Permisos => Set<Permiso>();
+        public DbSet<PermisoEspecial> PermisosEspeciales => Set<PermisoEspecial>();
+        public DbSet<PoliticaDeCancelacion> PoliticasDeCancelacion => Set<PoliticaDeCancelacion>();
+        public DbSet<Publicacion> Publicaciones => Set<Publicacion>();
+        public DbSet<Recargo> Recargos => Set<Recargo>();
+        public DbSet<Reembolso> Reembolsos => Set<Reembolso>();
+        public DbSet<Reserva> Reservas => Set<Reserva>();
+        public DbSet<Respuesta> Respuestas => Set<Respuesta>();
+        public DbSet<Rol> Roles => Set<Rol>();
+        public DbSet<TagMaquina> TagsMaquina => Set<TagMaquina>();
+        public DbSet<TagPublicacion> TagsPublicacion => Set<TagPublicacion>();
+        public DbSet<TipoEntrega> TiposEntrega => Set<TipoEntrega>();
+        public DbSet<TipoMaquina> TiposMaquina => Set<TipoMaquina>();
+        public DbSet<Ubicacion> Ubicaciones => Set<Ubicacion>();
         public DbSet<UsuarioRegistrado> UsuariosRegistrados => Set<UsuarioRegistrado>();
         public DbSet<UsuarioRegistrado_PermisoEspecial> UsuarioRegistrado_PermisoEspecial => Set<UsuarioRegistrado_PermisoEspecial>();
     }

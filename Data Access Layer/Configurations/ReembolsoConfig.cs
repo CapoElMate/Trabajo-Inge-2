@@ -14,15 +14,30 @@ namespace Data_Access_Layer.Configurations
         public void Configure(EntityTypeBuilder<Reembolso> builder)
         {
             builder.HasKey(r => new { r.idReembolso, r.DNICliente });
+
             builder.Property(r => r.Motivo)
                 .IsRequired()
                 .HasMaxLength(150);
+
             builder.Property(r => r.Status)
                 .IsRequired()
                 .HasMaxLength(50);
+
             builder.Property(r => r.Monto)
                 .IsRequired()
                 .HasPrecision(18, 2);
+
+            // Relación con Cliente (muchos Reembolsos por Cliente)
+            builder.HasOne(r => r.Cliente)
+                .WithMany(c => c.Reembolsos)
+                .HasForeignKey(r => r.DNICliente)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Relación con Alquiler (un Reembolso por Alquiler, un Alquiler tiene un Reembolso)
+            builder.HasOne(r => r.Alquiler)
+                .WithOne(a => a.Reembolso)
+                .HasForeignKey<Reembolso>(r => r.idAlquiler)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -14,6 +14,17 @@ namespace Data_Access_Layer.Configurations
         public void Configure(EntityTypeBuilder<Pago> builder)
         {
             builder.HasKey(p => p.nroPago);
+
+            builder.Property(p => p.fecPago)
+                .IsRequired();
+
+            builder.Property(p => p.idReserva)
+                .IsRequired();
+
+            builder.HasOne(p => p.Reserva)
+                .WithOne(r => r.Pago)
+                .HasForeignKey<Pago>(p => p.idReserva)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

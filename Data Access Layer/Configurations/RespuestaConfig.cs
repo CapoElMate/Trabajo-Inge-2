@@ -13,10 +13,15 @@ namespace Data_Access_Layer.Configurations
     {
         public void Configure(EntityTypeBuilder<Respuesta> builder)
         {
-            builder.HasKey(r => new { r.idRespuesta});
+            builder.HasKey(r => r.idRespuesta);
             builder.Property(r => r.Contenido).IsRequired().HasMaxLength(150);
             builder.Property(r => r.fec).IsRequired();
             builder.Property(r => r.isDeleted).HasDefaultValue(false).IsRequired();
+
+            builder.HasOne(r => r.Empleado)
+                   .WithMany(e => e.Respuestas)
+                   .HasForeignKey(r => r.nroEmpleado)
+                   .IsRequired();
         }
     }
 }

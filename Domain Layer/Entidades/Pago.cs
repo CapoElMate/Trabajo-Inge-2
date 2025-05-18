@@ -10,6 +10,7 @@ namespace Domain_Layer.Entidades
     {
         public int nroPago { get; set; }
         public DateTime fecPago { get; set; }
+        public int idReserva { get; set; }
         public Reserva Reserva { get; set; } = null!;
     }
 }

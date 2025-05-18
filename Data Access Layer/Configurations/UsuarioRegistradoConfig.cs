@@ -50,6 +50,10 @@ namespace Domain_Layer.Configurations
 
             builder.HasIndex(user => user.passwordHash)
                 .IsUnique();
+
+            builder.HasOne(u => u.Cliente)
+               .WithOne(c => c.UsuarioRegistrado)
+               .HasForeignKey<Cliente>(c => c.DNI);
         }
     }
 }

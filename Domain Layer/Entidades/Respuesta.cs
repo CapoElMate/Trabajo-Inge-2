@@ -14,6 +14,7 @@ namespace Domain_Layer.Entidades
         public DateTime fec { get; set; }
         public string Contenido { get; set; } = null!;
         public bool isDeleted { get; set; }
+        public int nroEmpleado { get; set; }
         public Empleado Empleado { get; set; } = null!;
         public Comentario Comentario { get; set; } = null!;
     }

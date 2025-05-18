@@ -12,8 +12,11 @@ namespace Domain_Layer.Entidades
         public DateTime fecDevolucion { get; set; }
         public string Descripcion { get; set; } = null!;
         public ICollection<Recargo> Recargos { get; set; } = new List<Recargo>();
+        public string DNIEmpleado { get; set; }
         public Empleado Empleado { get; set; }
+        public string UbicacionName { get; set; }
         public Ubicacion Ubicacion { get; set; }
+        public int idAlquiler { get; set; }
         public Alquiler Alquiler { get; set; }
     }
 }

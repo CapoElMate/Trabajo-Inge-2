@@ -11,6 +11,6 @@ namespace Domain_Layer.Entidades
     {
         [Key]
         public string Tipo { get; set; }
-        public List<Maquina> Maquinas { get; set; } = new List<Maquina>();
+        public ICollection<Maquina> Maquinas { get; set; } = new List<Maquina>();
     }
 }
