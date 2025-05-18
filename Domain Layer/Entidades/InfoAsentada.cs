@@ -13,7 +13,7 @@ namespace Domain_Layer.Entidades
         public string Contenido { get; set; } = null!;
         public int idAlquiler { get; set; }
         public Alquiler Alquiler { get; set; }
-        public int nroEmpleado { get; set; }
+        public string DNIEmpleado { get; set; }
         public Empleado Empleado { get; set; }
         //Tiene lista de archivos con patron polimorfico.
     }

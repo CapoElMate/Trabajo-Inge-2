@@ -16,7 +16,7 @@ namespace Domain_Layer.Entidades
         public string DNICliente { get; set; }
         public Cliente Cliente { get; set; }
         public Reembolso? Reembolso { get; set; }
-        public int nroEmpleado { get; set; }
+        public string DNIEmpleado { get; set; }
         public Empleado Empleado { get; set; }
         public ICollection<InfoAsentada>? InfoAsentada { get; set; } = new List<InfoAsentada>();
         public Devolucion Devolucion { get; set; }

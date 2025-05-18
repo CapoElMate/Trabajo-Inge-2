@@ -30,7 +30,7 @@ namespace Data_Access_Layer.Configurations
             // Relación con Empleado (muchos InfoAsentada a uno Empleado)
             builder.HasOne(i => i.Empleado)
                 .WithMany(e => e.InfoAsentada)
-                .HasForeignKey(i => i.nroEmpleado)
+                .HasForeignKey(i => i.DNIEmpleado)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

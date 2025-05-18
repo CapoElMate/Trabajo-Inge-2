@@ -27,7 +27,7 @@ namespace Data_Access_Layer.Configurations
             // Relación uno a muchos: Empleado - Alquiler
             builder.HasOne(a => a.Empleado)
                 .WithMany(e => e.Alquileres)
-                .HasForeignKey(a => a.nroEmpleado)
+                .HasForeignKey(a => a.DNIEmpleado)
                 .IsRequired();
 
             // Relación uno a muchos: Reserva - Alquiler (1:1)

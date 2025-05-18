@@ -20,7 +20,7 @@ namespace Data_Access_Layer.Configurations
 
             builder.HasOne(r => r.Empleado)
                    .WithMany(e => e.Respuestas)
-                   .HasForeignKey(r => r.nroEmpleado)
+                   .HasForeignKey(r => r.DNIEmpleado)
                    .IsRequired();
         }
     }
