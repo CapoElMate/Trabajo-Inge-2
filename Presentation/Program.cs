@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Identity.UI;
+
+
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
 
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -45,7 +49,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqli
 
 // Replace the problematic line with the following:
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 //configuro identity
 builder.Services.Configure<IdentityOptions>(options =>
@@ -67,6 +72,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
 });
 
 
