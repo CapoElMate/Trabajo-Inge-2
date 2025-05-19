@@ -33,7 +33,7 @@ namespace Domain_Layer.Entidades
         public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
         public bool mailVerificado { get; set; }
-        public ICollection<UsuarioRegistrado_PermisoEspecial>? PermisosEspeciales { get; set; } = new List<UsuarioRegistrado_PermisoEspecial>();
+        public ICollection<UsuarioRegistrado_PermisoEspecial> PermisosEspeciales { get; set; } = new List<UsuarioRegistrado_PermisoEspecial>();
         public Cliente? Cliente { get; set; } = null!;
     }
 }
