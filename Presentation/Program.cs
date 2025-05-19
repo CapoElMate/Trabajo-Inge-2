@@ -3,7 +3,8 @@ using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,8 +43,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqli
 //builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-//solucion 2
-builder.Services.AddIdentity<UsuarioRegistrado, IdentityRole>();
+// Replace the problematic line with the following:
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 //configuro identity
 builder.Services.Configure<IdentityOptions>(options =>

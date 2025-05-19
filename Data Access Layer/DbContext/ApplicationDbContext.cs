@@ -10,14 +10,8 @@ namespace Data_Access_Layer
     {
         //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Migrations"
         //update-database -Project "Data Access Layer" -StartupProject "API Layer"
-        
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-        }
 
-        protected ApplicationDbContext()
-        {
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options){}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

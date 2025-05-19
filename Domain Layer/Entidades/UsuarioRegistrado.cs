@@ -10,33 +10,18 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    
-    [Table("AspNetUsers")]
 
-    public class UsuarioRegistrado : IdentityUser
+
+    public class UsuarioRegistrado
     {
 
-        public UsuarioRegistrado(string email, string dNI, string passwordHash, bool isDeleted, string nombre, string apellido, int edad, string telefono, string calle, string altura, string? dpto, string entreCalles, bool mailVerificado)
+        public UsuarioRegistrado()
         {
-            Email = email;
-            DNI = dNI;
-            this.passwordHash = passwordHash;
-            this.isDeleted = isDeleted;
-            Nombre = nombre;
-            Apellido = apellido;
-            Edad = edad;
-            Telefono = telefono;
-            Calle = calle;
-            Altura = altura;
-            Dpto = dpto;
-            EntreCalles = entreCalles;
-            this.mailVerificado = mailVerificado;
         }
 
         public string Email { get; set; } = null!;
         [StringLength(8, MinimumLength = 6)]
         public string DNI { get; set; } = null!;
-        public string passwordHash { get; set; } = null!;
         public bool isDeleted { get; set; }
         [StringLength(50, MinimumLength = 2)]
         public string Nombre { get; set; } = null!;
