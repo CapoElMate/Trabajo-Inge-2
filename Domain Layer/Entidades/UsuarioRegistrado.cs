@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,7 +33,7 @@ namespace Domain_Layer.Entidades
         public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
         public bool mailVerificado { get; set; }
-        public ICollection<UsuarioRegistrado_PermisoEspecial> PermisosEspeciales { get; set; } = new List<UsuarioRegistrado_PermisoEspecial>();
-        public Cliente Cliente { get; set; } = null!;
+        public ICollection<UsuarioRegistrado_PermisoEspecial>? PermisosEspeciales { get; set; } = new List<UsuarioRegistrado_PermisoEspecial>();
+        public Cliente? Cliente { get; set; } = null!;
     }
 }

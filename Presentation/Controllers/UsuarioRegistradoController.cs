@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
-using System.Diagnostics;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Authorization;
-
 
 namespace API_Layer.Controllers
 {
@@ -14,60 +15,126 @@ namespace API_Layer.Controllers
     [ApiController]
     public class UsuarioRegistradoController : ControllerBase
     {
-        //NOTA: le paso el contecto de aplication para que me permita acceder a la base de datos.
         private readonly ApplicationDbContext _context;
+
         public UsuarioRegistradoController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+        // GET: api/UsuarioRegistrado
         [Authorize]
         [HttpGet]
-        public List<UsuarioRegistrado> Get()
+        public async Task<ActionResult<IEnumerable<UsuarioRegistrado>>> GetUsuariosRegistrados()
         {
-
-            //hardcodeo los valores que devuelve el Controler    
-
-            //UsuarioRegistrado ur1 =  new UsuarioRegistrado("pepe@gmail.com", "1122234", "a", false, "pepe", "gomez",
-            //    20, "221-1111111", "calle", "altura", "dpto", "calle 1 y calle 2", true);
-
-            //UsuarioRegistrado ur2 = new UsuarioRegistrado("maria@gmail.com", "1122233", "b", false, "maria", "perez",
-            //    50, "221-1111111", "calle", "altura", "dpto", "calle 1 y calle 2", true);
-
-            List<UsuarioRegistrado> usuarios = new List<UsuarioRegistrado>();
-
-            //usuarios.Add(ur1);
-            //usuarios.Add(ur2);
-
-            return usuarios;
+            return await _context.UsuariosRegistrados.ToListAsync();
         }
 
-        // GET api/<PrubeaController>/5
+        // GET: api/UsuarioRegistrado/5
+        [Authorize]
         [HttpGet("{id}")]
-        public UsuarioRegistrado Get(int id)
+        public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistrado(string id)
         {
-            //return new UsuarioRegistrado("pepe@gmail.com", id.ToString(), "a", false, "pepe", "mujica",
-            //    20, "221-1111111", "calle", "altura", "dpto", "calle 1 y calle 2", true); ;
-            return null;
+            var usuarioRegistrado = await _context.UsuariosRegistrados.FindAsync(id);
+
+            if (usuarioRegistrado == null)
+            {
+                return NotFound();
+            }
+
+            return usuarioRegistrado;
         }
 
-        // POST api/<PrubeaController>
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // GET: api/UsuarioRegistrado/mail/{id}
+        [Authorize]
+        [HttpGet("mail/{mail}")]
+        public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistradoPorMail(string mail)
         {
+            var usuarioRegistrado = await _context.UsuariosRegistrados.FindAsync(mail);
+            _context.UsuariosRegistrados.FirstOrDefault(x => x.Email == mail);
+            if (usuarioRegistrado == null)
+            {
+                return NotFound();
+            }
+
+            return usuarioRegistrado;
         }
 
-        // PUT api/<PrubeaController>/5
+        // PUT: api/UsuarioRegistrado/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public async Task<IActionResult> PutUsuarioRegistrado(string id, UsuarioRegistrado usuarioRegistrado)
         {
+            if (id != usuarioRegistrado.DNI)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(usuarioRegistrado).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UsuarioRegistradoExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
         }
 
-        // DELETE api/<PrubeaController>/5
+        // POST: api/UsuarioRegistrado
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<UsuarioRegistrado>> PostUsuarioRegistrado(UsuarioRegistrado usuarioRegistrado)
+        {
+            _context.UsuariosRegistrados.Add(usuarioRegistrado);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (UsuarioRegistradoExists(usuarioRegistrado.DNI))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetUsuarioRegistrado", new { id = usuarioRegistrado.DNI }, usuarioRegistrado);
+        }
+
+        // DELETE: api/UsuarioRegistrado/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> DeleteUsuarioRegistrado(string id)
         {
+            var usuarioRegistrado = await _context.UsuariosRegistrados.FindAsync(id);
+            if (usuarioRegistrado == null)
+            {
+                return NotFound();
+            }
+
+            _context.UsuariosRegistrados.Remove(usuarioRegistrado);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
         }
 
+        private bool UsuarioRegistradoExists(string id)
+        {
+            return _context.UsuariosRegistrados.Any(e => e.DNI == id);
+        }
     }
 }
