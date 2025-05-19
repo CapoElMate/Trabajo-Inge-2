@@ -37,7 +37,7 @@ namespace Data_Access_Layer
         public DbSet<Marca> Marcas => Set<Marca>();
         public DbSet<Modelo> Modelos => Set<Modelo>();
         public DbSet<Pago> Pagos => Set<Pago>();
-        public DbSet<Permiso> Permisos => Set<Permiso>();
+        //public DbSet<Permiso> Permisos => Set<Permiso>();
         public DbSet<PermisoEspecial> PermisosEspeciales => Set<PermisoEspecial>();
         public DbSet<PoliticaDeCancelacion> PoliticasDeCancelacion => Set<PoliticaDeCancelacion>();
         public DbSet<Publicacion> Publicaciones => Set<Publicacion>();
@@ -45,7 +45,7 @@ namespace Data_Access_Layer
         public DbSet<Reembolso> Reembolsos => Set<Reembolso>();
         public DbSet<Reserva> Reservas => Set<Reserva>();
         public DbSet<Respuesta> Respuestas => Set<Respuesta>();
-        public DbSet<Rol> Roles => Set<Rol>();
+        //public DbSet<Rol> Roles => Set<Rol>();
         public DbSet<TagMaquina> TagsMaquina => Set<TagMaquina>();
         public DbSet<TagPublicacion> TagsPublicacion => Set<TagPublicacion>();
         public DbSet<TipoEntrega> TiposEntrega => Set<TipoEntrega>();

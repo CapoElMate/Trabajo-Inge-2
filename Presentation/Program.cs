@@ -1,5 +1,6 @@
 using System;
 using Data_Access_Layer;
+using Domain_Layer.Entidades;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,13 +33,17 @@ builder.Services.AddControllers();
 
 //añado autoriazacion
 builder.Services.AddAuthorization();
+builder.Services.AddAuthentication();
 
 //configuro la bdd
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //activo la api de identity:
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+//solucion 2
+builder.Services.AddIdentity<UsuarioRegistrado, IdentityRole>();
 
 //configuro identity
 builder.Services.Configure<IdentityOptions>(options =>
@@ -105,6 +110,8 @@ if (app.Environment.IsDevelopment())
 }
 
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapIdentityApi<IdentityUser>();
 

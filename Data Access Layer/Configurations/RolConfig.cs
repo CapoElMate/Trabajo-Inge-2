@@ -9,14 +9,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data_Access_Layer.Configurations
 {
-    public class RolConfig: IEntityTypeConfiguration<Rol>
-    {
-        public void Configure(EntityTypeBuilder<Rol> builder)
-        {
-            builder.HasKey(r => r.idRol);
-            builder.Property(r => r.Nombre)
-                .IsRequired()
-                .HasMaxLength(50);
-        }
-    }
+    //public class RolConfig : IEntityTypeConfiguration<Rol>
+    //{
+    //    public void Configure(EntityTypeBuilder<Rol> builder)
+    //    {
+    //        builder.HasKey(r => r.idRol);
+    //        builder.Property(r => r.Nombre)
+    //            .IsRequired()
+    //            .HasMaxLength(50);
+    //    }
+    //}
 }

@@ -1,14 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    public class UsuarioRegistrado
+    
+    [Table("AspNetUsers")]
+
+    public class UsuarioRegistrado : IdentityUser
     {
 
         public UsuarioRegistrado(string email, string dNI, string passwordHash, bool isDeleted, string nombre, string apellido, int edad, string telefono, string calle, string altura, string? dpto, string entreCalles, bool mailVerificado)

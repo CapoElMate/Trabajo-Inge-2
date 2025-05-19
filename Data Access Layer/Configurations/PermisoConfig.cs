@@ -9,17 +9,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data_Access_Layer.Configurations
 {
-    public class PermisoConfig: IEntityTypeConfiguration<Permiso>
-    {
-        public void Configure(EntityTypeBuilder<Permiso> builder)
-        {
-            builder.HasKey(p => p.idPermiso);
-            builder.Property(p => p.Nombre)
-                .IsRequired()
-                .HasMaxLength(50);
-            builder.Property(p => p.Descripcion)
-                .IsRequired()
-                .HasMaxLength(150);
-        }
-    }
+    //public class PermisoConfig: IEntityTypeConfiguration<Permiso>
+    //{
+    //    public void Configure(EntityTypeBuilder<Permiso> builder)
+    //    {
+    //        builder.HasKey(p => p.idPermiso);
+    //        builder.Property(p => p.Nombre)
+    //            .IsRequired()
+    //            .HasMaxLength(50);
+    //        builder.Property(p => p.Descripcion)
+    //            .IsRequired()
+    //            .HasMaxLength(150);
+    //    }
+    //}
 }
