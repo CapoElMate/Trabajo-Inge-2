@@ -1,9 +1,11 @@
 using System;
 using Data_Access_Layer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -26,7 +28,41 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
+
+
+//añado autoriazacion
+builder.Services.AddAuthorization();
+
+//configuro la bdd
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+//activo la api de identity:
+builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+//configuro identity
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 999;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = false;
+});
+
+
 
 var app = builder.Build();
 
@@ -67,6 +103,10 @@ if (app.Environment.IsDevelopment())
         //ACA SE INTERACTUA CON EL CONTEXT DE LA DB.
     }
 }
+
+
+
+app.MapIdentityApi<IdentityUser>();
 
 app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();

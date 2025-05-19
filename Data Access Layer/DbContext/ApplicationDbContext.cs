@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using Domain_Layer.Entidades;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data_Access_Layer
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser> //hago que herede de Ident.DbContext para que banque el identity
     {
         //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Data Access Layer/Migrations"
         //update-database -Project "Data Access Layer" -StartupProject "API Layer"

@@ -5,6 +5,7 @@ using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace API_Layer.Controllers
@@ -20,6 +21,7 @@ namespace API_Layer.Controllers
             _context = context;
         }
 
+        [Authorize]
         [HttpGet]
         public List<UsuarioRegistrado> Get()
         {
