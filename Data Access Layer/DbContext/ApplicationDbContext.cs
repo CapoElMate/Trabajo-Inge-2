@@ -8,8 +8,9 @@ namespace Data_Access_Layer
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser> //hago que herede de Ident.DbContext para que banque el identity
     {
-        //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Data Access Layer/Migrations"
+        //Add-Migration InitialCreate -Project "Data Access Layer" -StartupProject "API Layer" -OutputDir "Migrations"
         //update-database -Project "Data Access Layer" -StartupProject "API Layer"
+        
         public ApplicationDbContext(DbContextOptions options) : base(options)
         {
         }
@@ -24,11 +25,33 @@ namespace Data_Access_Layer
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
+        public DbSet<Alquiler> Alquileres => Set<Alquiler>();
+        public DbSet<Archivo> Archivos => Set<Archivo>();
+        public DbSet<Cliente> Clientes => Set<Cliente>();
+        public DbSet<Comentario> Comentarios => Set<Comentario>();
+        public DbSet<Devolucion> Devoluciones => Set<Devolucion>();
+        public DbSet<Empleado> Empleados => Set<Empleado>();
+        public DbSet<Empleado_Maquina> Empleado_Maquina => Set<Empleado_Maquina>();
+        public DbSet<InfoAsentada> InfoAsentada => Set<InfoAsentada>();
+        public DbSet<Maquina> Maquinas => Set<Maquina>();
+        public DbSet<Marca> Marcas => Set<Marca>();
+        public DbSet<Modelo> Modelos => Set<Modelo>();
+        public DbSet<Pago> Pagos => Set<Pago>();
+        public DbSet<Permiso> Permisos => Set<Permiso>();
+        public DbSet<PermisoEspecial> PermisosEspeciales => Set<PermisoEspecial>();
+        public DbSet<PoliticaDeCancelacion> PoliticasDeCancelacion => Set<PoliticaDeCancelacion>();
+        public DbSet<Publicacion> Publicaciones => Set<Publicacion>();
+        public DbSet<Recargo> Recargos => Set<Recargo>();
+        public DbSet<Reembolso> Reembolsos => Set<Reembolso>();
+        public DbSet<Reserva> Reservas => Set<Reserva>();
+        public DbSet<Respuesta> Respuestas => Set<Respuesta>();
+        public DbSet<Rol> Roles => Set<Rol>();
+        public DbSet<TagMaquina> TagsMaquina => Set<TagMaquina>();
+        public DbSet<TagPublicacion> TagsPublicacion => Set<TagPublicacion>();
+        public DbSet<TipoEntrega> TiposEntrega => Set<TipoEntrega>();
+        public DbSet<TipoMaquina> TiposMaquina => Set<TipoMaquina>();
+        public DbSet<Ubicacion> Ubicaciones => Set<Ubicacion>();
         public DbSet<UsuarioRegistrado> UsuariosRegistrados => Set<UsuarioRegistrado>();
-        public DbSet<Cliente> Cliente => Set<Cliente>();
-        public DbSet<Empleado> Empleado => Set<Empleado>();
-        public DbSet<Rol> Rol => Set<Rol>();
-        public DbSet<Permiso> Permiso => Set<Permiso>();
-        public DbSet<PermisoEspecial> PermisoEspeciales => Set<PermisoEspecial>();
+        public DbSet<UsuarioRegistrado_PermisoEspecial> UsuarioRegistrado_PermisoEspecial => Set<UsuarioRegistrado_PermisoEspecial>();
     }
 }
