@@ -14,6 +14,7 @@ namespace API_Layer.DTOs
             UsuarioRegistrado u = new UsuarioRegistrado();
 
             u.DNI = DNI;
+            u.Email = Email;
             u.isDeleted = isDeleted;
             u.Nombre = Nombre;
             u.Apellido = Apellido;

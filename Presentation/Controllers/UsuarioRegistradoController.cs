@@ -136,6 +136,8 @@ namespace API_Layer.Controllers
 
 
 
+
+
         //METODOS CUSTOM (me voy del CRUD)
 
 
@@ -158,32 +160,17 @@ namespace API_Layer.Controllers
             return usuarioRegistrado;
         }
 
-        [HttpPost("registrarCompleto")]
-        public async Task<IActionResult> RegistrarCompleto([FromBody] RegistroUsuarioCompletoDTO dto)
-        {
-            // 1. Registrar en Identity
-            var user = new IdentityUser { UserName = dto.Email, Email = dto.Email };
-            var result = await _userManager.CreateAsync(user, dto.Password);
-
-            if (!result.Succeeded)
-            {
-                return BadRequest(result.Errors);
-            }
-
-            // 2. Registrar en UsuarioRegistrado
-            var usuarioRegistrado = dto.getUsuarioRegistrado();
-
-            await _context.UsuariosRegistrados.AddAsync(usuarioRegistrado);
-
-            return Ok("Usuario registrado correctamente en ambos sistemas.");
-        }
-
-        [Authorize]
+        
         [HttpGet("getUsuarioActualCompleto")]
         public async Task<ActionResult<UsuarioRegistrado>> GetDatosUsuarioActual()
         {
             //tomo el usuario actual del user manager
             var usuarioActual = await _userManager.GetUserAsync(User);
+
+            if(usuarioActual == null)
+            {
+                return NotFound("\"usuario actual no encontrado, falta autenticar\"");
+            }
 
             //busco el usuario registrado con el mismo mail
             var usuarioRegistrado = await _context.UsuariosRegistrados.FirstOrDefaultAsync(x => x.Email == usuarioActual.Email);
@@ -198,8 +185,41 @@ namespace API_Layer.Controllers
             return usuarioRegistrado;
         }
 
+        [HttpPost("registrarCompleto")]
+        public async Task<ActionResult<UsuarioRegistrado>> PostUsuarioRegistrado(RegistroUsuarioCompletoDTO dto)
+        {
+            // 1. Registrar en Identity
+            var user = new IdentityUser { UserName = dto.Email, Email = dto.Email };
+            var result = await _userManager.CreateAsync(user, dto.Password);
 
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
 
+            // 2. Registrar en UsuarioRegistrado
+            var usuarioRegistrado = dto.getUsuarioRegistrado();
+
+            _context.UsuariosRegistrados.Add(usuarioRegistrado);
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (UsuarioRegistradoExists(usuarioRegistrado.DNI))
+                {
+                    return Conflict();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return CreatedAtAction("GetUsuarioRegistrado", new { id = usuarioRegistrado.DNI }, usuarioRegistrado);
+        }
 
     }
 }
