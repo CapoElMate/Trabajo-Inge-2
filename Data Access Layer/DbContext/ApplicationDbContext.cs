@@ -18,6 +18,14 @@ namespace Data_Access_Layer
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+
+            modelBuilder.Entity<UsuarioRegistrado>(b =>
+            {
+                b.HasKey(u => u.DNI);
+                b.Property(u => u.DNI).ValueGeneratedNever();
+                b.Ignore(u => u.Id); // OJO: Esto puede romper Identity
+            });
         }
 
         public DbSet<Alquiler> Alquileres => Set<Alquiler>();

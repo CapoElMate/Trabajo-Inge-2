@@ -19,7 +19,10 @@ namespace Domain_Layer.Entidades
         public UsuarioRegistrado()
         {
             PermisosEspeciales = new List<UsuarioRegistrado_PermisoEspecial>();
-        } 
+        }
+
+        //hago que ID equivalga a DNI
+        public override string Id { get => DNI; set => DNI = value; }
 
         //public string Email { get; set; } = null!;
         [StringLength(8, MinimumLength = 6)]
