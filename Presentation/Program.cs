@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.UI;
-//using Bussines_Logic_Layer.Managers.DummyEmailSender;
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -16,19 +15,6 @@ builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenLocalhost(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
-});
-
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.AllowAnyOrigin() // Permite el origen de tu frontend
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
-                      });
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -43,9 +29,6 @@ builder.Services.AddAuthentication();
 //configuro la bdd
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-//activo la api de identity:
-//builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Replace the problematic line with the following:
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
@@ -78,33 +61,22 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.SignIn.RequireConfirmedPhoneNumber = false;
 });
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:5173") // Permite el origen de tu frontend
+                                .AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowCredentials();
+                      });
+});
 
 var app = builder.Build();
 
-app.Use(async (context, next) =>
-{
-    // Agrega encabezados CORS directamente a cada respuesta
-    //context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-    //context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    //context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
-
-    // Manejo especial para solicitudes OPTIONS (preflight)
-    if (context.Request.Method == "OPTIONS")
-    {
-        context.Response.StatusCode = 200;
-        await context.Response.CompleteAsync();
-        return;
-    }
-
-    await next();
-});
-
-app.Use(async (context, next) =>
-{
-    await next();
-    Console.WriteLine($"{context.Response.StatusCode} {context.Request.Method} {context.Request.Method}");
-});
 
 if (app.Environment.IsDevelopment())
 {
@@ -121,11 +93,12 @@ if (app.Environment.IsDevelopment())
 }
 //comentarios
 
+app.UseCors(MyAllowSpecificOrigins); // importante que vaya antes
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapIdentityApi<IdentityUser>();
 
-app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();
 app.Run();
