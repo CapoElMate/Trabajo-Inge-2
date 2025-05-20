@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { useState } from 'react';
-
-
+import axios from 'axios';
 
 import './App.css';
 
@@ -22,12 +21,14 @@ function App() {
     return (
         <Fragment>
             <div classname="container">
-                <InputPersona setPersonas={setPersonas}/>
+                {/*<InputPersona setPersonas={setPersonas}/>*/}
+                <h2>Lista Usuarios Registrados</h2>
                 <ListaPersonas personas={personas} setPersonas={setPersonas} />
             </div>
         
         </Fragment>
     );
+
 }
 
 export default App
