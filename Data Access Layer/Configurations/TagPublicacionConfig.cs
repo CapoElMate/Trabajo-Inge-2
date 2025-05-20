@@ -9,12 +9,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Data_Access_Layer.Configurations
 {
-    public class PermisoEspecialesConfig : IEntityTypeConfiguration<PermisoEspecial>
+    public class TagPublicacionConfig: IEntityTypeConfiguration<TagPublicacion>
     {
-        public void Configure(EntityTypeBuilder<PermisoEspecial> builder)
+        public void Configure(EntityTypeBuilder<TagPublicacion> builder)
         {
-            builder.HasKey(permisosE => permisosE.Permiso);
-            builder.Property(permisosE => permisosE.Permiso).HasMaxLength(50);
+            builder.HasKey(tag => tag.Tag);
         }
     }
 }

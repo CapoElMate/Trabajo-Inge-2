@@ -33,7 +33,7 @@ namespace Data_Access_Layer.Repositorios.SQL
             if (existingUser != null)
             {
                 existingUser.Email = usuarioRegistrado.Email;
-                existingUser.passwordHash = usuarioRegistrado.passwordHash;
+                //existingUser.passwordHash = usuarioRegistrado.passwordHash;
                 existingUser.isDeleted = usuarioRegistrado.isDeleted;
                 existingUser.Nombre = usuarioRegistrado.Nombre;
                 existingUser.Apellido = usuarioRegistrado.Apellido;

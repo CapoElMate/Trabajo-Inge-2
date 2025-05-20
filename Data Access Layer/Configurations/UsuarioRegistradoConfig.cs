@@ -48,8 +48,12 @@ namespace Domain_Layer.Configurations
                 .IsRequired()
                 .HasMaxLength(16);
 
-            builder.HasIndex(user => user.passwordHash)
-                .IsUnique();
+            //builder.HasIndex(user => user.passwordHash)
+            //    .IsUnique();
+
+            builder.HasOne(u => u.Cliente)
+               .WithOne(c => c.UsuarioRegistrado)
+               .HasForeignKey<Cliente>(c => c.DNI);
         }
     }
 }

@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain_Layer.Entidades
 {
-    internal class Pago
+    public class Pago
     {
+        public int nroPago { get; set; }
+        public DateTime fecPago { get; set; }
+        public int idReserva { get; set; }
+        public Reserva Reserva { get; set; } = null!;
     }
 }
