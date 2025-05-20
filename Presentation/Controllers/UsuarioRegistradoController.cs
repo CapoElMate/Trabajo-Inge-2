@@ -45,23 +45,29 @@ namespace API_Layer.Controllers
             return usuarioRegistrado;
         }
 
+
         // GET: api/UsuarioRegistrado/mail/{id}
         [Authorize]
         [HttpGet("mail/{mail}")]
         public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistradoPorMail(string mail)
         {
-            var usuarioRegistrado = await _context.UsuariosRegistrados.FindAsync(mail);
-            _context.UsuariosRegistrados.FirstOrDefault(x => x.Email == mail);
+            //busco asincronamente el primer usuario registrado con ese mail.
+            var usuarioRegistrado = await _context.UsuariosRegistrados.FirstOrDefaultAsync(x => x.Email == mail);
+
+            //si no lo encuentra tiro error
             if (usuarioRegistrado == null)
             {
                 return NotFound();
             }
 
+            //si lo encuentra retorna el usuarioRegistrado
             return usuarioRegistrado;
         }
 
+
         // PUT: api/UsuarioRegistrado/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsuarioRegistrado(string id, UsuarioRegistrado usuarioRegistrado)
         {
@@ -93,6 +99,7 @@ namespace API_Layer.Controllers
 
         // POST: api/UsuarioRegistrado
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        
         [HttpPost]
         public async Task<ActionResult<UsuarioRegistrado>> PostUsuarioRegistrado(UsuarioRegistrado usuarioRegistrado)
         {
@@ -112,11 +119,11 @@ namespace API_Layer.Controllers
                     throw;
                 }
             }
-
             return CreatedAtAction("GetUsuarioRegistrado", new { id = usuarioRegistrado.DNI }, usuarioRegistrado);
         }
 
         // DELETE: api/UsuarioRegistrado/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUsuarioRegistrado(string id)
         {
@@ -132,6 +139,7 @@ namespace API_Layer.Controllers
             return NoContent();
         }
 
+        [Authorize]
         private bool UsuarioRegistradoExists(string id)
         {
             return _context.UsuariosRegistrados.Any(e => e.DNI == id);

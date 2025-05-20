@@ -12,11 +12,11 @@ namespace API_Layer.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PublicacionsController : ControllerBase
+    public class PublicacionesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public PublicacionsController(ApplicationDbContext context)
+        public PublicacionesController(ApplicationDbContext context)
         {
             _context = context;
         }
