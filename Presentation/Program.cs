@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity.UI;
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
+builder.Services.AddSingleton<IEmailSender<UsuarioRegistrado>, DummyEmailSender>();
 
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -44,11 +44,11 @@ builder.Services.AddAuthentication();
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 //activo la api de identity:
-//builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+//builder.Services.AddIdentityApiEndpoints<UsuarioRegistrado>()
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Replace the problematic line with the following:
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<UsuarioRegistrado, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -124,7 +124,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<UsuarioRegistrado>();
 
 app.UseCors(MyAllowSpecificOrigins);
 app.MapControllers();

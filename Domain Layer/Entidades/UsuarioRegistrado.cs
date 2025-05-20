@@ -1,4 +1,7 @@
-﻿using System;
+﻿
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,14 +13,15 @@ namespace Domain_Layer.Entidades
 {
 
 
-    public class UsuarioRegistrado
+    public class UsuarioRegistrado : IdentityUser
     {
 
         public UsuarioRegistrado()
         {
-        }
+            PermisosEspeciales = new List<UsuarioRegistrado_PermisoEspecial>();
+        } 
 
-        public string Email { get; set; } = null!;
+        //public string Email { get; set; } = null!;
         [StringLength(8, MinimumLength = 6)]
         public string DNI { get; set; } = null!;
         public bool isDeleted { get; set; }
@@ -33,7 +37,7 @@ namespace Domain_Layer.Entidades
         public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
         public bool mailVerificado { get; set; }
-        public ICollection<UsuarioRegistrado_PermisoEspecial> PermisosEspeciales { get; set; } = new List<UsuarioRegistrado_PermisoEspecial>();
+        public ICollection<UsuarioRegistrado_PermisoEspecial> PermisosEspeciales { get; set; } 
         public Cliente? Cliente { get; set; } = null!;
     }
 }
