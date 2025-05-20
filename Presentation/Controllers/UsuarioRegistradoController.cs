@@ -136,7 +136,9 @@ namespace API_Layer.Controllers
 
 
 
-        //METODOS JIJIJAJA
+        //METODOS CUSTOM (me voy del CRUD)
+
+
 
         // GET: api/UsuarioRegistrado/mail/{id}
         [Authorize]
@@ -177,7 +179,7 @@ namespace API_Layer.Controllers
         }
 
         [Authorize]
-        [HttpGet("getUsuarioActual")]
+        [HttpGet("getUsuarioActualCompleto")]
         public async Task<ActionResult<UsuarioRegistrado>> GetDatosUsuarioActual()
         {
             //tomo el usuario actual del user manager
@@ -198,20 +200,6 @@ namespace API_Layer.Controllers
 
 
 
-
-        /*
-          public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistrado(string id)
-            {
-                var usuarioRegistrado = await _context.UsuariosRegistrados.FindAsync(id);
-
-                if (usuarioRegistrado == null)
-                {
-                    return NotFound();
-                }
-
-                return usuarioRegistrado;
-            }
-         */
 
     }
 }
