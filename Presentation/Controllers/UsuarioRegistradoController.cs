@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Bussines_Logic_Layer.Services;
 using Microsoft.AspNetCore.Identity;
 using API_Layer.DTOs;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 
 namespace API_Layer.Controllers
 {
@@ -50,24 +51,6 @@ namespace API_Layer.Controllers
             return usuarioRegistrado;
         }
 
-
-        // GET: api/UsuarioRegistrado/mail/{id}
-        [Authorize]
-        [HttpGet("mail/{mail}")]
-        public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistradoPorMail(string mail)
-        {
-            //busco asincronamente el primer usuario registrado con ese mail.
-            var usuarioRegistrado = await _context.UsuariosRegistrados.FirstOrDefaultAsync(x => x.Email == mail);
-
-            //si no lo encuentra tiro error
-            if (usuarioRegistrado == null)
-            {
-                return NotFound();
-            }
-
-            //si lo encuentra retorna el usuarioRegistrado
-            return usuarioRegistrado;
-        }
 
 
         // PUT: api/UsuarioRegistrado/5
@@ -152,6 +135,27 @@ namespace API_Layer.Controllers
 
 
 
+
+        //METODOS JIJIJAJA
+
+        // GET: api/UsuarioRegistrado/mail/{id}
+        [Authorize]
+        [HttpGet("mail/{mail}")]
+        public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistradoPorMail(string mail)
+        {
+            //busco asincronamente el primer usuario registrado con ese mail.
+            var usuarioRegistrado = await _context.UsuariosRegistrados.FirstOrDefaultAsync(x => x.Email == mail);
+
+            //si no lo encuentra tiro error
+            if (usuarioRegistrado == null)
+            {
+                return NotFound();
+            }
+
+            //si lo encuentra retorna el usuarioRegistrado
+            return usuarioRegistrado;
+        }
+
         [HttpPost("registrarCompleto")]
         public async Task<IActionResult> RegistrarCompleto([FromBody] RegistroUsuarioCompletoDTO dto)
         {
@@ -172,7 +176,42 @@ namespace API_Layer.Controllers
             return Ok("Usuario registrado correctamente en ambos sistemas.");
         }
 
+        [Authorize]
+        [HttpGet("getUsuarioActual")]
+        public async Task<ActionResult<UsuarioRegistrado>> GetDatosUsuarioActual()
+        {
+            //tomo el usuario actual del user manager
+            var usuarioActual = await _userManager.GetUserAsync(User);
 
+            //busco el usuario registrado con el mismo mail
+            var usuarioRegistrado = await _context.UsuariosRegistrados.FirstOrDefaultAsync(x => x.Email == usuarioActual.Email);
+
+            //si no lo encuentra tiro error
+            if (usuarioRegistrado == null)
+            {
+                return NotFound();
+            }
+
+            //si lo encuentra retorna el usuarioRegistrado
+            return usuarioRegistrado;
+        }
+
+
+
+
+        /*
+          public async Task<ActionResult<UsuarioRegistrado>> GetUsuarioRegistrado(string id)
+            {
+                var usuarioRegistrado = await _context.UsuariosRegistrados.FindAsync(id);
+
+                if (usuarioRegistrado == null)
+                {
+                    return NotFound();
+                }
+
+                return usuarioRegistrado;
+            }
+         */
 
     }
 }
