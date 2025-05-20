@@ -10,8 +10,8 @@ using Domain_Layer.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Bussines_Logic_Layer.Services;
 using Microsoft.AspNetCore.Identity;
-using API_Layer.DTOs;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using Bussines_Logic_Layer.DTOs;
 
 namespace API_Layer.Controllers
 {

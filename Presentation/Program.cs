@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.UI;
+using Bussines_Logic_Layer.Interfaces;
+using Bussines_Logic_Layer.Services;
+using Data_Access_Layer.Interfaces;
+using Data_Access_Layer.Repositorios.SQL;
+using Bussines_Logic_Layer.Mapping;
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -74,6 +79,14 @@ builder.Services.AddCors(options =>
                                 .AllowCredentials();
                       });
 });
+
+//Repositorios
+builder.Services.AddScoped<IMaquinaRepository, MaquinaRepository>();
+
+//Servicios
+builder.Services.AddScoped<IMaquinaService, MaquinaService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

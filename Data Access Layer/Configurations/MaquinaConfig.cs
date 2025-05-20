@@ -22,10 +22,10 @@ namespace Data_Access_Layer.Configurations
             builder.Property(x => x.anioFabricacion)
                 .IsRequired();
 
-            // Relación con Marca (muchas Maquinas a una Marca)
-            builder.HasOne(x => x.Marca)
+            // Relación con Modelo (muchas Maquinas a un Modelo)
+            builder.HasOne(x => x.Modelo)
                 .WithMany()
-                .HasForeignKey(x => x.MarcaName)
+                .HasForeignKey(x => x.ModeloName)
                 .IsRequired();
 
             // Relación con TipoMaquina (muchas Maquinas a un TipoMaquina)
