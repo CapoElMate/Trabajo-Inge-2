@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using Microsoft.AspNetCore.Authorization;
+using Bussines_Logic_Layer.Services;
+using Microsoft.AspNetCore.Identity;
+using API_Layer.DTOs;
 
 namespace API_Layer.Controllers
 {
@@ -15,11 +18,13 @@ namespace API_Layer.Controllers
     [ApiController]
     public class UsuarioRegistradoController : ControllerBase
     {
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ApplicationDbContext _context;
 
-        public UsuarioRegistradoController(ApplicationDbContext context)
+        public UsuarioRegistradoController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: api/UsuarioRegistrado
@@ -144,5 +149,30 @@ namespace API_Layer.Controllers
         {
             return _context.UsuariosRegistrados.Any(e => e.DNI == id);
         }
+
+
+
+        [HttpPost("registrarCompleto")]
+        public async Task<IActionResult> RegistrarCompleto([FromBody] RegistroUsuarioCompletoDTO dto)
+        {
+            // 1. Registrar en Identity
+            var user = new IdentityUser { UserName = dto.Email, Email = dto.Email };
+            var result = await _userManager.CreateAsync(user, dto.Password);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            // 2. Registrar en UsuarioRegistrado
+            var usuarioRegistrado = dto.getUsuarioRegistrado();
+
+            await _context.UsuariosRegistrados.AddAsync(usuarioRegistrado);
+
+            return Ok("Usuario registrado correctamente en ambos sistemas.");
+        }
+
+
+
     }
 }
