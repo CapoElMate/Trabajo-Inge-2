@@ -1,0 +1,48 @@
+.registro-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.registro-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.registro-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.registro-form input[type="text"],
+.registro-form input[type="email"],
+.registro-form input[type="password"],
+.registro-form input[type="file"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.registro-form label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.registro-form button {
+  padding: 10px;
+  background-color: #2e86de;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.registro-form button:hover {
+  background-color: #1b4f72;
+}

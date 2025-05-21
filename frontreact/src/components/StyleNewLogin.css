@@ -1,0 +1,102 @@
+/* Login.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #ffffff, #ffe4ec);
+  font-family: 'Inter', sans-serif;
+  padding: 20px;
+}
+
+.login-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-width: 900px;
+  width: 100%;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+.login-form {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-form h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-form input {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #ff7096;
+}
+
+.login-form button {
+  background-color: #ff7096;
+  color: #fff;
+  padding: 12px 16px;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #e66083;
+}
+
+.login-video {
+  flex: 1;
+  max-width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .login-main {
+    flex-direction: column;
+  }
+
+  .login-video {
+    display: none;
+  }
+
+  .login-form {
+    width: 100%;
+    padding: 30px 20px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

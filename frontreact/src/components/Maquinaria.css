@@ -1,0 +1,63 @@
+/* Maquinaria.css */
+
+.maquinaria-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.maquinaria-card:hover {
+  transform: scale(1.02);
+}
+
+.maquinaria-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.maquinaria-info {
+  padding: 1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.maquinaria-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #1f2937;
+}
+
+.maquinaria-info p {
+  font-size: 0.95rem;
+  color: #4b5563;
+  margin: 0.3rem 0;
+}
+
+.precio {
+  font-weight: bold;
+  color: #10b981;
+  margin-top: 0.5rem;
+}
+
+.alquilar-btn {
+  margin-top: 1rem;
+  padding: 0.6rem;
+  background-color: #a10000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.alquilar-btn:hover {
+  background-color: #e03232;
+}
