@@ -13,5 +13,6 @@ namespace Domain_Layer.Entidades
         public string ModeloName { get; set; } = null!;
         public string MarcaName { get; set; } = null!;
         public Marca Marca { get; set; } = null!;
+        public ICollection<Maquina> Maquinas { get; set; }
     }
 }

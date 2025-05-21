@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Data_Access_Layer.DataAccessLayer.Migrations
+namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -256,6 +256,9 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("ModeloName1")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -275,6 +278,8 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.HasKey("idMaquina");
 
                     b.HasIndex("ModeloName");
+
+                    b.HasIndex("ModeloName1");
 
                     b.HasIndex("Tipo");
 
@@ -1081,6 +1086,10 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domain_Layer.Entidades.Modelo", null)
+                        .WithMany("Maquinas")
+                        .HasForeignKey("ModeloName1");
+
                     b.HasOne("Domain_Layer.Entidades.TipoMaquina", null)
                         .WithMany("Maquinas")
                         .HasForeignKey("Tipo")
@@ -1390,6 +1399,11 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
             modelBuilder.Entity("Domain_Layer.Entidades.Marca", b =>
                 {
                     b.Navigation("Modelos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Modelo", b =>
+                {
+                    b.Navigation("Maquinas");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Pago", b =>

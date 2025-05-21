@@ -8,6 +8,7 @@ using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.Interfaces;
 using Data_Access_Layer.Interfaces;
 using Domain_Layer.Entidades;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bussines_Logic_Layer.Services
 {

@@ -16,7 +16,9 @@ namespace Data_Access_Layer.Repositorios.SQL
 
         public async Task<IEnumerable<Modelo>> GetAllAsync()
         {
-            return await _context.Modelos.ToListAsync();
+            return await _context.Modelos
+                .Include(m => m.Marca)
+                .ToListAsync();
         }
 
         public async Task<Modelo?> GetByNameAsync(string modeloName)

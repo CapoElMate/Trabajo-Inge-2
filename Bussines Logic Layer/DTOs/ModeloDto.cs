@@ -9,6 +9,6 @@ namespace Bussines_Logic_Layer.DTOs
     public class ModeloDto
     {
         public string Modelo { get; set; } = null!;
-        public string Marca { get; set; } = null!;
+        public MarcaDto Marca { get; set; } = null!;
     }
 }

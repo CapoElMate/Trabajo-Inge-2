@@ -17,7 +17,9 @@ namespace Data_Access_Layer.Repositorios.SQL
         public async Task<IEnumerable<Maquina>> GetAllAsync()
         {
             return await _context.Maquinas
-                .Include(m => m.Modelo)          
+                .Include(m => m.Modelo)
+                .Include(m => m.PermisosEspeciales)
+                .Include(m => m.Modelo.Marca)
                 .Include(m => m.TipoMaquina)
                 .Include(m => m.TagsMaquina) 
                 .ToListAsync();
@@ -27,6 +29,7 @@ namespace Data_Access_Layer.Repositorios.SQL
         {
             return await _context.Maquinas
                 .Include(m => m.Modelo)
+                .Include(m => m.Modelo.Marca)
                 .Include(m => m.TipoMaquina)
                 .Include(m => m.TagsMaquina)
                 .FirstOrDefaultAsync(m => m.idMaquina == id);
