@@ -19,6 +19,7 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
     fotoDNI: null,
+    rol:'cliente',
   });
 
   const [errors, setErrors] = useState({});
@@ -94,7 +95,7 @@ const SignUp = () => {
       }
 
       try {
-        const response = await fetch('http://localhost:3000/pendingUsers', {
+        const response = await fetch('http://localhost:3001/pendingUsers', {
           method: 'POST', // Siempre POST para enviar nuevos recursos
           headers: {
             'Content-Type': 'application/json', // Importante: Enviamos JSON

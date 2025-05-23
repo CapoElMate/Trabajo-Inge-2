@@ -1,0 +1,223 @@
+.detalle-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.detalle-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #b30000; /* rojo fuerte */
+}
+
+.back-button {
+  background-color: #b30000;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.back-button:hover {
+  background-color: #800000;
+}
+
+.publicacion-detalle-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+  .publicacion-detalle-card {
+    flex-direction: row;
+  }
+}
+
+.detalle-imagen {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
+.detalle-imagen img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.detalle-info {
+  flex: 2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.detalle-info h2 {
+  font-size: 1.8em;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #990000;
+}
+
+.detalle-info p {
+  margin-bottom: 10px;
+  color: #444;
+  font-size: 1.05em;
+}
+
+.detalle-tags {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 15px;
+}
+
+.reservar-button {
+  background-color: #cc0000;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.reservar-button:hover {
+  background-color: #a30000;
+}
+
+.reservar-button.disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.disponibilidad-status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.disponibilidad-status.disponible {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.disponibilidad-status.no-disponible {
+  background-color: #e2e3e5;
+  color: #383d41;
+  border: 1px solid #d6d8db;
+}
+
+/* Reservation Form Card */
+.reservation-form-card {
+  background-color: #fffafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 25px;
+  margin-top: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.reservation-form-card h3 {
+  text-align: center;
+  color: #b30000;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input[type="date"],
+.form-group input[type="text"],
+.form-group select {
+  width: calc(100% - 22px);
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.form-group input[type="date"]:focus,
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #b30000;
+  box-shadow: 0 0 0 0.2rem rgba(179, 0, 0, 0.25);
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 0.85em;
+  margin-top: 5px;
+  display: block;
+}
+
+.total-amount {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #b30000;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.submit-reservation-button {
+  background-color: #b30000;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.submit-reservation-button:hover {
+  background-color: #800000;
+}
+
+.message {
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.message.success {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}

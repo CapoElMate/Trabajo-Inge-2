@@ -9,7 +9,7 @@ const ValidateUser = () => {
   useEffect(() => {
     const fetchPendingUsers = async () => {
       try {
-        const response = await fetch('http://localhost:3000/pendingUsers');
+        const response = await fetch('http://localhost:3001/pendingUsers');
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,7 +33,7 @@ const ValidateUser = () => {
       const userToApprove = { ...user };
       delete userToApprove.id; 
       delete userToApprove.confirmPassword;
-        const addResponse = await fetch('http://localhost:3000/users', {
+        const addResponse = await fetch('http://localhost:3001/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const ValidateUser = () => {
       }
       const addedUser = await addResponse.json(); 
 
-      const deleteResponse = await fetch(`http://localhost:3000/pendingUsers/${user.id}`, {
+      const deleteResponse = await fetch(`http://localhost:3001/pendingUsers/${user.id}`, {
         method: 'DELETE',
       });
 
@@ -54,7 +54,7 @@ const ValidateUser = () => {
         console.warn(`Usuario ${user.id} aprobado pero falló la eliminación de pendingUsers.`);
         throw new Error(`Failed to delete user from pendingUsers: ${deleteResponse.status}`);
       }
-      const emailRegistrationResponse = await fetch('http://localhost:3000/passwordResetRequests', {
+      const emailRegistrationResponse = await fetch('http://localhost:3001/passwordResetRequests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +83,7 @@ const ValidateUser = () => {
 
   const handleReject = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/pendingUsers/${id}`, {
+      const response = await fetch(`http://localhost:3001/pendingUsers/${id}`, {
         method: 'DELETE',
       });
 

@@ -1,68 +1,122 @@
-.homepage-wrapper {
-  display: flex;
-  flex-direction: column;
+.home-page-container {
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
 }
 
-.homepage-header {
-  background-color: #a10000;
-  color: white;
-  padding: 1rem 2rem;
-  text-align: center;
-}
-
-.homepage-container {
-  display: flex;
-  padding: 1rem;
-}
-
-.filter-sidebar {
-  width: 250px;
-  background-color: #f9f9f9;
-  padding: 1rem;
-  border-radius: 8px;
-  margin-right: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.filter-sidebar h3 {
-  margin-bottom: 10px;
-  color: #a10000;
-}
-
-.filter-sidebar select,
-.filter-sidebar input {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.filter-sidebar button {
-  background-color: #a10000;
-  color: white;
-  border: none;
-  padding: 0.6rem;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.filter-sidebar button:hover {
+/* New Header Styles */
+.home-header {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Distribute items with space between them */
+  align-items: center; /* Align items vertically in the center */
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
   background-color: #cc0000;
+  border-radius: 10px;
 }
 
-.homepage-main {
-  flex-grow: 1;
+
+.login-button,
+.logout-button {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  margin-right: 1em;
 }
 
-.maquinarias-grid {
+.login-button:hover,
+.logout-button:hover {
+  background-color: white;
+  color: #b30000; /* Rojo oscuro al hacer hover */
+}
+
+
+
+/* Existing styles below */
+.publicaciones-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-}
-.filter-sidebar input[type="text"] {
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
 }
 
+.publicacion-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  position: relative;
+}
+
+.publicacion-card:hover {
+  transform: translateY(-5px);
+}
+
+.publicacion-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #eee;
+}
+
+.publicacion-info {
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.publicacion-info h2 {
+  font-size: 1.3em;
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #0056b3;
+}
+
+.publicacion-info p {
+  margin-bottom: 8px;
+  color: #555;
+  font-size: 0.95em;
+}
+
+.publicacion-tags {
+  font-size: 0.85em;
+  color: #777;
+  margin-top: auto;
+}
+
+.error-message {
+  color: #d32f2f;
+  text-align: center;
+  font-weight: bold;
+}
+
+.publicacion-card.unavailable {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.unavailable-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    border-radius: 8px;
+    z-index: 10;
+}

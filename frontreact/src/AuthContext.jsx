@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => { 
     try {
-      const response = await fetch(`http://localhost:3000/users?email=${email}&password=${password}`);
+      const response = await fetch(`http://localhost:3001/users?email=${email}&password=${password}`);
 
       if (!response.ok) {
         throw new Error(`Error en la conexión o el servidor respondió con estado: ${response.status}`);
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
       if (usersFound.length > 0) {
         const usuarioLogueado = usersFound[0]; 
         setUser(usuarioLogueado); 
-        navigate("/homePage"); 
+        navigate("/HomePage"); 
       } else {
         alert("Email o contraseña incorrectos");
       }

@@ -19,7 +19,7 @@ function ForgotPassword() {
     setIsLoading(true); 
 
     if (!validarInput(email)) {
-      setMessage('Por favor, ingresa un correo electrónico o número de celular válido.');
+      setMessage('Por favor, ingresa un correo electrónico válido.');
       setIsError(true);
       setIsLoading(false);
       return;
@@ -70,12 +70,12 @@ function ForgotPassword() {
       <div className="forgot-password-card">
         <h2>Recuperar Contraseña</h2>
         <p className="instruction-text">
-          Ingresa tu correo electrónico o número de celular para buscar tu cuenta.
+          Ingresa tu correo electrónico.
         </p>
         <form onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="Correo electrónico o número de celular"
+            placeholder="Correo electrónico "
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={isError ? 'input-error' : ''}
