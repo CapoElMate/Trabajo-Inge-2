@@ -1,7 +1,6 @@
 import Maquinaria from "./Maquinaria";
 import React, { useEffect, useState } from "react";
 import './HomePage.css';
-import { CiShoppingTag } from "react-icons/ci";
 import logo from '../assets/bobElAlquiladorLogoCompleto.svg';
 
 
@@ -18,7 +17,7 @@ function HomePage() {
         }
         return response.json();
       })
-      .then(data => {
+      .then(data => {  
         setMaquinarias(data);
       })
       .catch(error => {

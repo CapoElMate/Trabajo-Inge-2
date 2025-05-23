@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -6,32 +8,28 @@ function SignUp() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('api/register?useCookies=true', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials:"include",        
-        body: JSON.stringify({
-          email,
-          password
-        })
+      const response = await axios.post('/api/register', {
+        email,
+        password
       });
 
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.message || 'Error en login');
-      }
+      console.log('Registrado', response.data);
+      setSuccess('Registro exitoso');
+      setError('');
 
-      const data = await response.json();
-      console.log('REgistrado', data);
+      // Redirigir al usuario después de 1 segundo (opcional)
+      setTimeout(() => {
+        navigate('/LoginReal'); // o a donde quieras enviarlo
+      }, 1000);
 
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || 'Error en el registro');
       setSuccess('');
     }
   };
@@ -55,6 +53,7 @@ function SignUp() {
           onChange={(e) => setPassword(e.target.value)}
           required
         /><br />
+
         <button type="submit">SignUp</button>
       </form>
 

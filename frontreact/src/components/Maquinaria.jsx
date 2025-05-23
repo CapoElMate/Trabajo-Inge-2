@@ -1,8 +1,6 @@
 import React from 'react';
-import './Maquinaria.css';
 import {useNavigate } from 'react-router-dom';
 
-import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 function Maquinaria({ maquinaria }) {
   const { nombre, descripcion, precio, ubicacion, imagen } = maquinaria;
 const navigate=useNavigate(); 
