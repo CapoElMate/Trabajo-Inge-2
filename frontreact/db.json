@@ -1,0 +1,118 @@
+{
+  "users": [
+    {
+      "id": "4c27",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "12345678",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoeldavo@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Java-Logo-1996.png"
+    },
+    {
+      "id": "1a91",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "e71f",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "b095",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "65c0",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "4e15",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoeldavo@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla (1).png"
+    },
+    {
+      "id": "aee1",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "23",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoelmate@gmail.com",
+      "password": "Marcos@123",
+      "fotoDNI_name": "Captura de pantalla 2024-09-04 061030.png"
+    }
+  ],
+  "pendingUsers": [],
+  "passwordResetRequests": [
+    {
+      "id": "6cfc",
+      "email": "capoeldavo@gmail.com",
+      "approvedAt": "2025-05-23T00:01:40.118Z",
+      "type": "user_approved_email_registration"
+    }
+  ]
+}
