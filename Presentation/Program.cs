@@ -6,6 +6,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity.UI;
+using Bussines_Logic_Layer.Interfaces;
+using Bussines_Logic_Layer.Services;
+using Data_Access_Layer.Interfaces;
+using Data_Access_Layer.Repositorios.SQL;
+using Bussines_Logic_Layer.Mapping;
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -74,6 +79,24 @@ builder.Services.AddCors(options =>
                                 .AllowCredentials();
                       });
 });
+
+//Repositorios
+builder.Services.AddScoped<IMaquinaRepository, MaquinaRepository>();
+builder.Services.AddScoped<IMarcaRepository, MarcaRepository>();
+builder.Services.AddScoped<IModeloRepository, ModeloRepository>();
+builder.Services.AddScoped<IPermisoEspecialRepository, PermisoEspecialRepository>();
+builder.Services.AddScoped<ITagMaquinaRepository, TagMaquinaRepository>();
+builder.Services.AddScoped<ITipoMaquinaRepository, TipoMaquinaRepository>();
+
+//Servicios
+builder.Services.AddScoped<IMaquinaService, MaquinaService>();
+builder.Services.AddScoped<IMarcaService, MarcaService>();
+builder.Services.AddScoped<IModeloService, ModeloService>();
+builder.Services.AddScoped<IPermisoEspecialService, PermisoEspecialServie>();
+builder.Services.AddScoped<ITagMaquinaService, TagMaquinaService>();
+builder.Services.AddScoped<ITipoMaquinaService, TipoMaquinaService>();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 

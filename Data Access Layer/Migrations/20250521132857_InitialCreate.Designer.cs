@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250519193907_AddIdentity")]
-    partial class AddIdentity
+    [Migration("20250521132857_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -255,8 +255,11 @@ namespace Data_Access_Layer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("MarcaName")
+                    b.Property<string>("ModeloName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModeloName1")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Tipo")
@@ -277,7 +280,9 @@ namespace Data_Access_Layer.Migrations
 
                     b.HasKey("idMaquina");
 
-                    b.HasIndex("MarcaName");
+                    b.HasIndex("ModeloName");
+
+                    b.HasIndex("ModeloName1");
 
                     b.HasIndex("Tipo");
 
@@ -304,9 +309,10 @@ namespace Data_Access_Layer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MarcaName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ModeloName", "MarcaName");
+                    b.HasKey("ModeloName");
 
                     b.HasIndex("MarcaName");
 
@@ -668,10 +674,6 @@ namespace Data_Access_Layer.Migrations
 
                     b.Property<bool>("mailVerificado")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("passwordHash")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.HasKey("DNI");
 
@@ -1081,11 +1083,15 @@ namespace Data_Access_Layer.Migrations
 
             modelBuilder.Entity("Domain_Layer.Entidades.Maquina", b =>
                 {
-                    b.HasOne("Domain_Layer.Entidades.Marca", "Marca")
+                    b.HasOne("Domain_Layer.Entidades.Modelo", "Modelo")
                         .WithMany()
-                        .HasForeignKey("MarcaName")
+                        .HasForeignKey("ModeloName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Modelo", null)
+                        .WithMany("Maquinas")
+                        .HasForeignKey("ModeloName1");
 
                     b.HasOne("Domain_Layer.Entidades.TipoMaquina", null)
                         .WithMany("Maquinas")
@@ -1099,7 +1105,7 @@ namespace Data_Access_Layer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Marca");
+                    b.Navigation("Modelo");
 
                     b.Navigation("TipoMaquina");
                 });
@@ -1398,6 +1404,11 @@ namespace Data_Access_Layer.Migrations
                     b.Navigation("Modelos");
                 });
 
+            modelBuilder.Entity("Domain_Layer.Entidades.Modelo", b =>
+                {
+                    b.Navigation("Maquinas");
+                });
+
             modelBuilder.Entity("Domain_Layer.Entidades.Pago", b =>
                 {
                     b.Navigation("Reserva")
@@ -1446,8 +1457,7 @@ namespace Data_Access_Layer.Migrations
 
             modelBuilder.Entity("Domain_Layer.Entidades.UsuarioRegistrado", b =>
                 {
-                    b.Navigation("Cliente")
-                        .IsRequired();
+                    b.Navigation("Cliente");
 
                     b.Navigation("PermisosEspeciales");
                 });

@@ -9,9 +9,11 @@ namespace Data_Access_Layer.Interfaces
 {
     public interface IPermisoEspecialRepository
     {
-        public PermisoEspecial get(string permiso);
-        public void update(PermisoEspecial permisoEspecial);
-        public void delete(string permiso);
-        public void create(PermisoEspecial permisoEspecial);
+        Task<IEnumerable<PermisoEspecial>> GetAllAsync();
+        Task<PermisoEspecial?> GetByNameAsync(string permisoEspecial);
+        Task AddAsync(PermisoEspecial permisoEspecial);
+        Task UpdateAsync(PermisoEspecial permisoEspecial);
+        Task DeleteAsync(PermisoEspecial permisoEspecial);
+        Task<bool> ExistsAsync(string permisoEspecial);
     }
 }

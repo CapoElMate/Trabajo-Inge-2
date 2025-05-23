@@ -2,7 +2,7 @@
 using Domain_Layer.Entidades;
 using System.ComponentModel.DataAnnotations;
 
-namespace API_Layer.DTOs
+namespace Bussines_Logic_Layer.DTOs
 {
     public class RegistroUsuarioCompletoDTO
     {
