@@ -6,9 +6,11 @@ import DetallePublicacion from './components/DetallePublicacion';
 import SignUp from './components/SignUp';
 import ForgotPassword from './components/ForgotPassword';
 import ResetPassword from './components/ResetPassword';
+import CargarPublicacion from './components/CargarPublicacion';
+import CargarMaquinaria from './components/CargarMaquinaria';
 function App(){
   return(
-    <Routes>
+    <Routes> 
       <Route path='/LoginReal' element={<LoginReal/>}/>
       <Route path='/HomePage' element={<HomePage/>}/>
       <Route path='/Login' element={<Login/>}/>
@@ -16,6 +18,8 @@ function App(){
       <Route path='/ForgotPassword' element={<ForgotPassword/>}/>
       <Route path='/DetallePublicacion/:id' element={<DetallePublicacion/>}/>
       <Route path='/ResetPassword' element={<ResetPassword/>}/>
+      <Route path='/CargarPublicacion' element={<CargarPublicacion/>} />
+      <Route path='/CargarMaquinaria' element={<CargarMaquinaria/>} />
     </Routes>
   );
 }

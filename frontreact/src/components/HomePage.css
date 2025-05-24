@@ -65,4 +65,29 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+/*No sirve por el momento*/
+.imagen-boton{ width: "20px";
+                    height: "20px";
+                    border-radius: "50%";
+                    background-color: "red";
+                    color: "white";
+                    font-size: "12px";
+                    border: "none";
+                    align-items: "center";
+                    justify-content: "center";
+                    cursor: "pointer";  
+                }
+
+.imagen-miniatura {
+                width: "70px";
+                height: "70px";
+                object-fit: "cover";
+                border-radius: "8px"
+            }
+.imagen-div {
+    display: "flex";
+    flex-wrap: "wrap";
+    gap: "8px";       /* equivalente a gap-2 (2 * 4px)*/
+    margin-top: "8px"  /* equivalente a mt-2 (2 * 4px)*/
+  }
 
