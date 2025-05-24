@@ -1,89 +1,86 @@
-import Maquinaria from "./Maquinaria";
-import React, { useEffect, useState } from "react";
-import './HomePage.css';
-import { CiShoppingTag } from "react-icons/ci";
-import logo from '../assets/bobElAlquiladorLogoCompleto.svg';
-
-
-
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from './Header.jsx';
+import './HomePage.css'; 
+import { useAuth } from '../AuthContext'; 
 function HomePage() {
-  const [maquinarias, setMaquinarias] = useState([]);
-  const [busqueda, setBusqueda] = useState('');
+  const [publicaciones, setPublicaciones] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { user, logout } = useAuth(); 
 
   useEffect(() => {
-    fetch('http://localhost:3001/maquinarias')
-      .then(response => {
+    const fetchPublicaciones = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/publicaciones');
         if (!response.ok) {
-          throw new Error('Error en la respuesta');
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
-      })
-      .then(data => {
-        setMaquinarias(data);
-      })
-      .catch(error => {
-        console.error('Error al obtener maquinarias:', error);
-      });
+        const data = await response.json();
+        setPublicaciones(data);
+      } catch (error) {
+        console.error("Error fetching publications:", error);
+        setError("No se pudieron cargar las publicaciones. Intenta de nuevo más tarde.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPublicaciones();
   }, []);
 
+  const handleCardClick = (id) => {
+    navigate(`/PostDetail/${id}`); // Redirect to the detail page
+  };
+
+  if (loading) {
+    return <div className="home-page-container">Cargando publicaciones...</div>;
+  }
+
+  if (error) {
+    return <div className="home-page-container error-message">{error}</div>;
+  }
+
   return (
-    <div className="homepage-wrapper">
-      <header className="homepage-header">
-        <img src={logo} alt="Bob el alquilador" style={{width:'200px'}} />
-      </header>
-
-      <div className="homepage-container">
-        <aside className="filter-sidebar">
-          <input
-            type="text"
-            placeholder="Buscar por nombre o modelo"
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-          />
-
-          <h3>Filtrar</h3>
-          <select>
-            <option>Ubicación</option>
-            <option>Buenos Aires</option>
-            <option>Córdoba</option>
-            <option>Mendoza</option>
-          </select>
-          <select>
-            <option>Tipo de maquinaria</option>
-            <option>Excavadora</option>
-            <option>Grua</option>
-            <option>Camión</option>
-          </select>
-          <select>
-            <option>Marca</option>
-            <option>CAT</option>
-            <option>John Deere</option>
-            <option>Komatsu</option>
-          </select><CiShoppingTag /> 
-          <select>
-            <option>Permiso</option>
-            <option>Requiere</option>
-            <option>No requiere</option>
-          </select><input type="text"  placeholder="Modelo" />
-          <input type="number" placeholder="Precio máximo" />
-          <button>Aplicar filtros</button>
-        </aside>
-
-        <main className="homepage-main">
-          <h2 className="homepage-title">Publicaciones más recientes</h2>
-          <div className="maquinarias-grid">
-            {maquinarias
-                .filter((m) =>
-                  m.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
-                  m.modelo?.toLowerCase().includes(busqueda.toLowerCase())
-                )
-                .map((m) => (
-                  <Maquinaria key={m.id} maquinaria={m} />
-              ))}
-
-          </div>
-        </main>
-      </div>
+      <div className="home-page-container">
+      <Header/>
+      {publicaciones.length === 0 ? (
+        <p>No hay publicaciones disponibles en este momento.</p>
+      ) : (
+        <div className="publicaciones-grid">
+          {publicaciones.map((pub) => (
+            <div
+              key={pub.id}
+              className={`publicacion-card ${!pub.disponible ? 'unavailable' : ''}`}
+              onClick={() => handleCardClick(pub.id)}
+            >
+              <img
+                src={pub.imagenes[0] || 'https://via.placeholder.com/400x300/CCCCCC/000000?text=No+Image'}
+                alt={pub.nombreMaquina}
+                className="publicacion-image"
+              />
+              <div className="publicacion-info">
+                <h2>{pub.nombreMaquina}</h2>
+                <p>
+                  <strong>Precio por día:</strong> ${pub.precioPorDia.toLocaleString('es-AR')}
+                </p>
+                <p>
+                  <strong>Ubicación:</strong> {pub.ubicacionActual.calle},{' '}
+                  {pub.ubicacionActual.altura}
+                  {pub.ubicacionActual.departamento && `, Dpto. ${pub.ubicacionActual.departamento}`}
+                </p>
+                {pub.tagsAdicionales && pub.tagsAdicionales.length > 0 && (
+                  <p className="publicacion-tags">
+                    <strong>Tags:</strong> {pub.tagsAdicionales.join(', ')}
+                  </p>
+                )}
+                {!pub.disponible && <div className="unavailable-overlay">No Disponible</div>}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -1,47 +1,62 @@
-import logo from '../assets/bobElAlquiladorLogoCompleto.svg';
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState } from "react";
+import { useAuth } from "../AuthContext"; 
+import { Link } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+
 import './Login.css';
-function Login() {
-  const navigate = useNavigate();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  
-  const handleLogin = (e) => {
+
+const Login = () => {
+  const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const navigate = useNavigate();  
+  const handleSubmit = async (e) => { 
     e.preventDefault();
-    if (username === 'david' && password === '1234') {
-      navigate('/HomePage');
-    } else {
-      alert('Credenciales incorrectas');
+    setErrorMessage(""); 
+
+    if (!email || !password) {
+      setErrorMessage("Por favor, ingresa tu email y contraseña.");
+      return;
+    }
+
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.error("Error en el componente Login:", error);
+      setErrorMessage("Hubo un problema al iniciar sesión. Inténtalo de nuevo.");
     }
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleLogin} className="login-form">
-        <img src={logo} alt="Bob el alquilador logo" style={{width:'300px'}} />
-        <h2>Iniciar sesión</h2>
+    <div className="login-container"> 
+      <div className="login-card"> 
+        <h2>Iniciar Sesión</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Correo electrónico"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required 
+          />
+          <input
+            type="password"
+            placeholder="Contraseña"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {errorMessage && <p className="error-message">{errorMessage}</p>} 
 
-        <input
-          type="text"
-          placeholder="email@example.com"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">Entrar</button>
+          <button type="submit">Ingresar</button>
+        </form>
 
-        <div className="login-links">
-          <Link to="/ForgotPassword">¿Olvidaste tu contraseña?</Link>
-          <Link to="/SignUp">Registrarse</Link>
-        </div>
-      </form>
+        <Link to="/ForgotPassword" className="forgot-password-link">¿Olvidaste tu contraseña?</Link>
+        <Link to="/SignUp" className="register-link">¿No tienes cuenta? Regístrate</Link>
+      </div>
     </div>
   );
-}
+};
+
 export default Login;

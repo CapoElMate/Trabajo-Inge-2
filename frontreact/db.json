@@ -1,0 +1,281 @@
+{
+  "users": [
+    {
+      "id": "4c27",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "12345678",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoeldavo@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Java-Logo-1996.png"
+    },
+    {
+      "id": "1a91",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "e71f",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "b095",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "65c0",
+      "nombre": "David",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "david@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
+    },
+    {
+      "id": "4e15",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoeldavo@gmail.com",
+      "password": "@Davo123",
+      "fotoDNI_name": "Captura de pantalla (1).png"
+    },
+    {
+      "id": "aee1",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "23",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoelmate@gmail.com",
+      "password": "Marcos@123",
+      "fotoDNI_name": "Captura de pantalla 2024-09-04 061030.png"
+    },
+    {
+      "id": "7caa",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "91",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "marcosmatias086@gmail.com",
+      "password": "Davo@123",
+      "rol": "cliente",
+      "fotoDNI_name": "bobelalquilador.png"
+    },
+    {
+      "id": "4848",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "19",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "davoxx086@gmail.com",
+      "password": "@Davo123",
+      "rol": "cliente",
+      "fotoDNI_name": "bobelalquilador.png"
+    },
+    {
+      "id": "1732",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "19",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoeldavo@gmail.com",
+      "password": "@Davo123",
+      "rol": "cliente",
+      "fotoDNI_name": "bobelalquilador.png"
+    }
+  ],
+  "pendingUsers": [
+    {
+      "id": "094a",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "19",
+      "telefono": "221 6316176",
+      "calle": "229",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "capoeldavo@gmail.com",
+      "password": "@Davo123",
+      "rol": "cliente",
+      "fotoDNI_name": "bobelalquilador.png"
+    }
+  ],
+  "passwordResetRequests": [
+    {
+      "id": "6cfc",
+      "email": "capoeldavo@gmail.com",
+      "approvedAt": "2025-05-23T00:01:40.118Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "ec0a",
+      "email": "marcosmatias086@gmail.com",
+      "approvedAt": "2025-05-23T15:26:27.646Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "f538",
+      "email": "davoxx086@gmail.com",
+      "approvedAt": "2025-05-23T20:51:17.122Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "f389",
+      "email": "capoeldavo@gmail.com",
+      "approvedAt": "2025-05-23T21:20:32.883Z",
+      "type": "user_approved_email_registration"
+    }
+  ],
+  "publicaciones": [
+    {
+      "id": "pub1",
+      "maquinaId": "maq101",
+      "nombreMaquina": "Excavadora Caterpillar 320",
+      "politicaCancelacion": "devolucion total del dinero",
+      "ubicacionActual": {
+        "calle": "Calle Falsa",
+        "altura": "123",
+        "departamento": "A",
+        "entreCalles": "Entre Av. Siempreviva y Calle Siempre Viva"
+      },
+      "precioPorDia": 10999,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF5733/FFFFFF?text=Excavadora+1",
+        "https://via.placeholder.com/400x300/33FF57/FFFFFF?text=Excavadora+2"
+      ],
+      "tagsAdicionales": [
+        "ofertas",
+        "construccion"
+      ],
+      "disponible": true
+    },
+    {
+      "id": "pub2",
+      "maquinaId": "maq102",
+      "nombreMaquina": "Minicargadora Bobcat S70",
+      "politicaCancelacion": "devolucion parcial",
+      "ubicacionActual": {
+        "calle": "Avenida Siempre Viva",
+        "altura": "742"
+      },
+      "precioPorDia": 5500,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/3357FF/FFFFFF?text=Minicargadora+1"
+      ],
+      "tagsAdicionales": [
+        "compacta"
+      ],
+      "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    }
+  ],
+  "maquinas": [
+    {
+      "id": "maq101",
+      "nombre": "Excavadora Caterpillar 320",
+      "tipo": "Excavadora",
+      "modelo": "320"
+    },
+    {
+      "id": "maq102",
+      "nombre": "Minicargadora Bobcat S70",
+      "tipo": "Minicargadora",
+      "modelo": "S70"
+    },
+    {
+      "id": "maq103",
+      "nombre": "Rodillo Compactador Vibratorio",
+      "tipo": "Compactador",
+      "modelo": "Vibratorio"
+    }
+  ]
+}

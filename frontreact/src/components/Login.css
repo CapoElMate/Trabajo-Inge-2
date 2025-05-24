@@ -1,65 +1,90 @@
-/* Login.css */
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-}
-
 .login-container {
-  height: 100vh;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #f3f4f6;
+  justify-content: center; 
+  align-items: center;     
+  min-height: 100vh;       
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
-.login-form {
-  background: #FFCDD2;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  width: 300px;
+.login-card {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); 
   text-align: center;
+  width: 100%;
+  max-width: 400px; 
+  box-sizing: border-box; 
 }
 
-.login-form input {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+.login-card h2 {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.2em;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.login-form button {
+.login-card input[type="email"],
+.login-card input[type="password"] {
+  width: calc(100% - 20px); 
+  padding: 12px 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; 
+}
+
+.login-card input[type="email"]:focus,
+.login-card input[type="password"]:focus {
+  border-color: #007bff; 
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25); 
+  outline: none; 
+}
+
+.login-card button {
   width: 100%;
-  padding: 10px;
-  background: #2563eb;
+  padding: 14px;
+  background-color: #8d040a;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 5px;
+  font-size: 1.1em;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease; 
+  margin-top: 10px;
 }
 
-.login-form button:hover {
-  background: #1d4ed8;
+.login-card button:hover {
+  background-color: #cd134e;
+  transform: translateY(-2px); 
 }
 
-.login-links {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.login-links a {
-  color: #2563eb;
+.login-card .forgot-password-link,
+.login-card .register-link {
+  display: block; 
+  margin-top: 15px;
+  color: #007bff;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.95em;
+  transition: color 0.3s ease;
 }
 
-.login-links a:hover {
+.login-card .forgot-password-link:hover,
+.login-card .register-link:hover {
+  color: #0056b3;
   text-decoration: underline;
+}
+
+.login-card .error-message {
+  color: #e74c3c; 
+  background-color: #ffebee; 
+  border: 1px solid #e74c3c;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  font-size: 0.9em;
 }
