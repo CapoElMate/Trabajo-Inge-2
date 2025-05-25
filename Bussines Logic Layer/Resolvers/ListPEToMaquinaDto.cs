@@ -2,6 +2,7 @@
 using System.Linq;
 using AutoMapper;
 using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 
@@ -10,9 +11,11 @@ namespace Bussines_Logic_Layer.Resolvers
     public class ListPEToMaquinaDto : IValueResolver<Maquina, MaquinaDto, ICollection<PermisoEspecialDto>>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ListPEToMaquinaDto(ApplicationDbContext context)
+        public ListPEToMaquinaDto(ApplicationDbContext context, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
         }
 
@@ -27,9 +30,10 @@ namespace Bussines_Logic_Layer.Resolvers
                 throw new Exception("No existen permisos especiales para los valores proporcionados");
             }
 
-            return permisosEspeciales
-                .Select(p => new PermisoEspecialDto { Permiso = p.Permiso})
-                .ToList();
+            //return permisosEspeciales
+            //    .Select(p => new PermisoEspecialDto { Permiso = p.Permiso})
+            //    .ToList();
+            return _mapper.Map<ICollection<PermisoEspecialDto>>(permisosEspeciales);
         }
     }
 }

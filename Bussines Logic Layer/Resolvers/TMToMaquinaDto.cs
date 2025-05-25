@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using Microsoft.EntityFrameworkCore;
@@ -14,10 +15,12 @@ namespace Bussines_Logic_Layer.Resolvers
     public class TMToMaquinaDto : IValueResolver<Maquina, MaquinaDto, TipoMaquinaDto>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public TMToMaquinaDto(ApplicationDbContext context)
+        public TMToMaquinaDto(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public TipoMaquinaDto Resolve(Maquina source, MaquinaDto destination, TipoMaquinaDto destMember, ResolutionContext context)
@@ -28,10 +31,11 @@ namespace Bussines_Logic_Layer.Resolvers
             {
                 throw new Exception("El tipo no existe");
             }
-            return new TipoMaquinaDto
-            {
-                Tipo = tipoExistente.Tipo
-            };
+            //return new TipoMaquinaDto
+            //{
+            //    Tipo = tipoExistente.Tipo
+            //};
+            return _mapper.Map<TipoMaquinaDto>(tipoExistente);
         }
     }
 }

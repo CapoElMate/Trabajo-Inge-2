@@ -14,10 +14,12 @@ namespace Bussines_Logic_Layer.Resolvers
     public class ModeloDtoToModeloResolver : IValueResolver<ModeloDto, Modelo, Marca>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ModeloDtoToModeloResolver(ApplicationDbContext context)
+        public ModeloDtoToModeloResolver(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public Marca Resolve(ModeloDto source, Modelo destination, Marca destMember, ResolutionContext context)
@@ -28,6 +30,8 @@ namespace Bussines_Logic_Layer.Resolvers
             {
                 throw new Exception("La marca no existe");
             }
+
+            _mapper.Map(source.Marca, marcaExistente);
             return marcaExistente;
         }
     }

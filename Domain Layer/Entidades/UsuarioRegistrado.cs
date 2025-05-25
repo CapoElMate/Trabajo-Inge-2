@@ -12,11 +12,6 @@ namespace Domain_Layer.Entidades
 
     public class UsuarioRegistrado
     {
-
-        public UsuarioRegistrado()
-        {
-        }
-
         public string Email { get; set; } = null!;
         [StringLength(8, MinimumLength = 6)]
         public string DNI { get; set; } = null!;
@@ -32,7 +27,8 @@ namespace Domain_Layer.Entidades
         public string Altura { get; set; } = null!;
         public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
-        public bool mailVerificado { get; set; }
+        public bool dniVerificado { get; set; }
+        public string roleName { get; set; } = null!;
         public ICollection<UsuarioRegistrado_PermisoEspecial> PermisosEspeciales { get; set; } = new List<UsuarioRegistrado_PermisoEspecial>();
         public Cliente? Cliente { get; set; } = null!;
     }

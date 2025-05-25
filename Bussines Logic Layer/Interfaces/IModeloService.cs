@@ -12,7 +12,7 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<IEnumerable<ModeloDto>> GetAllAsync();
         Task<ModeloDto?> GetByNameAsync(string Tipo);
         Task<ModeloDto> CreateAsync(ModeloDto dto);
-        Task<bool> UpdateAsync(ModeloDto dto);
+        Task<bool> UpdateAsync(string modeloName, ModeloDto dto);
         Task<bool> DeleteAsync(string Tipo);
     }
 }

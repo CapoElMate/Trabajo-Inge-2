@@ -16,14 +16,14 @@ namespace API_Layer.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<PermisoEspecialDto>>> GetPermisosEspeciales()
         {
             var permisosEspeciales = await _service.GetAllAsync();
             return Ok(permisosEspeciales);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("byName")]
         public async Task<ActionResult<PermisoEspecialDto>> GetPermisoEspecial(string permiso)
         {
             var permisoEspecial = await _service.GetByNameAsync(permiso);
@@ -40,22 +40,27 @@ namespace API_Layer.Controllers
             return CreatedAtAction(nameof(GetPermisoEspecial), new { Permiso = created }, created);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaquina(string permiso, PermisoEspecialDto dto)
+        //[HttpPut()]
+        //public async Task<IActionResult> PutMaquina(string permiso, PermisoEspecialDto dto)
+        //{
+        //    var permisoE = await _service.GetByNameAsync(permiso);
+        //    if (permisoE == null || !permiso.Equals(permisoE.Permiso))
+        //        return BadRequest("El permiso no existe.");
+
+        //    var updated = await _service.UpdateAsync(dto);
+        //    if (!updated)
+        //        return NotFound();
+
+        //    return NoContent();
+        //}
+
+        [HttpDelete()]
+        public async Task<IActionResult> DeletePermiso(string permiso)
         {
-            if (!permiso.Equals(dto.Permiso))
-                return BadRequest();
+            var permisoE = await _service.GetByNameAsync(permiso);
+            if (permisoE == null || !permiso.Equals(permisoE.Permiso))
+                return BadRequest("El permiso no existe.");
 
-            var updated = await _service.UpdateAsync(dto);
-            if (!updated)
-                return NotFound();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaquina(string permiso)
-        {
             var deleted = await _service.DeleteAsync(permiso);
             if (!deleted)
                 return NotFound();

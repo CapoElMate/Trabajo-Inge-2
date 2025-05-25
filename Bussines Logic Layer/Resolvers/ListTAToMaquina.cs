@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 
@@ -11,10 +11,11 @@ namespace Bussines_Logic_Layer.Resolvers
     public class ListTAToMaquina : IValueResolver<CreateMaquinaDto, Maquina, ICollection<TagMaquina>>
     {
         private readonly ApplicationDbContext _context;
-
-        public ListTAToMaquina(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+        public ListTAToMaquina(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public ICollection<TagMaquina> Resolve(CreateMaquinaDto source, Maquina destination, ICollection<TagMaquina> destMember, ResolutionContext context)
@@ -28,6 +29,7 @@ namespace Bussines_Logic_Layer.Resolvers
                 throw new Exception("No existen tags de maquinaria para los valores proporcionados");
             }
 
+            _mapper.Map(source.TagsMaquina, tagsMaquinaria);
             return tagsMaquinaria;
         }
     }

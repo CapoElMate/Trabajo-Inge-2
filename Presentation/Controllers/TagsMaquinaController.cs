@@ -16,15 +16,15 @@ namespace API_Layer.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TagMaquinaDto>>> GetTagsMaquina()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<TagMaquinaDto>>> GetAllTagsMaquina()
         {
             var tags = await _service.GetAllAsync();
             return Ok(tags);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TagMaquinaDto>> GetTagMaquina(string tagMaquina)
+        [HttpGet("byName")]
+        public async Task<ActionResult<TagMaquinaDto>> GetTagMaquinaByName(string tagMaquina)
         {
             var tag = await _service.GetByNameAsync(tagMaquina);
             if (tag == null)
@@ -34,28 +34,33 @@ namespace API_Layer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TagMaquinaDto>> PostMaquina(TagMaquinaDto dto)
+        public async Task<ActionResult<TagMaquinaDto>> PostTagMaquina(TagMaquinaDto dto)
         {
             var created = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetTagMaquina), new { Tag = created }, created);
+            return CreatedAtAction(nameof(GetTagMaquinaByName), new { Tag = created }, created);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaquina(string tagMaquina, TagMaquinaDto dto)
+        //[HttpPut]
+        //public async Task<IActionResult> PutMaquina(string tagMaquina, TagMaquinaDto dto)
+        //{
+        //    var tag = await _service.GetByNameAsync(tagMaquina);
+        //    if (tag == null || !tagMaquina.Equals(tag.Tag))
+        //        return BadRequest("El tag no existe.");
+
+        //    var updated = await _service.UpdateAsync(dto);
+        //    if (!updated)
+        //        return NotFound();
+
+        //    return NoContent();
+        //}
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTagMaquina(string tagMaquina)
         {
-            if (!tagMaquina.Equals(dto.Tag))
-                return BadRequest();
+            var tag = await _service.GetByNameAsync(tagMaquina);
+            if (tag == null || !tagMaquina.Equals(tag.Tag))
+                return BadRequest("El tag no existe.");
 
-            var updated = await _service.UpdateAsync(dto);
-            if (!updated)
-                return NotFound();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaquina(string tagMaquina)
-        {
             var deleted = await _service.DeleteAsync(tagMaquina);
             if (!deleted)
                 return NotFound();

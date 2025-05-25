@@ -9,9 +9,12 @@ namespace Data_Access_Layer.Interfaces
 {
     public interface IClienteRepository
     {
-        public Cliente get(string dni = "", string email = "");
-        public void update(Cliente cliente);
-        public void delete(string dni = "", string email = "");
-        public void create(Cliente cliente);
+        Task<IEnumerable<Cliente>> GetAllAsync();
+        Task<Cliente?> GetByDNIAsync(string DNI);
+        Task<Cliente?> GetByEmailAsync(string email);
+        Task AddAsync(Cliente cliente);
+        Task UpdateAsync(Cliente cliente);
+        Task DeleteAsync(Cliente cliente);
+        Task<bool> ExistsAsync(string DNI);
     }
 }
