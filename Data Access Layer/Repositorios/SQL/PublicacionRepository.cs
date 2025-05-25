@@ -24,7 +24,7 @@ namespace Data_Access_Layer.Repositorios.SQL
             return await _context.Publicaciones
                 .Include(p => p.Maquina)
                 .Include(p => p.TagsPublicacion)
-                .Include(p => p.Comentarios)
+                //.Include(p => p.Comentarios)
                 .Include(p => p.PoliticaDeCancelacion)
                 .Include(p => p.Ubicacion)
                 .ToListAsync();
@@ -53,7 +53,7 @@ namespace Data_Access_Layer.Repositorios.SQL
             return await _context.Publicaciones
                 .Include(p => p.Maquina)
                 .Include(p => p.TagsPublicacion)
-                .Include(p => p.Comentarios)
+                //.Include(p => p.Comentarios)
                 .Include(p => p.PoliticaDeCancelacion)
                 .Include(p => p.Ubicacion)
                 .FirstOrDefaultAsync(p => p.idMaquina == id);
