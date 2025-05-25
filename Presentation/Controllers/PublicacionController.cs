@@ -1,5 +1,6 @@
 ﻿using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.Interfaces;
+using Domain_Layer.Entidades;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +17,14 @@ namespace API_Layer.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<PublicacionDto>>> GetPublicaciones()
         {
             var publicaciones = await _service.GetAllAsync();
             return Ok(publicaciones);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("byId")]
         public async Task<ActionResult<PublicacionDto>> GetPublicacion(int id)
         {
             var publicacion = await _service.GetByIdAsync(id);
@@ -33,18 +34,19 @@ namespace API_Layer.Controllers
             return Ok(publicacion);
         }
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<PublicacionDto>> PostPublicacion(CreatePublicacionDto dto)
         {
             var created = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetPublicacion), new { id = created }, created);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("byId")]
         public async Task<IActionResult> PutPublicacion(int id, PublicacionDto dto)
         {
-            if (id != dto.idPublicacion)
-                return BadRequest();
+            var publi = await _service.GetByIdAsync(id);
+            if (publi == null || !id.Equals(publi.idPublicacion))
+                return BadRequest("La publicacion no existe.");
 
             var updated = await _service.UpdateAsync(dto);
             if (!updated)
@@ -53,9 +55,13 @@ namespace API_Layer.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("byId")]
         public async Task<IActionResult> DeletePublicacion(int id)
         {
+            var publi = await _service.GetByIdAsync(id);
+            if (publi == null || !id.Equals(publi.idPublicacion))
+                return BadRequest("La publicacion no existe.");
+
             var deleted = await _service.DeleteAsync(id);
             if (!deleted)
                 return NotFound();
