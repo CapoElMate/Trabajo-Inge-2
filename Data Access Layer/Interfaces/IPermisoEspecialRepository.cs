@@ -11,9 +11,13 @@ namespace Data_Access_Layer.Interfaces
     {
         Task<IEnumerable<PermisoEspecial>> GetAllAsync();
         Task<PermisoEspecial?> GetByNameAsync(string permisoEspecial);
+        Task<ICollection<UsuarioRegistrado_PermisoEspecial>> GetByUserAsync(string dni);
         Task AddAsync(PermisoEspecial permisoEspecial);
         Task UpdateAsync(PermisoEspecial permisoEspecial);
         Task DeleteAsync(PermisoEspecial permisoEspecial);
         Task<bool> ExistsAsync(string permisoEspecial);
+        Task ActualizarPermisoUsuarioAsync(UsuarioRegistrado_PermisoEspecial permiso);
+        Task BorrarPermisoUsuarioAsync(UsuarioRegistrado_PermisoEspecial permiso);
+        Task AgregarPermisoUsuarioAsync(UsuarioRegistrado_PermisoEspecial permiso);
     }
 }

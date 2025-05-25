@@ -18,6 +18,8 @@ namespace Domain_Layer.Configurations
                 .IsRequired();
             builder.HasIndex(user => user.DNI)
                 .IsUnique();
+            builder.Property(c => c.DNI)
+                  .ValueGeneratedNever();
 
             builder.Property(user => user.Email)
                 .IsRequired()

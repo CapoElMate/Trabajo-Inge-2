@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina
 {
-    public class ListPEToMaquina : IValueResolver<CreateMaquinaDto, Maquina, ICollection<PermisoEspecial>>
+    public class ListPETCreateMaquinaoMaquina : IValueResolver<CreateMaquinaDto, Domain_Layer.Entidades.Maquina, ICollection<PermisoEspecial>>
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public ListPEToMaquina(ApplicationDbContext context)
+        public ListPETCreateMaquinaoMaquina(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public ICollection<PermisoEspecial> Resolve(CreateMaquinaDto source, Maquina destination, ICollection<PermisoEspecial> destMember, ResolutionContext context)
+        public ICollection<PermisoEspecial> Resolve(CreateMaquinaDto source, Domain_Layer.Entidades.Maquina destination, ICollection<PermisoEspecial> destMember, ResolutionContext context)
         {
             var permisosEspeciales = _context.PermisosEspeciales
                 .Where(p => source.PermisosEspeciales.Select(pe => pe.Permiso).Contains(p.Permiso))

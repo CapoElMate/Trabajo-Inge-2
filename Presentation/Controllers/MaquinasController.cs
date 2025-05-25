@@ -1,4 +1,4 @@
-﻿using Bussines_Logic_Layer.DTOs;
+﻿using Bussines_Logic_Layer.DTOs.Maquina;
 using Bussines_Logic_Layer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +16,14 @@ namespace API_Layer.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("all")]
         public async Task<ActionResult<IEnumerable<MaquinaDto>>> GetMaquinas()
         {
             var maquinas = await _service.GetAllAsync();
             return Ok(maquinas);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("byId")]
         public async Task<ActionResult<MaquinaDto>> GetMaquina(int id)
         {
             var maquina = await _service.GetByIdAsync(id);
@@ -40,22 +40,27 @@ namespace API_Layer.Controllers
             return CreatedAtAction(nameof(GetMaquina), new { id = created }, created);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> PutMaquina(int id, MaquinaDto dto)
         {
-            if (id != dto.IdMaquina)
-                return BadRequest();
+            var maquina = await _service.GetByIdAsync(id);
+            if (maquina == null || id != maquina.IdMaquina)
+                return BadRequest("La maquina no existe.");
 
-            var updated = await _service.UpdateAsync(dto);
+            var updated = await _service.UpdateAsync(id, dto);
             if (!updated)
                 return NotFound();
 
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteMaquina(int id)
         {
+            var maquina = await _service.GetByIdAsync(id);
+            if (maquina == null || id != maquina.IdMaquina)
+                return BadRequest("La maquina no existe.");
+
             var deleted = await _service.DeleteAsync(id);
             if (!deleted)
                 return NotFound();

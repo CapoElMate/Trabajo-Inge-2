@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Domain_Layer.Entidades;
@@ -15,6 +16,9 @@ namespace Data_Access_Layer.Configurations
         {
             // Primary Key
             builder.HasKey(cliente => cliente.DNI);
+
+            builder.Property(c => c.DNI)
+                  .ValueGeneratedNever();
 
             builder.Property(cliente => cliente.DNI)
                 .IsRequired();

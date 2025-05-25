@@ -9,9 +9,13 @@ namespace Data_Access_Layer.Interfaces
 {
     public interface IEmpleadoRepository
     {
-        public Empleado get(string dni = "", string email = "", int nroEmpleado = -1);
-        public void update(Empleado empleado);
-        public void delete(string dni = "", string email = "", int nroEmpleado = -1);
-        public void create(Empleado empleado);
+        Task<IEnumerable<Empleado>> GetAllAsync();
+        Task<Empleado?> GetByDNIAsync(string DNI);
+        Task<Empleado?> GetByEmailAsync(string email);
+        Task<Empleado?> GetByNroEmpleadoAsync(int nroEmpleado);
+        Task AddAsync(Empleado empleado);
+        Task UpdateAsync(Empleado empleado);
+        Task DeleteAsync(Empleado empleado);
+        Task<bool> ExistsAsync(string DNI);
     }
 }

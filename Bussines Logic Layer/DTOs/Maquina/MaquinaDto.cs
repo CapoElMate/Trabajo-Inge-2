@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain_Layer.Entidades;
 
-namespace Bussines_Logic_Layer.DTOs
+namespace Bussines_Logic_Layer.DTOs.Maquina
 {
-    public class CreateMaquinaDto
+    public class MaquinaDto
     {
+        public int IdMaquina { get; set; }
         public string Status { get; set; } = null!;
         public int AnioFabricacion { get; set; }
         public ModeloDto Modelo { get; set; } = null!;

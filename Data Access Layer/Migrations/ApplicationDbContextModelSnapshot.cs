@@ -666,11 +666,15 @@ namespace Data_Access_Layer.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("dniVerificado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("isDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("mailVerificado")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("roleName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("DNI");
 

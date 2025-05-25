@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Maquina;
 using Bussines_Logic_Layer.Interfaces;
 using Data_Access_Layer.Interfaces;
 using Domain_Layer.Entidades;
@@ -41,9 +41,9 @@ namespace Bussines_Logic_Layer.Services
             return _mapper.Map<MaquinaDto>(maquina);
         }
 
-        public async Task<bool> UpdateAsync(MaquinaDto dto)
+        public async Task<bool> UpdateAsync(int id, MaquinaDto dto)
         {
-            var maquina = await _repo.GetByIdAsync(dto.IdMaquina);
+            var maquina = await _repo.GetByIdAsync(id);
             if (maquina == null)
                 return false;
 

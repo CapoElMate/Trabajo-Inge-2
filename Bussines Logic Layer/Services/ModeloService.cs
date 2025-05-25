@@ -42,9 +42,9 @@ namespace Bussines_Logic_Layer.Services
             return _mapper.Map<ModeloDto>(modelo);
         }
 
-        public async Task<bool> UpdateAsync(ModeloDto dto)
+        public async Task<bool> UpdateAsync(string modeloName, ModeloDto dto)
         {
-            var modelo = await _repo.GetByNameAsync(dto.Modelo);
+            var modelo = await _repo.GetByNameAsync(modeloName);
             if (modelo == null)
                 return false;
 

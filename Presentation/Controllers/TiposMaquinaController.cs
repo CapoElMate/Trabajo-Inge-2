@@ -16,15 +16,15 @@ namespace API_Layer.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TipoMaquinaDto>>> GetTiposMaquina()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<TipoMaquinaDto>>> GetAllTiposMaquina()
         {
             var tipos = await _service.GetAllAsync();
             return Ok(tipos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TipoMaquinaDto>> GetTipoMaquina(string tipoMaquina)
+        [HttpGet("byName")]
+        public async Task<ActionResult<TipoMaquinaDto>> GetTipoMaquinaByName(string tipoMaquina)
         {
             var tipo = await _service.GetByNameAsync(tipoMaquina);
             if (tipo == null)
@@ -34,28 +34,33 @@ namespace API_Layer.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TipoMaquinaDto>> PostMaquina(TipoMaquinaDto dto)
+        public async Task<ActionResult<TipoMaquinaDto>> PostTipoMaquina(TipoMaquinaDto dto)
         {
             var created = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetTipoMaquina), new { Tipo = created }, created);
+            return CreatedAtAction(nameof(GetTipoMaquinaByName), new { Tipo = created }, created);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTipoMaquina(string tipoMaquina, TipoMaquinaDto dto)
+        //[HttpPut]
+        //public async Task<IActionResult> PutTipoMaquina(string tipoMaquina, TipoMaquinaDto dto)
+        //{
+        //    var tipo = await _service.GetByNameAsync(tipoMaquina);
+        //    if (tipo == null || !tipoMaquina.Equals(tipo.Tipo))
+        //        return BadRequest("El tipo de maquinaria no existe.");
+
+        //    var updated = await _service.UpdateAsync(dto);
+        //    if (!updated)
+        //        return NotFound();
+
+        //    return NoContent();
+        //}
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteTipoMaquina(string tipoMaquina)
         {
-            if (!tipoMaquina.Equals(dto.Tipo))
-                return BadRequest();
+            var tipo = await _service.GetByNameAsync(tipoMaquina);
+            if (tipo == null || !tipoMaquina.Equals(tipo.Tipo))
+                return BadRequest("El tipo de maquinaria no existe.");
 
-            var updated = await _service.UpdateAsync(dto);
-            if (!updated)
-                return NotFound();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteMaquina(string tipoMaquina)
-        {
             var deleted = await _service.DeleteAsync(tipoMaquina);
             if (!deleted)
                 return NotFound();
