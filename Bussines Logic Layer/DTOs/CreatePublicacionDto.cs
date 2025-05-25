@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Bussines_Logic_Layer.DTOs
 {
-    public class PublicacionDto
+    public class CreatePublicacionDto
     {
-        public int idPublicacion { get; set; }
         public string Status { get; set; } = null!;
         public double PrecioPorDia { get; set; }
         public string Descripcion { get; set; } = null!;        
