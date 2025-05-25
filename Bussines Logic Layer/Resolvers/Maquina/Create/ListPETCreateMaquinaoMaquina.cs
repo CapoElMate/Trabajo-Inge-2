@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina.Create
 {
-    public class ListPEToMaquinaDto : IValueResolver<Domain_Layer.Entidades.Maquina, MaquinaDto, ICollection<PermisoEspecialDto>>
+    public class ListPETMaquinaoMaquina : IValueResolver<MaquinaDto, Domain_Layer.Entidades.Maquina, ICollection<PermisoEspecial>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public ListPEToMaquinaDto(ApplicationDbContext context, IMapper mapper)
+        public ListPETMaquinaoMaquina(ApplicationDbContext context, IMapper mapper)
         {
-            _mapper = mapper;
             _context = context;
+            _mapper = mapper;
         }
 
-        public ICollection<PermisoEspecialDto> Resolve(Domain_Layer.Entidades.Maquina source, MaquinaDto destination, ICollection<PermisoEspecialDto> destMember, ResolutionContext context)
+        public ICollection<PermisoEspecial> Resolve(MaquinaDto source, Domain_Layer.Entidades.Maquina destination, ICollection<PermisoEspecial> destMember, ResolutionContext context)
         {
             var permisosEspeciales = _context.PermisosEspeciales
                 .Where(p => source.PermisosEspeciales.Select(pe => pe.Permiso).Contains(p.Permiso))
@@ -30,10 +29,7 @@ namespace Bussines_Logic_Layer.Resolvers
                 throw new Exception("No existen permisos especiales para los valores proporcionados");
             }
 
-            //return permisosEspeciales
-            //    .Select(p => new PermisoEspecialDto { Permiso = p.Permiso})
-            //    .ToList();
-            return _mapper.Map<ICollection<PermisoEspecialDto>>(permisosEspeciales);
+            return permisosEspeciales;
         }
     }
 }

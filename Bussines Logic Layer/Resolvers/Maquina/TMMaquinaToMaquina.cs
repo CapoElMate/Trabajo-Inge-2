@@ -4,26 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina
 {
-    public class TMToMaquinaDto : IValueResolver<Domain_Layer.Entidades.Maquina, MaquinaDto, TipoMaquinaDto>
+    public class TMMaquinaToMaquinaResolver : IValueResolver<MaquinaDto, Domain_Layer.Entidades.Maquina, TipoMaquina>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public TMToMaquinaDto(ApplicationDbContext context, IMapper mapper)
+        public TMMaquinaToMaquinaResolver(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public TipoMaquinaDto Resolve(Domain_Layer.Entidades.Maquina source, MaquinaDto destination, TipoMaquinaDto destMember, ResolutionContext context)
+        public TipoMaquina Resolve(MaquinaDto source, Domain_Layer.Entidades.Maquina destination, TipoMaquina destMember, ResolutionContext context)
         {
             var tipoExistente = _context.TiposMaquina.FirstOrDefault(t => t.Tipo.Equals(source.TipoMaquina.Tipo));
 
@@ -31,11 +30,8 @@ namespace Bussines_Logic_Layer.Resolvers
             {
                 throw new Exception("El tipo no existe");
             }
-            //return new TipoMaquinaDto
-            //{
-            //    Tipo = tipoExistente.Tipo
-            //};
-            return _mapper.Map<TipoMaquinaDto>(tipoExistente);
+
+            return tipoExistente;
         }
     }
 }

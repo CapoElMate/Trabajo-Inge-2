@@ -31,7 +31,7 @@ namespace Bussines_Logic_Layer.Resolvers
                 throw new Exception("La marca no existe");
             }
 
-            _mapper.Map(source.Marca, marcaExistente);
+            //_mapper.Map(source.Marca, marcaExistente);
             return marcaExistente;
         }
     }

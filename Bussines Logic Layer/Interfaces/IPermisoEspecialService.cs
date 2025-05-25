@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Usuarios;
 
 namespace Bussines_Logic_Layer.Interfaces
 {
@@ -14,5 +15,9 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<PermisoEspecialDto> CreateAsync(PermisoEspecialDto dto);
         Task<bool> UpdateAsync(PermisoEspecialDto dto);
         Task<bool> DeleteAsync(string Permiso);
+        Task<ICollection<PermisoEspecialUsuarioDto>> GetByUserAsync(string dni);
+        Task<bool> actualizarPermisoAsync(PermisoEspecialUsuarioDto dto);
+        Task<bool> borrarPermisoUsuarioAsync(PermisoEspecialUsuarioDto permiso);
+        Task<PermisoEspecialUsuarioDto> AgregarPermisoEspecialUsuarioAsync(PermisoEspecialUsuarioDto dto);
     }
 }

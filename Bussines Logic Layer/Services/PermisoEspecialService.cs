@@ -5,9 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Usuarios;
 using Bussines_Logic_Layer.Interfaces;
 using Data_Access_Layer.Interfaces;
 using Domain_Layer.Entidades;
+using Humanizer;
 
 namespace Bussines_Logic_Layer.Services
 {
@@ -26,6 +28,39 @@ namespace Bussines_Logic_Layer.Services
         {
             var permiso = await _repo.GetAllAsync();
             return _mapper.Map<IEnumerable<PermisoEspecialDto>>(permiso);
+        }
+
+        public async Task<ICollection<PermisoEspecialUsuarioDto>> GetByUserAsync(string dni)
+        {
+            var permisos = await _repo.GetByUserAsync(dni);
+            return permisos == null ? new List<PermisoEspecialUsuarioDto>() : _mapper.Map<ICollection<PermisoEspecialUsuarioDto>>(permisos);
+        }
+        public async Task<bool> actualizarPermisoAsync(PermisoEspecialUsuarioDto dto)
+        {
+            var permisos = await _repo.GetByUserAsync(dto.DNICliente);
+            var permiso = permisos.FirstOrDefault(p => p.Permiso.Equals(dto.Permiso));
+            if (permisos == null)
+                return false;
+
+            _mapper.Map(dto, permiso);
+            await _repo.ActualizarPermisoUsuarioAsync(permiso);
+            return true;
+        }
+        public async Task<bool> borrarPermisoUsuarioAsync(PermisoEspecialUsuarioDto dto)
+        {
+            var permisos = await _repo.GetByUserAsync(dto.DNICliente);
+            var permiso = permisos.FirstOrDefault(p => p.Permiso.Equals(dto.Permiso));
+            if (permisos == null)
+                return false;
+
+            await _repo.BorrarPermisoUsuarioAsync(permiso);
+            return true;
+        }
+        public async Task<PermisoEspecialUsuarioDto> AgregarPermisoEspecialUsuarioAsync(PermisoEspecialUsuarioDto dto)
+        {
+            var permiso = _mapper.Map<UsuarioRegistrado_PermisoEspecial>(dto);
+            await _repo.AgregarPermisoUsuarioAsync(permiso);
+            return _mapper.Map<PermisoEspecialUsuarioDto>(permiso);
         }
 
         public async Task<PermisoEspecialDto?> GetByNameAsync(string permisoEspecial)

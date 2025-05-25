@@ -76,19 +76,19 @@ namespace API_Layer.Controllers.Usuarios
             return CreatedAtAction(nameof(GetEmpleadoByDNI), new { dni = created }, created);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutEmpleado(string dni, EmpleadoDTO dto)
-        {
-            var existingEmpleado = await _serviceEmpledo.GetByDNIAsync(dni);
-            if (existingEmpleado == null || dni != existingEmpleado.Cliente.UsuarioRegistrado.DNI)
-                return BadRequest("El empelado no existe.");
+        //[HttpPut]
+        //public async Task<IActionResult> PutEmpleado(string dni, EmpleadoDTO dto)
+        //{
+        //    var existingEmpleado = await _serviceEmpledo.GetByDNIAsync(dni);
+        //    if (existingEmpleado == null || dni != existingEmpleado.Cliente.UsuarioRegistrado.DNI)
+        //        return BadRequest("El empelado no existe.");
 
-            var updated = await _serviceEmpledo.UpdateAsync(dto);
-            if (!updated)
-                return NotFound();
+        //    var updated = await _serviceEmpledo.UpdateAsync(dni, dto);
+        //    if (!updated)
+        //        return NotFound();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         [HttpDelete("byDNI")]
         public async Task<IActionResult> DeleteByDNI(string dni)

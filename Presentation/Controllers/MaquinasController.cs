@@ -47,7 +47,7 @@ namespace API_Layer.Controllers
             if (maquina == null || id != maquina.IdMaquina)
                 return BadRequest("La maquina no existe.");
 
-            var updated = await _service.UpdateAsync(dto);
+            var updated = await _service.UpdateAsync(id, dto);
             if (!updated)
                 return NotFound();
 

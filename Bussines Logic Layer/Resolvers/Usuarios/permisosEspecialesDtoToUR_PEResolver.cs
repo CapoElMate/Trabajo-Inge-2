@@ -10,20 +10,20 @@ using Domain_Layer.Entidades;
 
 namespace Bussines_Logic_Layer.Resolvers.Usuarios
 {
-    public class permisosEspecialesDtoToUsuarioRegistradoResolver : IValueResolver<UsuarioRegistradoDTO, UsuarioRegistrado, ICollection<UsuarioRegistrado_PermisoEspecial>>
+    public class permisosEspecialesDtoToUR_PEResolver : IValueResolver<PermisoEspecialUsuarioDto, UsuarioRegistrado_PermisoEspecial, PermisoEspecial>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
 
-        public permisosEspecialesDtoToUsuarioRegistradoResolver(ApplicationDbContext context, IMapper mapper)
+        public permisosEspecialesDtoToUR_PEResolver(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public ICollection<UsuarioRegistrado_PermisoEspecial> Resolve(UsuarioRegistradoDTO source, UsuarioRegistrado destination, ICollection<UsuarioRegistrado_PermisoEspecial> destMember, ResolutionContext context)
+        public PermisoEspecial Resolve(PermisoEspecialUsuarioDto source, UsuarioRegistrado_PermisoEspecial destination, PermisoEspecial destMember, ResolutionContext context)
         {
-            var usuarioExistente = _context.UsuariosRegistrados.FirstOrDefault(u => u.DNI == source.DNI);
+            var usuarioExistente = _context.UsuarioRegistrado_PermisoEspecial.FirstOrDefault(u => u.UsuarioRegistradoDNI == source.DNICliente);
 
             if (usuarioExistente == null)
             {
@@ -31,7 +31,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
             }
 
             //_mapper.Map(source.PermisosEspeciales, usuarioExistente.PermisosEspeciales);
-            return usuarioExistente.PermisosEspeciales;
+            return usuarioExistente.PermisoEspecial;
         }
     }
 }

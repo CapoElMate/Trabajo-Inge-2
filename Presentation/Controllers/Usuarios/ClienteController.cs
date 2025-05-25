@@ -52,19 +52,19 @@ namespace API_Layer.Controllers.Usuarios
             return CreatedAtAction(nameof(GetUsuarioByDNI), new { dni = created }, created);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> PutMaquina(string dni, ClienteDTO dto)
-        {
-            var cliente = await _serviceCliente.GetByDNIAsync(dni);
-            if (cliente == null || dni != cliente.UsuarioRegistrado.DNI)
-                return BadRequest("El cliente no existe.");
+        //[HttpPut]
+        //public async Task<IActionResult> PutMaquina(string dni, ClienteDTO dto)
+        //{
+        //    var cliente = await _serviceCliente.GetByDNIAsync(dni);
+        //    if (cliente == null || dni != cliente.UsuarioRegistrado.DNI)
+        //        return BadRequest("El cliente no existe.");
 
-            var updated = await _serviceCliente.UpdateAsync(dto);
-            if (!updated)
-                return NotFound();
+        //    var updated = await _serviceCliente.UpdateAsync(dni, dto);
+        //    if (!updated)
+        //        return NotFound();
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
         [HttpDelete("byDNI")]
         public async Task<IActionResult> DeleteByDNI(string dni)

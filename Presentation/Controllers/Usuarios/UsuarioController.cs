@@ -53,13 +53,13 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpPut]
-        public async Task<IActionResult> PutMaquina(string dni, UsuarioRegistradoDTO dto)
+        public async Task<IActionResult> PutUsuario(string dni, UsuarioRegistradoDTO dto)
         {
             var existingUsuario = await _serviceUsuario.GetByDNIAsync(dni);
             if (existingUsuario == null || dni != existingUsuario.DNI)
                 return BadRequest("El usuario no existe.");
 
-            var updated = await _serviceUsuario.UpdateAsync(dto);
+            var updated = await _serviceUsuario.UpdateAsync(dni, dto);
             if (!updated)
                 return NotFound();
 

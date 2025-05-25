@@ -30,7 +30,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
                 throw new Exception("El cliente no existe");
             }
 
-            _mapper.Map(source.Cliente, clienteExistente);
+            //_mapper.Map(source.Cliente, clienteExistente);
             return clienteExistente;
         }
     }

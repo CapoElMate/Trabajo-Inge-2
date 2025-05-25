@@ -2,25 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina
 {
-    public class ListTAToMaquinaDto : IValueResolver<Domain_Layer.Entidades.Maquina, MaquinaDto, ICollection<TagMaquinaDto>>
+    public class ListTACreateMaquinaToMaquina : IValueResolver<CreateMaquinaDto, Domain_Layer.Entidades.Maquina, ICollection<TagMaquina>>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-
-        public ListTAToMaquinaDto(ApplicationDbContext context, IMapper mapper)
+        public ListTACreateMaquinaToMaquina(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
-        public ICollection<TagMaquinaDto> Resolve(Domain_Layer.Entidades.Maquina source, MaquinaDto destination, ICollection<TagMaquinaDto> destMember, ResolutionContext context)
+        public ICollection<TagMaquina> Resolve(CreateMaquinaDto source, Domain_Layer.Entidades.Maquina destination, ICollection<TagMaquina> destMember, ResolutionContext context)
         {
             var tagsMaquinaria = _context.TagsMaquina
                 .Where(t => source.TagsMaquina.Select(st => st.Tag).Contains(t.Tag))
@@ -31,10 +29,7 @@ namespace Bussines_Logic_Layer.Resolvers
                 throw new Exception("No existen tags de maquinaria para los valores proporcionados");
             }
 
-            //return tagsMaquinaria
-            //    .Select(t => new TagMaquinaDto { Tag = t.Tag })
-            //    .ToList();
-            return _mapper.Map<ICollection<TagMaquinaDto>>(tagsMaquinaria);
+            return tagsMaquinaria;
         }
     }
 }

@@ -18,12 +18,15 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.fecEmision, opt => opt.MapFrom(src => src.fecEmision))
                 .ForMember(dest => dest.fecVencimiento, opt => opt.MapFrom(src => src.fecVencimiento))
                 .ForMember(dest => dest.status, opt => opt.MapFrom(src => src.status))
-                .ForMember(dest => dest.Permiso, opt => opt.MapFrom(src => src.Permiso));
+                .ForMember(dest => dest.Permiso, opt => opt.MapFrom(src => src.PermisoEspecial))
+                .ForMember(dest => dest.DNICliente, opt => opt.MapFrom(src => src.UsuarioRegistradoDNI));
+
             CreateMap<PermisoEspecialUsuarioDto, UsuarioRegistrado_PermisoEspecial>()
                 .ForMember(dest => dest.fecEmision, opt => opt.MapFrom(src => src.fecEmision))
                 .ForMember(dest => dest.fecVencimiento, opt => opt.MapFrom(src => src.fecVencimiento))
                 .ForMember(dest => dest.status, opt => opt.MapFrom(src => src.status))
-                .ForMember(dest => dest.Permiso, opt => opt.MapFrom(src => src.Permiso));
+                .ForMember(dest => dest.PermisoEspecial, opt => opt.MapFrom(src => src.Permiso))
+                .ForMember(dest => dest.UsuarioRegistradoDNI, opt => opt.MapFrom(src => src.DNICliente));
         }
     }
 }

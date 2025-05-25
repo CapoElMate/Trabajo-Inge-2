@@ -30,7 +30,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
                 throw new Exception("El tipo no existe");
             }
 
-            _mapper.Map(source.UsuarioRegistrado, usuarioExistente);
+            //_mapper.Map(source.UsuarioRegistrado, usuarioExistente);
             return usuarioExistente;
         }
     }
