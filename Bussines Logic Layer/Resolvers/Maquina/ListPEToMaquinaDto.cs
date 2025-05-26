@@ -6,7 +6,7 @@ using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina
 {
     public class ListPEToMaquinaDto : IValueResolver<Domain_Layer.Entidades.Maquina, MaquinaDto, ICollection<PermisoEspecialDto>>
     {

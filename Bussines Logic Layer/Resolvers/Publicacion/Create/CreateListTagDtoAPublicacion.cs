@@ -1,0 +1,37 @@
+﻿using AutoMapper;
+using Bussines_Logic_Layer.DTOs;
+using Data_Access_Layer;
+using Domain_Layer.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bussines_Logic_Layer.Resolvers.Publicacion.Create
+{
+    public class CreateListTagDtoAPublicacion : IValueResolver<CreatePublicacionDto, Domain_Layer.Entidades.Publicacion, ICollection<TagPublicacion>>
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+        public CreateListTagDtoAPublicacion(ApplicationDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        public ICollection<TagPublicacion> Resolve(CreatePublicacionDto source, Domain_Layer.Entidades.Publicacion destination, ICollection<TagPublicacion> destMember, ResolutionContext context)
+        {
+            var tagsPublicacion = _context.TagsPublicacion
+                .Where(t => source.TagsPublicacion.Select(st => st.Tag).Contains(t.Tag))
+                .ToList();
+
+            if (tagsPublicacion == null || !tagsPublicacion.Any())
+            {
+                throw new Exception("No existen tags de publicacionria para los valores proporcionados");
+            }
+
+            return tagsPublicacion;
+        }
+    }
+}

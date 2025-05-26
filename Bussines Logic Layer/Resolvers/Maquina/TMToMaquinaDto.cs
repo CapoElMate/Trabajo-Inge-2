@@ -10,7 +10,7 @@ using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina
 {
     public class TMToMaquinaDto : IValueResolver<Domain_Layer.Entidades.Maquina, MaquinaDto, TipoMaquinaDto>
     {
