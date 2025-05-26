@@ -27,11 +27,11 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion.Create
 
         public Domain_Layer.Entidades.Maquina Resolve(CreatePublicacionDto source, Domain_Layer.Entidades.Publicacion destination, Domain_Layer.Entidades.Maquina destMember, ResolutionContext context)
         {
-            var publicacionExistente = _context.Maquinas.FirstOrDefault(m => m.idMaquina.Equals(source.Maquina.IdMaquina));
+            var publicacionExistente = _context.Maquinas.FirstOrDefault(m => m.idMaquina.Equals(source.IdMaquina));
 
             if (publicacionExistente == null)
             {
-                throw new Exception("La publicacion no existe");
+                throw new Exception("La maquina no existe");
             }
 
             //_mapper.Map(source.Marca, publicacionExistente);

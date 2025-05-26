@@ -2,6 +2,7 @@
 using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,17 +25,14 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
         public MaquinaDto Resolve(Domain_Layer.Entidades.Publicacion source, PublicacionDto destination
                                                        , MaquinaDto destMember, ResolutionContext context)
         {
-            var publicacion = _context.Publicaciones
-                .Where(p => source.Maquina.idMaquina == p.idMaquina)
-                .ToList();
+            var maquinaExistente = _context.Maquinas.FirstOrDefault(m => m.idMaquina.Equals(source.Maquina.idMaquina));
 
-            if (publicacion == null || !publicacion.Any())
+            if (maquinaExistente == null)
             {
-                throw new Exception("No existen permisos especiales para los valores proporcionados");
+                throw new Exception("La publicacion no existe");
             }
 
-
-            return _mapper.Map<MaquinaDto>(publicacion);
+            return _mapper.Map<MaquinaDto>(maquinaExistente);
         }
     }
     

@@ -26,8 +26,9 @@ namespace Bussines_Logic_Layer.Resolvers
                 .Where(t => source.TagsMaquina.Select(st => st.Tag).Contains(t.Tag))
                 .ToList();
 
-            if (tagsMaquinaria == null || !tagsMaquinaria.Any())
+            if (tagsMaquinaria == null || tagsMaquinaria.Count == 0)
             {
+                //return new List<TagMaquinaDto>();
                 throw new Exception("No existen tags de maquinaria para los valores proporcionados");
             }
 

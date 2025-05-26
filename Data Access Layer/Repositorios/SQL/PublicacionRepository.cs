@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Data_Access_Layer.Repositorios.SQL
 {
-    class PublicacionRepository : IPublicacionRepository
+    public class PublicacionRepository : IPublicacionRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -44,7 +44,7 @@ namespace Data_Access_Layer.Repositorios.SQL
 
         public async Task<bool> ExistsAsync(int id)
         {
-            return await _context.Publicaciones.AnyAsync(p => p.idMaquina == id);
+            return await _context.Publicaciones.AnyAsync(p => p.idPublicacion == id);
         }
 
         
@@ -56,7 +56,7 @@ namespace Data_Access_Layer.Repositorios.SQL
                 //.Include(p => p.Comentarios)
                 .Include(p => p.PoliticaDeCancelacion)
                 .Include(p => p.Ubicacion)
-                .FirstOrDefaultAsync(p => p.idMaquina == id);
+                .FirstOrDefaultAsync(p => p.idPublicacion == id);
         }
 
         public async Task UpdateAsync(Publicacion publicacion)

@@ -34,7 +34,7 @@ namespace API_Layer.Controllers
             return Ok(publicacion);
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public async Task<ActionResult<PublicacionDto>> PostPublicacion(CreatePublicacionDto dto)
         {
             var created = await _service.CreateAsync(dto);

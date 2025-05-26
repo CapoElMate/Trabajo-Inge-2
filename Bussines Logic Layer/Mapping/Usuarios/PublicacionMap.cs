@@ -22,8 +22,7 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
             //           source -> destination
             CreateMap<Publicacion, PublicacionDto>()
                 //         destination               <-      source
-                .ForMember(dest => dest.idPublicacion, opt => opt.MapFrom(src => src.idPublicacion))
-                                                                  //
+                .ForMember(dest => dest.idPublicacion, opt => opt.MapFrom(src => src.idPublicacion))                                                                  
                 .ForMember(dest => dest.Maquina, opt => opt.MapFrom<MaquinaToPublicacionDto>())
                 .ForMember(dest => dest.TagsPublicacion, opt => opt.MapFrom<ListTagAPublicacionDto>())
                 .ForMember(dest => dest.PoliticaDeCancelacion, opt => opt.MapFrom<PoliticaDeCancelacionToPublicacionDto>())
@@ -37,7 +36,6 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.Ubicacion, opt => opt.MapFrom<UbicacionDtoToPublicacion>());
                         
             CreateMap<CreatePublicacionDto, Publicacion>()
-                .ForMember(dest => dest.idPublicacion, opt => opt.Ignore())
                 .ForMember(dest => dest.Maquina, opt => opt.MapFrom<CreateMaquinaDtoToPublicacion>())
                 .ForMember(dest => dest.TagsPublicacion, opt => opt.MapFrom<CreateListTagDtoAPublicacion>())
                 .ForMember(dest => dest.PoliticaDeCancelacion, opt => opt.MapFrom<CreatePoliticaDeCancelacionDtoToPublicacion>())
