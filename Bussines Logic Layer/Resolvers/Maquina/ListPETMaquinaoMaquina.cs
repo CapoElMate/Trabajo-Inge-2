@@ -20,11 +20,17 @@ namespace Bussines_Logic_Layer.Resolvers.Maquina
 
         public ICollection<PermisoEspecial> Resolve(CreateMaquinaDto source, Domain_Layer.Entidades.Maquina destination, ICollection<PermisoEspecial> destMember, ResolutionContext context)
         {
+            // Si no se proporcionan permisos especiales en el DTO, retornar una lista vacía
+            if (source.PermisosEspeciales == null || !source.PermisosEspeciales.Any())
+            {
+                return new List<PermisoEspecial>();
+            }
+
             var permisosEspeciales = _context.PermisosEspeciales
                 .Where(p => source.PermisosEspeciales.Select(pe => pe.Permiso).Contains(p.Permiso))
                 .ToList();
 
-            if (permisosEspeciales == null || !permisosEspeciales.Any())
+            if (!permisosEspeciales.Any())
             {
                 throw new Exception("No existen permisos especiales para los valores proporcionados");
             }

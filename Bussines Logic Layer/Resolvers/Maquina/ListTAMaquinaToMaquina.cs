@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
@@ -20,6 +21,11 @@ namespace Bussines_Logic_Layer.Resolvers.Maquina
 
         public ICollection<TagMaquina> Resolve(CreateMaquinaDto source, Domain_Layer.Entidades.Maquina destination, ICollection<TagMaquina> destMember, ResolutionContext context)
         {
+            if (source.TagsMaquina == null || !source.TagsMaquina.Any())
+            {
+                return new List<TagMaquina>();
+            }
+
             var tagsMaquinaria = _context.TagsMaquina
                 .Where(t => source.TagsMaquina.Select(st => st.Tag).Contains(t.Tag))
                 .ToList();

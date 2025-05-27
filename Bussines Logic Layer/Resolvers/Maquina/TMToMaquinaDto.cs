@@ -10,7 +10,7 @@ using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using Microsoft.EntityFrameworkCore;
 
-namespace Bussines_Logic_Layer.Resolvers
+namespace Bussines_Logic_Layer.Resolvers.Maquina
 {
     public class TMToMaquinaDto : IValueResolver<Domain_Layer.Entidades.Maquina, MaquinaDto, TipoMaquinaDto>
     {
@@ -25,7 +25,7 @@ namespace Bussines_Logic_Layer.Resolvers
 
         public TipoMaquinaDto Resolve(Domain_Layer.Entidades.Maquina source, MaquinaDto destination, TipoMaquinaDto destMember, ResolutionContext context)
         {
-            var tipoExistente = _context.TiposMaquina.FirstOrDefault(t => t.Tipo.Equals(source.TipoMaquina.Tipo));
+            var tipoExistente = _context.TiposMaquina.FirstOrDefault(t => t.Tipo.Equals(source.Tipo));
 
             if (tipoExistente == null)
             {

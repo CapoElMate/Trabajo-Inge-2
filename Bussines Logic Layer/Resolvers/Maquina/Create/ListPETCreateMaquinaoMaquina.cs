@@ -20,6 +20,11 @@ namespace Bussines_Logic_Layer.Resolvers.Maquina.Create
 
         public ICollection<PermisoEspecial> Resolve(MaquinaDto source, Domain_Layer.Entidades.Maquina destination, ICollection<PermisoEspecial> destMember, ResolutionContext context)
         {
+            if (source.PermisosEspeciales == null || !source.PermisosEspeciales.Any())
+            {
+                return new List<PermisoEspecial>();
+            }
+
             var permisosEspeciales = _context.PermisosEspeciales
                 .Where(p => source.PermisosEspeciales.Select(pe => pe.Permiso).Contains(p.Permiso))
                 .ToList();

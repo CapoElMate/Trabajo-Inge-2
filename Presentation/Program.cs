@@ -90,6 +90,10 @@ builder.Services.AddScoped<ITipoMaquinaRepository, TipoMaquinaRepository>();
 builder.Services.AddScoped<IUsuarioRegistradoRepository, UsuarioRegistradoRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
+builder.Services.AddScoped<IPublicacionRepository, PublicacionRepository>();
+builder.Services.AddScoped<ITagPublicacionRepository, TagPublicacionRepository>();
+
+
 
 //Servicios
 builder.Services.AddScoped<IMaquinaService, MaquinaService>();
@@ -101,6 +105,10 @@ builder.Services.AddScoped<ITipoMaquinaService, TipoMaquinaService>();
 builder.Services.AddScoped<IUsuarioRegistradoService, UsuarioRegistradoService>();
 builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IPublicacionService, PublicacionService>();
+builder.Services.AddScoped<ITagPublicacionService, TagPublicacionService>();
+
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
