@@ -22,6 +22,7 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<ListPEToMaquinaDto>())
                 .ForMember(dest => dest.TagsMaquina, opt => opt.MapFrom<ListTAToMaquinaDto>())
                 .ForMember(dest => dest.TipoMaquina, opt => opt.MapFrom<TMToMaquinaDto>())
+                .ForMember(dest => dest.Modelo, opt => opt.MapFrom<ModeloToMaquinaDto>())
                 .ForMember(dest => dest.AnioFabricacion, opt => opt.MapFrom(src => src.anioFabricacion))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.status));
 

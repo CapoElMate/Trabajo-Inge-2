@@ -25,7 +25,12 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
         public MaquinaDto Resolve(Domain_Layer.Entidades.Publicacion source, PublicacionDto destination
                                                        , MaquinaDto destMember, ResolutionContext context)
         {
-            var maquinaExistente = _context.Maquinas.FirstOrDefault(m => m.idMaquina.Equals(source.Maquina.idMaquina));
+            var maquinaExistente = _context.Maquinas.Include(m => m.Modelo)
+                .Include(m => m.PermisosEspeciales)
+                .Include(m => m.Modelo.Marca)
+                .Include(m => m.TipoMaquina)
+                .Include(m => m.TagsMaquina)
+                .FirstOrDefault(m => m.idMaquina.Equals(source.Maquina.idMaquina));
 
             if (maquinaExistente == null)
             {

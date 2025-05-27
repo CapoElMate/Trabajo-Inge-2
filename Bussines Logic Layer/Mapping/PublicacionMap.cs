@@ -12,7 +12,7 @@ using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.Resolvers.Publicacion;
 using Bussines_Logic_Layer.Resolvers.Publicacion.Create;
 
-namespace Bussines_Logic_Layer.Mapping.Usuarios
+namespace Bussines_Logic_Layer.Mapping
 {
     class PublicacionMap : Profile
     {

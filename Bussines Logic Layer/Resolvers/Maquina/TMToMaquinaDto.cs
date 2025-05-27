@@ -25,7 +25,7 @@ namespace Bussines_Logic_Layer.Resolvers.Maquina
 
         public TipoMaquinaDto Resolve(Domain_Layer.Entidades.Maquina source, MaquinaDto destination, TipoMaquinaDto destMember, ResolutionContext context)
         {
-            var tipoExistente = _context.TiposMaquina.FirstOrDefault(t => t.Tipo.Equals(source.TipoMaquina.Tipo));
+            var tipoExistente = _context.TiposMaquina.FirstOrDefault(t => t.Tipo.Equals(source.Tipo));
 
             if (tipoExistente == null)
             {

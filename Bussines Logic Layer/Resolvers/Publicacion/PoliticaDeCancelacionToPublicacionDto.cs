@@ -26,14 +26,14 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
                                                        , PoliticaDeCancelacionDto destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.PoliticasDeCancelacion.FirstOrDefault(m => m.Politica.Equals(source.PoliticaDeCancelacion.Politica));
+            var politicaExistente = _context.PoliticasDeCancelacion.FirstOrDefault(p => p.Politica.Equals(source.PoliticaDeCancelacion.Politica));
 
-            if (tipoExistente == null)
+            if (politicaExistente == null)
             {
                 throw new Exception("No existe una politica de cancelacion para los valores proporcionados");
             }
 
-            return _mapper.Map<PoliticaDeCancelacionDto>(tipoExistente);
+            return _mapper.Map<PoliticaDeCancelacionDto>(politicaExistente);
         }
 
     }

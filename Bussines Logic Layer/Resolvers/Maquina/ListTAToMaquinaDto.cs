@@ -22,19 +22,21 @@ namespace Bussines_Logic_Layer.Resolvers
 
         public ICollection<TagMaquinaDto> Resolve(Domain_Layer.Entidades.Maquina source, MaquinaDto destination, ICollection<TagMaquinaDto> destMember, ResolutionContext context)
         {
+            // Si la máquina no tiene tags asociados, retornar lista vacía
+            if (source.TagsMaquina == null || !source.TagsMaquina.Any())
+            {
+                return new List<TagMaquinaDto>();
+            }
+
             var tagsMaquinaria = _context.TagsMaquina
                 .Where(t => source.TagsMaquina.Select(st => st.Tag).Contains(t.Tag))
                 .ToList();
 
             if (tagsMaquinaria == null || tagsMaquinaria.Count == 0)
             {
-                //return new List<TagMaquinaDto>();
                 throw new Exception("No existen tags de maquinaria para los valores proporcionados");
             }
 
-            //return tagsMaquinaria
-            //    .Select(t => new TagMaquinaDto { Tag = t.Tag })
-            //    .ToList();
             return _mapper.Map<ICollection<TagMaquinaDto>>(tagsMaquinaria);
         }
     }

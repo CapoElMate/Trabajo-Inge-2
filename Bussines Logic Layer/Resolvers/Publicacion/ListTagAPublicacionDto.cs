@@ -25,6 +25,12 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
         public ICollection<TagPublicacionDto> Resolve(Domain_Layer.Entidades.Publicacion source, PublicacionDto destination
                                                         ,ICollection<TagPublicacionDto> destMember, ResolutionContext context)
         {
+            // Si no se proporcionan tags de publicacion en el DTO, retornar una lista vacía
+            if (source.TagsPublicacion == null || !source.TagsPublicacion.Any())
+            {
+                return new List<TagPublicacionDto>();
+            }
+
             var tagsPublicacion = _context.TagsPublicacion
                 .Where(t => source.TagsPublicacion.Select(st => st.Tag).Contains(t.Tag))
                 .ToList();
