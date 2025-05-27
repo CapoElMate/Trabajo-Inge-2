@@ -1,0 +1,5 @@
+html, body, #root {
+  overflow: auto; /* Opcional: para evitar scrollbars si no lo necesitas */
+ font-family: sans-serif;
+}
+

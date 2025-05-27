@@ -1,111 +1,6 @@
 {
   "users": [
     {
-      "id": "4c27",
-      "nombre": "Marcos",
-      "apellido": "Matias",
-      "dni": "12345678",
-      "edad": "18",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "capoeldavo@gmail.com",
-      "password": "@Davo123",
-      "fotoDNI_name": "Java-Logo-1996.png"
-    },
-    {
-      "id": "1a91",
-      "nombre": "David",
-      "apellido": "Matias",
-      "dni": "44222222",
-      "edad": "18",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "david@gmail.com",
-      "password": "@Davo123",
-      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
-    },
-    {
-      "id": "e71f",
-      "nombre": "David",
-      "apellido": "Matias",
-      "dni": "44222222",
-      "edad": "18",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "david@gmail.com",
-      "password": "@Davo123",
-      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
-    },
-    {
-      "id": "b095",
-      "nombre": "David",
-      "apellido": "Matias",
-      "dni": "44222222",
-      "edad": "18",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "david@gmail.com",
-      "password": "@Davo123",
-      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
-    },
-    {
-      "id": "65c0",
-      "nombre": "David",
-      "apellido": "Matias",
-      "dni": "44222222",
-      "edad": "18",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "david@gmail.com",
-      "password": "@Davo123",
-      "fotoDNI_name": "Captura de pantalla 2024-08-08 114241.png"
-    },
-    {
-      "id": "4e15",
-      "nombre": "Marcos",
-      "apellido": "Matias",
-      "dni": "44222222",
-      "edad": "18",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "capoeldavo@gmail.com",
-      "password": "@Davo123",
-      "fotoDNI_name": "Captura de pantalla (1).png"
-    },
-    {
-      "id": "aee1",
-      "nombre": "Marcos",
-      "apellido": "Matias",
-      "dni": "44222222",
-      "edad": "23",
-      "telefono": "221 6316176",
-      "calle": "229",
-      "altura": "45",
-      "departamento": "",
-      "entreCalles": "",
-      "email": "capoelmate@gmail.com",
-      "password": "Marcos@123",
-      "fotoDNI_name": "Captura de pantalla 2024-09-04 061030.png"
-    },
-    {
       "id": "7caa",
       "nombre": "Marcos",
       "apellido": "Matias",
@@ -118,7 +13,7 @@
       "entreCalles": "",
       "email": "marcosmatias086@gmail.com",
       "password": "Davo@123",
-      "rol": "cliente",
+      "rol": "admin",
       "fotoDNI_name": "bobelalquilador.png"
     },
     {
@@ -152,26 +47,41 @@
       "password": "@Davo123",
       "rol": "cliente",
       "fotoDNI_name": "bobelalquilador.png"
-    }
-  ],
-  "pendingUsers": [
+    },
     {
-      "id": "094a",
+      "id": "ea38",
       "nombre": "Marcos",
       "apellido": "Matias",
       "dni": "44222222",
-      "edad": "19",
-      "telefono": "221 6316176",
-      "calle": "229",
+      "edad": "23",
+      "telefono": "2216316176",
+      "calle": "221",
       "altura": "45",
       "departamento": "",
       "entreCalles": "",
-      "email": "capoeldavo@gmail.com",
+      "email": "empleado1@gmail.com",
       "password": "@Davo123",
       "rol": "cliente",
       "fotoDNI_name": "bobelalquilador.png"
+    },
+    {
+      "id": "c014",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "23",
+      "telefono": "2216316176",
+      "calle": "221",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "empleado1@gmail.com",
+      "password": "@Davo123",
+      "rol": "empleado",
+      "fotoDNI_name": "bobelalquilador.png"
     }
   ],
+  "pendingUsers": [],
   "passwordResetRequests": [
     {
       "id": "6cfc",
@@ -256,6 +166,59 @@
       ],
       "tagsAdicionales": [],
       "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    },{
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
     }
   ],
   "maquinas": [
@@ -276,6 +239,101 @@
       "nombre": "Rodillo Compactador Vibratorio",
       "tipo": "Compactador",
       "modelo": "Vibratorio"
+    }
+  ],
+  "marcas": [
+    {
+      "id": "CAT",
+      "nombre": "Caterpillar",
+      "modelos": [
+        {
+          "id": "CAT-320D",
+          "nombre": "Excavadora 320D"
+        },
+        {
+          "id": "CAT-D6T",
+          "nombre": "Tractor D6T"
+        },
+        {
+          "id": "CAT-966M",
+          "nombre": "Cargadora 966M"
+        }
+      ]
+    },
+    {
+      "id": "JCB",
+      "nombre": "JCB",
+      "modelos": [
+        {
+          "id": "JCB-3CX",
+          "nombre": "Retroexcavadora 3CX"
+        },
+        {
+          "id": "JCB-JS200",
+          "nombre": "Excavadora JS200"
+        }
+      ]
+    },
+    {
+      "id": "KOM",
+      "nombre": "Komatsu",
+      "modelos": [
+        {
+          "id": "KOM-PC200",
+          "nombre": "Excavadora PC200"
+        },
+        {
+          "id": "KOM-D85EX",
+          "nombre": "Bulldozer D85EX"
+        }
+      ]
+    },
+    {
+      "id": "VOL",
+      "nombre": "Volvo Construction Equipment",
+      "modelos": [
+        {
+          "id": "VOL-EC210D",
+          "nombre": "Excavadora EC210D"
+        },
+        {
+          "id": "VOL-L90H",
+          "nombre": "Cargadora L90H"
+        }
+      ]
+    }
+  ],
+  "empleados": [],
+  "alquileres": [
+    {
+      "Maquinaria": "Excavadora CAT 320",
+      "fechaVencimiento": "2025-07-01",
+      "precio": 50000
+    },
+    {
+      "Maquinaria": "Retroexcavadora Komatsu",
+      "fechaVencimiento": "2025-06-15",
+      "precio": 65000
+    },
+    {
+      "Maquinaria": "Grúa Liebherr LTM 1050",
+      "fechaVencimiento": "2025-08-10",
+      "precio": 55000
+    },
+    {
+      "Maquinaria": "Cargadora Volvo L90H",
+      "fechaVencimiento": "2025-07-25",
+      "precio": 72000
+    },
+    {
+      "Maquinaria": "Niveladora John Deere 770G",
+      "fechaVencimiento": "2025-06-30",
+      "precio": 48000
+    },
+    {
+      "Maquinaria": "Compactadora Bomag BW213",
+      "fechaVencimiento": "2025-07-20",
+      "precio": 53000
     }
   ]
 }

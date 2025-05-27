@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './SignUp.css';
 import { useNavigate } from "react-router-dom";
-
+import { useAuth } from '../AuthContext';
+import Header from './Header';
 const SignUp = () => {
-  
-    const navigate = useNavigate();
+  const {user} = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -85,6 +86,7 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let ruta = 'pendingUsers';
     if (validate()) {
       const dataToSend = { ...formData };
       delete dataToSend.fotoDNI; 
@@ -93,9 +95,14 @@ const SignUp = () => {
         const simulatedImageName = formData.fotoDNI.name;
         dataToSend.fotoDNI_name = simulatedImageName; 
       }
-
+      if(user){
+        if(user.rol==='admin'){
+          dataToSend.rol==='empleado';
+          ruta='users';
+        }
+      }
       try {
-        const response = await fetch('http://localhost:3001/pendingUsers', {
+        const response = await fetch(`http://localhost:3001/${ruta}`, {
           method: 'POST', // Siempre POST para enviar nuevos recursos
           headers: {
             'Content-Type': 'application/json', // Importante: Enviamos JSON
@@ -106,8 +113,15 @@ const SignUp = () => {
         const result = await response.json();
 
         if (response.ok) { 
-          alert('Sus datos seran validados en breve por un empleado');
-          navigate("/Login");
+          if(!user){
+            alert('Sus datos seran validados en breve por un empleado');
+            navigate("/Login");
+          }else{
+            if(user.rol=== 'admin'){
+                alert('Se registro un empleado');
+            }
+          }
+
         } else {
           alert(`Error al registrar. Código: ${response.status}`);
           console.error('Error en el registro:', result);
@@ -119,7 +133,8 @@ const SignUp = () => {
     }
   };
 
-  return (
+  return (<>
+    {user&&(<Header/>)}
     <div className="signup-container">
       <form onSubmit={handleSubmit}>
         <h2>Registro</h2>
@@ -167,6 +182,7 @@ const SignUp = () => {
         <button type="submit">Registrarse</button>
       </form>
     </div>
+    </>
   );
 };
 

@@ -20,7 +20,12 @@ export const AuthProvider = ({ children }) => {
       if (usersFound.length > 0) {
         const usuarioLogueado = usersFound[0]; 
         setUser(usuarioLogueado); 
+        if(usuarioLogueado.rol=='admin'){
+          navigate("/HomePageAdmin");
+        }
+        if(usuarioLogueado.rol=='cliente'){
         navigate("/HomePage"); 
+        }
       } else {
         alert("Email o contraseña incorrectos");
       }
