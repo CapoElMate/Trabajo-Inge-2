@@ -19,14 +19,14 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<EmpleadoDTO>>> GetEmpleados()
+        public async Task<ActionResult<IEnumerable<EmpleadoDto>>> GetEmpleados()
         {
             var usuarios = await _serviceEmpledo.GetAllAsync();
             return Ok(usuarios);
         }
 
         [HttpGet("byNroEmpleado")]
-        public async Task<ActionResult<EmpleadoDTO>> GetUsuarioByNroEmpleado(int nroEmpleado)
+        public async Task<ActionResult<EmpleadoDto>> GetUsuarioByNroEmpleado(int nroEmpleado)
         {
             var usuario = await _serviceEmpledo.GetByNroEmpleadoAsync(nroEmpleado);
             if (usuario == null)
@@ -50,7 +50,7 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpGet("byDNI")]
-        public async Task<ActionResult<EmpleadoDTO>> GetEmpleadoByDNI(string DNI)
+        public async Task<ActionResult<EmpleadoDto>> GetEmpleadoByDNI(string DNI)
         {
             var usuario = await _serviceEmpledo.GetByDNIAsync(DNI);
             if (usuario == null)
@@ -60,7 +60,7 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpGet("byEmail")]
-        public async Task<ActionResult<EmpleadoDTO>> GetEmpleadoByEmail(string email)
+        public async Task<ActionResult<EmpleadoDto>> GetEmpleadoByEmail(string email)
         {
             var usuario = await _serviceEmpledo.GetByEmailAsync(email);
             if (usuario == null)
@@ -70,14 +70,14 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmpleadoDTO>> PostEmpleado(EmpleadoDTO dto)
+        public async Task<ActionResult<EmpleadoDto>> PostEmpleado(EmpleadoDto dto)
         {
             var created = await _serviceEmpledo.CreateAsync(dto);
             return CreatedAtAction(nameof(GetEmpleadoByDNI), new { dni = created }, created);
         }
 
         //[HttpPut]
-        //public async Task<IActionResult> PutEmpleado(string dni, EmpleadoDTO dto)
+        //public async Task<IActionResult> PutEmpleado(string dni, EmpleadoDto dto)
         //{
         //    var existingEmpleado = await _serviceEmpledo.GetByDNIAsync(dni);
         //    if (existingEmpleado == null || dni != existingEmpleado.Cliente.UsuarioRegistrado.DNI)
