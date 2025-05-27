@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace Bussines_Logic_Layer.DTOs
 {
-    public class ClienteDto
-    {
-        public string DNI { get; set; }
-        public UsuarioRegistrado UsuarioRegistrado { get; set; }
+    //public class ClienteDto
+    //{
+    //    public string DNI { get; set; }
+    //    public UsuarioRegistrado UsuarioRegistrado { get; set; }
                 
-    }
+    //}
 }

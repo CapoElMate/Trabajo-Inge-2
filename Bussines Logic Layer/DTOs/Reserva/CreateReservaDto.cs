@@ -1,17 +1,14 @@
-﻿using Bussines_Logic_Layer.DTOs;
-using Bussines_Logic_Layer.DTOs.Usuarios;
+﻿using Domain_Layer.Entidades;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain_Layer.Entidades
+namespace Bussines_Logic_Layer.DTOs.Reserva
 {
-    public class ReservaDto
+    public class CreateReservaDto
     {
-        public int idReserva { get; set; }
         public DateTime fecInicio { get; set; }
         public DateTime fecFin { get; set; }
         public string Status { get; set; } = null!;
@@ -20,10 +17,10 @@ namespace Domain_Layer.Entidades
         public string Altura { get; set; } = null!;
         public string? Dpto { get; set; }
         public string EntreCalles { get; set; } = null!;
-        public TipoEntregaDto TipoEntrega { get; set; } = null!;        
-        public PagoDto Pago { get; set; } = null!;        
-        public AlquilerDto? Alquiler { get; set; }        
-        public Bussines_Logic_Layer.DTOs.Usuarios.ClienteDto Cliente { get; set; } = null!;
+        public TipoEntregaDto TipoEntrega { get; set; } = null!;
+        public PagoDto Pago { get; set; } = null!;
+        public AlquilerDto? Alquiler { get; set; }
+        public Usuarios.ClienteDto Cliente { get; set; } = null!;
         public PublicacionDto Publicacion { get; set; } = null!;
     }
 }

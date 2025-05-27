@@ -1,4 +1,5 @@
-﻿using Bussines_Logic_Layer.DTOs.Usuarios;
+﻿using Bussines_Logic_Layer.DTOs.Reserva;
+using Bussines_Logic_Layer.DTOs.Usuarios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -14,6 +15,7 @@ namespace Domain_Layer.Entidades
         public bool isDeleted { get; set; }
         public DateTime fecEfectivizacion { get; set; }
         public ClienteDto Cliente { get; set; }
+        
         //TODO: los dto que faltan: 
 
 

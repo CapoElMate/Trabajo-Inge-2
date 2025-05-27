@@ -1,4 +1,6 @@
-﻿namespace Bussines_Logic_Layer.DTOs
+﻿using Bussines_Logic_Layer.DTOs.Usuarios;
+
+namespace Bussines_Logic_Layer.DTOs
 {   
     public class ComentarioDto
     {
