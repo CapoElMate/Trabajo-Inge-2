@@ -10,7 +10,7 @@ using Domain_Layer.Entidades;
 
 namespace Bussines_Logic_Layer.Resolvers.Usuarios
 {
-    public class UsuarioRegistradoDtoToClienteResolver : IValueResolver<ClienteDTO, Cliente, UsuarioRegistrado>
+    public class UsuarioRegistradoDtoToClienteResolver : IValueResolver<ClienteDto, Cliente, UsuarioRegistrado>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -21,7 +21,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
             _mapper = mapper;
         }
 
-        public UsuarioRegistrado Resolve(ClienteDTO source, Cliente destination, UsuarioRegistrado destMember, ResolutionContext context)
+        public UsuarioRegistrado Resolve(ClienteDto source, Cliente destination, UsuarioRegistrado destMember, ResolutionContext context)
         {
             var usuarioExistente = _context.UsuariosRegistrados.FirstOrDefault(u => u.DNI == source.UsuarioRegistrado.DNI);
 

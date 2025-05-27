@@ -23,7 +23,7 @@ namespace Domain_Layer.Entidades
         public TipoEntregaDto TipoEntrega { get; set; } = null!;        
         public PagoDto Pago { get; set; } = null!;        
         public AlquilerDto? Alquiler { get; set; }        
-        public ClienteDTO Cliente { get; set; } = null!;
+        public Bussines_Logic_Layer.DTOs.Usuarios.ClienteDto Cliente { get; set; } = null!;
         public PublicacionDto Publicacion { get; set; } = null!;
     }
 }

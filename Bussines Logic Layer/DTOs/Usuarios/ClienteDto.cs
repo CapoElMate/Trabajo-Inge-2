@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bussines_Logic_Layer.DTOs.Usuarios
 {
-    public class ClienteDTO
+    public class ClienteDto
     {
         public UsuarioRegistradoDTO UsuarioRegistrado { get; set; }
     }
