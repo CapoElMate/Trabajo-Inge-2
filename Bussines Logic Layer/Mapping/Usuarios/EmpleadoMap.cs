@@ -14,12 +14,12 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
     {
         public EmpleadoMap()
         {
-            CreateMap<EmpleadoDTO, Empleado>()
+            CreateMap<EmpleadoDTO, EmpleadoDto>()
                 .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.Cliente.UsuarioRegistrado.DNI))
                 .ForMember(dest => dest.nroEmpleado, opt => opt.MapFrom(src => src.nroEmpleado))
                 .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteDtoToEmpeladoResolver>());
 
-            CreateMap<EmpleadoDTO, Empleado>()
+            CreateMap<EmpleadoDTO, EmpleadoDto>()
                 .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.Cliente.UsuarioRegistrado.DNI))
                 .ForMember(dest => dest.nroEmpleado, opt => opt.MapFrom(src => src.nroEmpleado))
                 .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteDtoToEmpeladoResolver>());

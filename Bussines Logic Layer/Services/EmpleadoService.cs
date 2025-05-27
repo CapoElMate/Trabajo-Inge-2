@@ -48,7 +48,7 @@ namespace Bussines_Logic_Layer.Services
 
         public async Task<EmpleadoDTO> CreateAsync(EmpleadoDTO dto)
         {
-            var usuario = _mapper.Map<Empleado>(dto);
+            var usuario = _mapper.Map<EmpleadoDto>(dto);
             await _repo.AddAsync(usuario);
             return _mapper.Map<EmpleadoDTO>(usuario);
         }
