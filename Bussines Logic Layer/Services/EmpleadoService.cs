@@ -23,37 +23,37 @@ namespace Bussines_Logic_Layer.Services
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<EmpleadoDto>> GetAllAsync()
+        public async Task<IEnumerable<EmpleadoDTO>> GetAllAsync()
         {
             var empleados = await _repo.GetAllAsync();
-            return _mapper.Map<IEnumerable<EmpleadoDto>>(empleados);
+            return _mapper.Map<IEnumerable<EmpleadoDTO>>(empleados);
         }
 
-        public async Task<EmpleadoDto?> GetByDNIAsync(string dni)
+        public async Task<EmpleadoDTO?> GetByDNIAsync(string dni)
         {
             var usuario = await _repo.GetByDNIAsync(dni);
-            return usuario == null ? null : _mapper.Map<EmpleadoDto>(usuario);
+            return usuario == null ? null : _mapper.Map<EmpleadoDTO>(usuario);
         }
-        public async Task<EmpleadoDto?> GetByNroEmpleadoAsync(int nroEmpleado)
+        public async Task<EmpleadoDTO?> GetByNroEmpleadoAsync(int nroEmpleado)
         {
             var usuario = await _repo.GetByNroEmpleadoAsync(nroEmpleado);
-            return usuario == null ? null : _mapper.Map<EmpleadoDto>(usuario);
+            return usuario == null ? null : _mapper.Map<EmpleadoDTO>(usuario);
         }
 
-        public async Task<EmpleadoDto?> GetByEmailAsync(string email)
+        public async Task<EmpleadoDTO?> GetByEmailAsync(string email)
         {
             var usuario = await _repo.GetByEmailAsync(email);
-            return usuario == null ? null : _mapper.Map<EmpleadoDto>(usuario);
+            return usuario == null ? null : _mapper.Map<EmpleadoDTO>(usuario);
         }
 
-        public async Task<EmpleadoDto> CreateAsync(EmpleadoDto dto)
+        public async Task<EmpleadoDTO> CreateAsync(EmpleadoDTO dto)
         {
             var usuario = _mapper.Map<Empleado>(dto);
             await _repo.AddAsync(usuario);
-            return _mapper.Map<EmpleadoDto>(usuario);
+            return _mapper.Map<EmpleadoDTO>(usuario);
         }
 
-        public async Task<bool> UpdateAsync(string dni, EmpleadoDto dto)
+        public async Task<bool> UpdateAsync(string dni, EmpleadoDTO dto)
         {
             var usuario = await _repo.GetByDNIAsync(dni);
             if (usuario == null)
