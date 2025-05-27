@@ -14,10 +14,10 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
     {
         public ClienteMap()
         {
-            CreateMap<Cliente, ClienteDto>()
+            CreateMap<Cliente, ClienteDTO>()
                 .ForMember(dest => dest.UsuarioRegistrado, opt => opt.MapFrom<UsuarioRegistradoToClienteDtoResolver>());
 
-            CreateMap<ClienteDto, Cliente>()
+            CreateMap<ClienteDTO, Cliente>()
                 .ForMember(dest => dest.UsuarioRegistrado, opt => opt.MapFrom<UsuarioRegistradoDtoToClienteResolver>())
                 .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.UsuarioRegistrado.DNI));
         }

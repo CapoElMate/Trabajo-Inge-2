@@ -19,14 +19,14 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<ClienteDto>>> GetUsuarios()
+        public async Task<ActionResult<IEnumerable<ClienteDTO>>> GetUsuarios()
         {
             var usuarios = await _serviceCliente.GetAllAsync();
             return Ok(usuarios);
         }
 
         [HttpGet("byDNI")]
-        public async Task<ActionResult<ClienteDto>> GetUsuarioByDNI(string DNI)
+        public async Task<ActionResult<ClienteDTO>> GetUsuarioByDNI(string DNI)
         {
             var usuario = await _serviceCliente.GetByDNIAsync(DNI);
             if (usuario == null)
@@ -36,7 +36,7 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpGet("byEmail")]
-        public async Task<ActionResult<ClienteDto>> GetUsuarioByEmail(string email)
+        public async Task<ActionResult<ClienteDTO>> GetUsuarioByEmail(string email)
         {
             var usuario = await _serviceCliente.GetByEmailAsync(email);
             if (usuario == null)
@@ -46,14 +46,14 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpPost]
-        public async Task<ActionResult<ClienteDto>> PostCliente(ClienteDto dto)
+        public async Task<ActionResult<ClienteDTO>> PostCliente(ClienteDTO dto)
         {
             var created = await _serviceCliente.CreateAsync(dto);
             return CreatedAtAction(nameof(GetUsuarioByDNI), new { dni = created }, created);
         }
 
         //[HttpPut]
-        //public async Task<IActionResult> PutMaquina(string dni, ClienteDto dto)
+        //public async Task<IActionResult> PutMaquina(string dni, ClienteDTO dto)
         //{
         //    var cliente = await _serviceCliente.GetByDNIAsync(dni);
         //    if (cliente == null || dni != cliente.UsuarioRegistrado.DNI)
