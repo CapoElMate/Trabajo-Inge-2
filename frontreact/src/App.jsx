@@ -14,10 +14,19 @@ import EditarMaquinaria from './components/EditarMaquinaria';
 import MaquinariaDetail from './components/DetalleMaquinaria';
 import MaquinariaList from './components/MaquinariaList';
 
+import HomePageAdmin from './components/HomePageAdmin';
+import './components/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Leases from './components/Leases';
+import Rentals from './components/Rentals';
+import ResetPassword from './components/ResetPassword';
+import PermitFileUploader from './components/PermitFileUploader';
+import Profile from './components/Profile';
 const App = () => {
   return (
     <AuthProvider>
       <Routes>
+        <Route path="/" element={<HomePage />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
@@ -30,6 +39,13 @@ const App = () => {
          <Route path="/modificar/:id" element={<EditarMaquinaria />} />
         <Route path="/maquinaria/:id" element={<MaquinariaDetail />} />
         <Route path='/maquinarias' element={<MaquinariaList/>}/>
+        <Route path='/HomePageAdmin' element={<HomePageAdmin/>} />
+        <Route path='/Leases' element={<Leases/>}/>
+        <Route path='/Rentals' element={<Rentals/>}/>      
+        <Route path='/Profile' element={<Profile/>}/>
+        <Route path='/ResetPassword' element={<ResetPassword/>}/>
+        <Route path='/PermitFileUploader' element={<PermitFileUploader/>}/>
+      
       </Routes>
     </AuthProvider>
   );

@@ -1,0 +1,34 @@
+.leases-container{
+    display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.lease-info {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lease-info:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.lease-info p {
+  margin: 6px 0;
+  font-size: 16px;
+}
+
+.lease-info strong {
+  font-size: 18px;
+  color: #333;
+}

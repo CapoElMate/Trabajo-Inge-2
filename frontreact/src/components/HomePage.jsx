@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header.jsx';
+import Filters from './Filters.jsx';
 import './HomePage.css'; 
 import { useAuth } from '../AuthContext'; 
 function HomePage() {
@@ -45,6 +46,8 @@ function HomePage() {
   return (
       <div className="home-page-container">
       <Header/>
+      <div style={{display:'flex'}}>
+      <Filters/>
       {publicaciones.length === 0 ? (
         <p>No hay publicaciones disponibles en este momento.</p>
       ) : (
@@ -81,6 +84,7 @@ function HomePage() {
           ))}
         </div>
       )}
+    </div>
     </div>
   );
 }
