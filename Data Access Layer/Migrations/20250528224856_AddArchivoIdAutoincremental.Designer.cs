@@ -3,6 +3,7 @@ using System;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528224856_AddArchivoIdAutoincremental")]
+    partial class AddArchivoIdAutoincremental
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -57,13 +60,17 @@ namespace Data_Access_Layer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("EntidadID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TipoEntidad")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("EntidadID")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -80,12 +87,7 @@ namespace Data_Access_Layer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TipoEntidad")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("idArchivo");
+                    b.HasKey("idArchivo", "EntidadID", "TipoEntidad");
 
                     b.ToTable("Archivos");
                 });

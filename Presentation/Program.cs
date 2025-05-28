@@ -116,6 +116,7 @@ builder.Services.AddScoped<ITagPublicacionRepository, TagPublicacionRepository>(
 builder.Services.AddScoped<IAlquilerRepository, AlquilerRepository>();
 builder.Services.AddScoped<IReembolsoRepository, ReembolsoRepository>();
 builder.Services.AddScoped<IUbicacionRepository, UbicacionRepository>();
+builder.Services.AddScoped<IArchivoRepository, ArchivoRepository>();
 
 //Servicios
 builder.Services.AddScoped<IMaquinaService, MaquinaService>();
@@ -132,6 +133,8 @@ builder.Services.AddScoped<ITagPublicacionService, TagPublicacionService>();
 builder.Services.AddScoped<IAlquilerService, AlquilerService>();
 builder.Services.AddScoped<IReembolsoService, ReembolsoService>();
 builder.Services.AddScoped<IUbicacionService, UbicacionService>();
+builder.Services.AddScoped<IArchivoService, ArchivoService>();
+
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
