@@ -34,7 +34,7 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
 
             if (maquinaExistente == null)
             {
-                throw new Exception("La publicacion no existe");
+                throw new Exception("La maquina no existe");
             }
 
             return _mapper.Map<MaquinaDto>(maquinaExistente);

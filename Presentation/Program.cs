@@ -11,12 +11,18 @@ using Bussines_Logic_Layer.Services;
 using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Repositorios.SQL;
 using Bussines_Logic_Layer.Mapping;
+using MercadoPago.Config;
 using Bussines_Logic_Layer.DTOs.Usuarios;
 using Bussines_Logic_Layer.Managers;
 using Microsoft.Extensions.Options;
 using System.Configuration;
 using Mailjet.Client;
 using Microsoft.AspNetCore.Identity.UI.Services;
+
+
+//añado el acces token de MeLi:
+MercadoPagoConfig.AccessToken = "APP_USR-7358553432925364-052814-bea62fcaedc85041522284dcca5d1ad2-363087617";
+
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -118,6 +124,8 @@ builder.Services.AddScoped<IAlquilerRepository, AlquilerRepository>();
 builder.Services.AddScoped<IReembolsoRepository, ReembolsoRepository>();
 builder.Services.AddScoped<IUbicacionRepository, UbicacionRepository>();
 builder.Services.AddScoped<IArchivoRepository, ArchivoRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRespository>();
+
 
 //Servicios
 builder.Services.AddScoped<IMaquinaService, MaquinaService>();
@@ -136,6 +144,7 @@ builder.Services.AddScoped<IReembolsoService, ReembolsoService>();
 builder.Services.AddScoped<IUbicacionService, UbicacionService>();
 builder.Services.AddScoped<IArchivoService, ArchivoService>();
 
+builder.Services.AddScoped<IReservaService, ReservaService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

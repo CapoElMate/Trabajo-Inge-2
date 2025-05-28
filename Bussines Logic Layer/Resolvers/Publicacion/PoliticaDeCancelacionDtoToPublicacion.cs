@@ -25,7 +25,7 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
                                            , PoliticaDeCancelacion destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.PoliticasDeCancelacion.FirstOrDefault(m => m.Politica.Equals(source.PoliticaDeCancelacion.Politica));
+            var tipoExistente = _context.PoliticasDeCancelacion.FirstOrDefault(p => p.Politica.Equals(source.PoliticaDeCancelacion.Politica));
 
             if (tipoExistente == null)
             {

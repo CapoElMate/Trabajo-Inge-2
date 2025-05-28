@@ -10,11 +10,11 @@ namespace Bussines_Logic_Layer.Interfaces
 {
     public interface IClienteService
     {
-        Task<IEnumerable<ClienteDTO>> GetAllAsync();
-        Task<ClienteDTO?> GetByDNIAsync(string dni);
-        Task<ClienteDTO?> GetByEmailAsync(string email);
-        Task<ClienteDTO> CreateAsync(ClienteDTO dto);
-        Task<bool> UpdateAsync(string dni, ClienteDTO dto);
+        Task<IEnumerable<ClienteDto>> GetAllAsync();
+        Task<ClienteDto?> GetByDNIAsync(string dni);
+        Task<ClienteDto?> GetByEmailAsync(string email);
+        Task<ClienteDto> CreateAsync(ClienteDto dto);
+        Task<bool> UpdateAsync(string dni, ClienteDto dto);
         Task<bool> DeleteByDNIAsync(string dni);
         Task<bool> DeleteByEmailAsync(string email);
     }

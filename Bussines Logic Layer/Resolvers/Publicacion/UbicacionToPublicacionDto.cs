@@ -25,11 +25,11 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
                                                         , UbicacionDto destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.Ubicaciones.FirstOrDefault(m => m.UbicacionName.Equals(source.Ubicacion.UbicacionName));
+            var tipoExistente = _context.Ubicaciones.FirstOrDefault(u => u.UbicacionName.Equals(source.Ubicacion.UbicacionName));
 
             if (tipoExistente == null)
             {
-                throw new Exception("No existe una politica de cancelacion para los valores proporcionados");
+                throw new Exception("No existe una ubicacion para los valores proporcionados");
             }
 
             return _mapper.Map<UbicacionDto>(tipoExistente);

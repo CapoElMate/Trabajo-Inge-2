@@ -31,7 +31,7 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion
 
             if (publicacionExistente == null)
             {
-                throw new Exception("La publicacion no existe");
+                throw new Exception("La maquina no existe");
             }
 
             //_mapper.Map(source.Marca, publicacionExistente);

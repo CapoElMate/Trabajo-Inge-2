@@ -25,4 +25,8 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Repositorios\SQL\ReservaRepository.cs" />
+  </ItemGroup>
+
 </Project>

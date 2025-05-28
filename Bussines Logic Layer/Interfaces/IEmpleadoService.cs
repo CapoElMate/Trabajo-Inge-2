@@ -10,14 +10,14 @@ namespace Bussines_Logic_Layer.Interfaces
 {
     public interface IEmpleadoService
     {
-        Task<IEnumerable<EmpleadoDTO>> GetAllAsync();
-        Task<EmpleadoDTO?> GetByDNIAsync(string dni);
-        Task<EmpleadoDTO?> GetByEmailAsync(string email);
-        Task<EmpleadoDTO> CreateAsync(EmpleadoDTO dto);
-        Task<bool> UpdateAsync(string dni, EmpleadoDTO dto);
+        Task<IEnumerable<EmpleadoDto>> GetAllAsync();
+        Task<EmpleadoDto?> GetByDNIAsync(string dni);
+        Task<EmpleadoDto?> GetByEmailAsync(string email);
+        Task<EmpleadoDto> CreateAsync(EmpleadoDto dto);
+        Task<bool> UpdateAsync(string dni, EmpleadoDto dto);
         Task<bool> DeleteByDNIAsync(string dni);
         Task<bool> DeleteByEmailAsync(string email);
-        Task<EmpleadoDTO?> GetByNroEmpleadoAsync(int nroEmpleado);
+        Task<EmpleadoDto?> GetByNroEmpleadoAsync(int nroEmpleado);
         Task<bool> DeleteByNroEmpleadoAsync(int nroEmpleado);
     }
 }
