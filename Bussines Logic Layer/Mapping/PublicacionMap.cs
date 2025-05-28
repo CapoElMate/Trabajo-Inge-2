@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.Resolvers.Publicacion;
 using Bussines_Logic_Layer.Resolvers.Publicacion.Create;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 
 namespace Bussines_Logic_Layer.Mapping
 {

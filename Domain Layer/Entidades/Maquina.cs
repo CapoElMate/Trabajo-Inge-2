@@ -11,6 +11,7 @@ namespace Domain_Layer.Entidades
     {
         [Key]
         public int idMaquina { get; set; }
+        public bool isDeleted { get; set; }
         public string status { get; set; } = null!;
         public int anioFabricacion { get; set; }
         public ICollection<Empleado_Maquina> Empleado_Maquinas { get; set; } = new List<Empleado_Maquina>();

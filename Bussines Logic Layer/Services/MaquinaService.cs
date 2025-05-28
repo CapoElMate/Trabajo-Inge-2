@@ -61,5 +61,17 @@ namespace Bussines_Logic_Layer.Services
             await _repo.DeleteAsync(maquina);
             return true;
         }
+
+        public async Task<bool> LogicDeleteAsync(int id)
+        {
+            var maquina = await _repo.GetByIdAsync(id);
+            if (maquina == null)
+                return false;
+
+            maquina.isDeleted = true;
+            await _repo.UpdateAsync(maquina);
+            return true;
+        }
+        
     }
 }

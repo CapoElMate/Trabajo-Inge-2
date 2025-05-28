@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 using Data_Access_Layer;
 using System;
 using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 using Bussines_Logic_Layer.Interfaces;
 using Data_Access_Layer.Interfaces;
 using Domain_Layer.Entidades;
@@ -59,6 +59,18 @@ namespace Bussines_Logic_Layer.Services
                 return false;
 
             await _repo.DeleteAsync(publicacion);
+            return true;
+        }
+
+        public async Task<bool> LogicDeleteAsync(int id)
+        {
+            var publicacion = await _repo.GetByIdAsync(id);
+            if (publicacion == null)
+                return false;
+
+            publicacion.isDeleted = true;
+
+            await _repo.UpdateAsync(publicacion);
             return true;
         }
     }

@@ -10,6 +10,7 @@ using global::Bussines_Logic_Layer.DTOs;
 using global::Bussines_Logic_Layer.DTOs.Maquina;
 using System;
 using System.Linq;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 
 namespace Bussines_Logic_Layer.Resolvers.Publicacion.Create
 {
