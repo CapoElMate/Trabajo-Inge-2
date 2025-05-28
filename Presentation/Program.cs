@@ -92,6 +92,8 @@ builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
 builder.Services.AddScoped<IPublicacionRepository, PublicacionRepository>();
 builder.Services.AddScoped<ITagPublicacionRepository, TagPublicacionRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRespository>();
+
 
 
 
@@ -107,6 +109,7 @@ builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IPublicacionService, PublicacionService>();
 builder.Services.AddScoped<ITagPublicacionService, TagPublicacionService>();
+builder.Services.AddScoped<IReservaService, ReservaService>();
 
 
 

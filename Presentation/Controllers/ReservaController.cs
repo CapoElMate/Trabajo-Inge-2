@@ -8,11 +8,11 @@ namespace API_Layer.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservasController : ControllerBase
+    public class ReservaController : ControllerBase
     {
         private readonly IReservaService _service;
 
-        public ReservasController(IReservaService service)
+        public ReservaController(IReservaService service)
         {
             _service = service;
         }
