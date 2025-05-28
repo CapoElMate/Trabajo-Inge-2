@@ -5,19 +5,17 @@ import TagSelector from "./TagSelector";
 import FormButtons from "../components/FormButtons";
 import Header2 from "./Header2";
 import { useNavigate } from "react-router-dom";
+import MaquinariaForm from "./FormMaquinaria";
 
-
-export default function CargarMaquinaria() {
-  const modelosPorMarca = {
-  "Marca A": ["Modelo A1", "Modelo A2"],
-  "Marca B": ["Modelo B1", "Modelo B2"]
-  };
+export default function CargarMaquinaria({initialData = {}, modo = 'Crear'}) {
+  
   const [tags, setTags] = useState([]);
   const opcionesDeTags = ["Pesado", "Ligero"];
-
+  const [anio, setAnio] = useState(initialData.anioFabricacion || "");
   const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
   const [modelosDisponibles, setModelosDisponibles] = useState([]);
-
+  const [modelo, setModelo] = useState(initialData.marca?.modelo || "");
+  const [tipo, setTipo] = useState(initialData.tipo || "");
   const handleMarcaChange = (marca) => {
     setMarcaSeleccionada(marca);
     setModelosDisponibles(modelosPorMarca[marca] || []);
@@ -28,8 +26,7 @@ export default function CargarMaquinaria() {
     if (!marca || !modelo || !año) {
       alert("Por favor completá todos los campos obligatorios.");
       return;
-    }
-
+    } 
     const data = {
       "marcaName": marca,
       "marca": {
@@ -45,7 +42,39 @@ export default function CargarMaquinaria() {
       "permisosEspeciales": permisos.map((p)=>({"permiso":p })),//mapear al formato
       "tagsMaquina":tags.map((t)=>({"tag":t })),
     };
+    console.log("Datos en cargar maquinariasubmit: ", data);
     /*
+     
+    try {
+      const res = await fetch("api/maquinarias", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) throw new Error("Error en el servidor");
+       
+      alert("maquinaria cargada exitosamente")
+    } catch (err) {
+      console.error("Error al enviar:", err)
+      alert("Ha ocurrido un error")
+    }*/
+  };
+   
+  const handleCancel = () => {
+    console.log("Cancelado");
+    navigate('/HomePage');
+  };
+  return (
+    <>
+      <Header2 />       
+         <MaquinariaForm onSubmit={handleSubmit} onCancel={handleCancel}/>
+    </>
+  )
+}
+ /*
     "anioFabricacion": int,
     "marcaName": "string",
   "marca": {
@@ -76,57 +105,3 @@ export default function CargarMaquinaria() {
   ],
   "tipo": "string",
     */ 
-
-    try {
-      const res = await fetch("api/maquinarias", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!res.ok) throw new Error("Error en el servidor");
-
-      const data = await res.json();
-      console.log("Respuesta exitosa:", data);
-    } catch (err) {
-      console.error("Error al enviar:", err);
-    }
-  };
-
-  const handleCancel = () => {
-    console.log("Cancelado");
-    navigate('/HomePage');
-  };
-  return (
-    <>
-      <Header2 />
-       <div className="detalle-contenedor">
-      <form className="max-w-md mx-auto p-4 border rounded space-y-4">
-        <h2 className="text-xl font-semibold text-center">Cargar Maquinaria</h2>
-
-        <SelectInput
-          label="Marca "
-          options={Object.keys(modelosPorMarca)}
-          value={marcaSeleccionada}
-          onChange={(e) => handleMarcaChange(e.target.value)}
-        />
-
-        <SelectInput
-          label="Modelo "
-          options={modelosDisponibles}
-        />
-
-        <TextInput label="Año de Fabricacion" type="number" />
-        <SelectInput label="Permisos " options={["Permiso A", "Permiso B"]} />
-        <SelectInput label="Tipo Maquinaria " options={["Excavadora", "Grúa"]} />
-        <SelectInput label="Permisos adicionales " options={["Extra 1", "Extra 2"]} />
-
-        <TagSelector tags={tags} setTags={setTags} opciones={opcionesDeTags} />
-        <FormButtons  onSubmit={handleSubmit} onCancel={handleCancel} />
-      </form>
-      </div>
-    </>
-  )
-}

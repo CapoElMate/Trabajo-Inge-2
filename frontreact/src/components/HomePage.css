@@ -14,6 +14,28 @@
   background-color: #cc0000;
   border-radius: 10px;
 }
+.detalle-contenedor {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+.homepage-header {
+  background-color: #a10000;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.homepage-container {
+  display: flex;
+  padding: 1rem;
+}
 
 
 .login-button,

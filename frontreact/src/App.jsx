@@ -10,6 +10,9 @@ import Header from './components/Header';
 
 import CargarPublicacion from './components/CargarPublicacion';
 import CargarMaquinaria from './components/CargarMaquinaria';
+import EditarMaquinaria from './components/EditarMaquinaria';
+import MaquinariaDetail from './components/DetalleMaquinaria';
+import MaquinariaList from './components/MaquinariaList';
 
 const App = () => {
   return (
@@ -24,6 +27,9 @@ const App = () => {
         <Route path='/Header' element={<Header/>} />
         <Route path='/CargarPublicacion' element={<CargarPublicacion/>} />
         <Route path='/CargarMaquinaria' element={<CargarMaquinaria/>} />
+         <Route path="/modificar/:id" element={<EditarMaquinaria />} />
+        <Route path="/maquinaria/:id" element={<MaquinariaDetail />} />
+        <Route path='/maquinarias' element={<MaquinariaList/>}/>
       </Routes>
     </AuthProvider>
   );
