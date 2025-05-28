@@ -11,6 +11,12 @@ using Bussines_Logic_Layer.Services;
 using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Repositorios.SQL;
 using Bussines_Logic_Layer.Mapping;
+using MercadoPago.Config;
+
+
+//añado el acces token de MeLi:
+MercadoPagoConfig.AccessToken = "APP_USR-7358553432925364-052814-bea62fcaedc85041522284dcca5d1ad2-363087617";
+
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -110,7 +116,6 @@ builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IPublicacionService, PublicacionService>();
 builder.Services.AddScoped<ITagPublicacionService, TagPublicacionService>();
 builder.Services.AddScoped<IReservaService, ReservaService>();
-
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
