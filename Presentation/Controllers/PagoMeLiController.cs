@@ -5,6 +5,7 @@ using MercadoPago.Resource.Preference;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 
 namespace API_Layer.Controllers
@@ -37,15 +38,27 @@ namespace API_Layer.Controllers
          */
 
         [HttpPost("getConfirmacionWebhook")]
-        public IActionResult getWebhookConfirmacion([FromBody] string jsonData)
+        public IActionResult getWebhookConfirmacion([FromBody] JsonElement jsonData)
         {
 
-            dynamic confirmacion = JsonConvert.DeserializeObject(jsonData);
+            var result = JsonConvert.DeserializeObject<JToken>(jsonData.ToString());
+
+            dynamic confirmacion = JValue.Parse(jsonData.ToString());
+            //dynamic confirmacion = JsonConvert.DeserializeObject(jsonData);
 
             // Imprimir parametros como JSON
             Console.WriteLine("Webhook de confirmacion recibido: ");
-            Console.WriteLine("action " + confirmacion.action);
-            Console.WriteLine("id " + confirmacion.id);
+            Console.WriteLine("---");
+            
+            Console.WriteLine(jsonData);
+
+
+            Console.WriteLine("--- \n");
+            Console.WriteLine("action " + result["action"]);
+            Console.WriteLine("id " + result["id"]);
+            Console.WriteLine("type " + result["type"]);
+            Console.WriteLine("userId " + result["user_id"]);
+            Console.WriteLine("dataId " + result["data"]["id"]);
             Console.WriteLine("---");
 
 
