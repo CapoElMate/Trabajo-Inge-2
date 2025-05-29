@@ -3,7 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './PostDetail.css'; // Create this CSS file
 import { useAuth } from '../AuthContext';
 import Header from './Header';
+import { useRef } from 'react';
 function PostDetail() {
+
+  const section=useRef(null);
   const { id } = useParams(); // Get the publication ID from the URL
   const navigate = useNavigate();
   const [publicacion, setPublicacion] = useState(null);
@@ -181,7 +184,8 @@ function PostDetail() {
 
                   return;
                 }
-                setShowReservationForm(!showReservationForm)}}
+                setShowReservationForm(!showReservationForm)
+                section.current?.scrollIntoView({behavior:"smoth"})}}
             >
               {showReservationForm ? 'Cerrar Formulario de Reserva' : 'Reservar Maquinaria'}
             </button>
@@ -194,7 +198,7 @@ function PostDetail() {
       </div>
 
       {showReservationForm && publicacion.disponible && (
-        <div className="reservation-form-card">
+        <div ref={section} className="reservation-form-card">
           <h3>Formulario de Reserva</h3>
           {reservationMessage.text && (
             <div className={`message ${reservationMessage.type}`}>

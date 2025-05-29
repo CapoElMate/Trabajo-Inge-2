@@ -15,6 +15,7 @@ import Rentals from './components/Rentals';
 import ResetPassword from './components/ResetPassword';
 import PermitFileUploader from './components/PermitFileUploader';
 import Profile from './components/Profile';
+import ValidatePermit from './components/ValidatePermit';
 const App = () => {
   return (
     <AuthProvider>
@@ -33,6 +34,7 @@ const App = () => {
         <Route path='/Profile' element={<Profile/>}/>
         <Route path='/ResetPassword' element={<ResetPassword/>}/>
         <Route path='/PermitFileUploader' element={<PermitFileUploader/>}/>
+        <Route path='/ValidatePermit' element={<ValidatePermit/>}/>
       
       </Routes>
     </AuthProvider>

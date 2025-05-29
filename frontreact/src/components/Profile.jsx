@@ -9,6 +9,7 @@ function Profile(){
     <button onClick={()=>{navigate("/ResetPassword");}}>Cambiar Contraseña</button>
     
     <button onClick={()=>{navigate("/PermitFileUploader");}}>Cargar Permiso de Maquinarias</button>
+    <button onClick={()=>{navigate("/ResetPassword")}}>Cambiar constraseña</button>
     </>);
 }
 export default Profile;

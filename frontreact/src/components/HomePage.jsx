@@ -30,7 +30,7 @@ function HomePage() {
 
     fetchPublicaciones();
   }, []);
-
+  let num = [publicaciones.length/6]
   const handleCardClick = (id) => {
     navigate(`/PostDetail/${id}`); // Redirect to the detail page
   };
@@ -82,6 +82,13 @@ function HomePage() {
               </div>
             </div>
           ))}
+          <div>
+            {
+              num.map((key)=>(
+                  <button>{key}</button>
+              ))
+            }
+          </div>
         </div>
       )}
     </div>
