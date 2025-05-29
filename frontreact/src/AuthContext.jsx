@@ -6,17 +6,18 @@
   export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const twoFactorCode = "string";
-   const twoFactorRecoveryCode= "string";
 
     const login = async (email, password) => {
       try {
-        const response = await fetch("http://localhost:5000/login", {
+        const response = await fetch("http://localhost:5000/api/Auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           }, credentials:'include',// Permite enviar y recibir cookies
-          body: JSON.stringify({ email, password,twoFactorCode,twoFactorRecoveryCode}),
+          body: JSON.stringify({ 
+            email, 
+            password,
+            rememberMe: true}),
         });
         console.log(response);
         if (!response.ok) {
@@ -39,6 +40,46 @@
         console.error("Error durante el login:", error);
         alert("Hubo un problema al iniciar sesión. Intenta más tarde.");
       }
+
+      try
+      {
+        const response2 = await fetch("http://localhost:5000/api/Auth/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }, credentials:'include',
+        });
+        console.log(response2);
+        const responseBody = await response2.json();
+        console.log(responseBody);
+        if (!response2.ok) {
+          throw new Error(`Error del servidor: ${response2.status}`);
+        }
+      }
+      catch (error) {
+        console.error("Error durante el login:", error);
+        alert("Hubo un problema al iniciar sesión. Intenta más tarde.");
+      }
+      
+      try
+      {
+        const response3 = await fetch("http://localhost:5000/api/Auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          }, credentials:'include',
+        });
+        console.log(response3);
+        const responseBody2 = await response3.json();
+        console.log(responseBody2);
+        if (!response3.ok) {
+          throw new Error(`Error del servidor: ${response3.status}`);
+        }
+      }
+      catch (error) {
+        console.error("Error durante el login:", error);
+        alert("Hubo un problema al iniciar sesión. Intenta más tarde.");
+      }      
     };
 
     const logout = () => {

@@ -48,19 +48,13 @@ builder.Services.AddControllers();
 
 //a�ado autoriazacion
 builder.Services.AddAuthorization();
-//builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-//    .AddCookie(IdentityConstants.ApplicationScheme)
-//    .AddCookie(IdentityConstants.ExternalScheme)
-//    .AddCookie(IdentityConstants.TwoFactorRememberMeScheme)
-//    .AddCookie(IdentityConstants.TwoFactorUserIdScheme);
 
 //configuro la bdd
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 //configuro identity
 builder.Services.Configure<IdentityOptions>(options =>
@@ -326,7 +320,7 @@ app.UseCors(MyAllowSpecificOrigins); // importante que vaya antes
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapIdentityApi<IdentityUser>();
+//app.MapIdentityApi<IdentityUser>();
 
 app.MapControllers();
 app.Run();
