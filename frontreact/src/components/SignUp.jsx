@@ -1,189 +1,106 @@
 import React, { useState } from 'react';
-import './SignUp.css';
-import { useNavigate } from "react-router-dom";
-import { useAuth } from '../AuthContext';
-import Header from './Header';
-const SignUp = () => {
-  const {user} = useAuth();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    dni: '',
-    edad: '',
-    telefono: '',
-    calle: '',
-    altura: '',
-    departamento: '',
-    entreCalles: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    fotoDNI: null,
-    rol:'cliente',
-  });
 
-  const [errors, setErrors] = useState({});
+function SignUp() {
+  const [dniBase64, setDniBase64] = useState(null);
 
-  const validarEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
 
-  const validarPassword = (pass) =>
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(pass);
+    reader.onloadend = () => {
+      const base64String = reader.result.split(',')[1];
+      setDniBase64(base64String);
+    };
 
-  const validarArchivo = (file) => {
-    if (!file) return false;
-    const ext = file.name.toLowerCase().split('.').pop();
-    return ['jpg', 'jpeg', 'png', 'pdf'].includes(ext);
-  };
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
-
-  const validate = () => {
-    const newErrors = {};
-
-    if (formData.nombre.length < 2 || formData.nombre.length > 50)
-      newErrors.nombre = 'Nombre debe tener entre 2 y 50 caracteres';
-
-    if (formData.apellido.length < 2 || formData.apellido.length > 50)
-      newErrors.apellido = 'Apellido debe tener entre 2 y 50 caracteres';
-
-    const edad = parseInt(formData.edad);
-    if (isNaN(edad) || edad < 18 || edad > 120)
-      newErrors.edad = 'Edad debe ser entre 18 y 120';
-
-    if (!/^\d{3}\s?\d{3,4}\s?\d{3,4}$/.test(formData.telefono))
-      newErrors.telefono = 'Formato: 221 555 5555 o similar';
-
-    if (!formData.calle || !formData.altura)
-      newErrors.direccion = 'Debe ingresar Calle y Altura';
-
-    if (!/^\d{7,8}$/.test(formData.dni))
-      newErrors.dni = 'DNI debe tener 7 u 8 dígitos';
-
-    if (!validarEmail(formData.email) || formData.email.length > 254)
-      newErrors.email = 'Email inválido o demasiado largo';
-
-    if (!formData.fotoDNI || !validarArchivo(formData.fotoDNI))
-      newErrors.fotoDNI = 'Debe adjuntar un archivo .jpg, .jpeg, .png o .pdf';
-
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-
-    if (!validarPassword(formData.password))
-      newErrors.password =
-        'Mínimo 6 caracteres. Debe incluir letras, números y un símbolo especial';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let ruta = 'pendingUsers';
-    if (validate()) {
-      const dataToSend = { ...formData };
-      delete dataToSend.fotoDNI; 
-      delete dataToSend.confirmPassword; 
-      if (formData.fotoDNI) {
-        const simulatedImageName = formData.fotoDNI.name;
-        dataToSend.fotoDNI_name = simulatedImageName; 
-      }
-      if(user){
-        if(user.rol==='admin'){
-          dataToSend.rol==='empleado';
-          ruta='users';
-        }
-      }
-      try {
-        const response = await fetch(`http://localhost:3001/${ruta}`, {
-          method: 'POST', // Siempre POST para enviar nuevos recursos
-          headers: {
-            'Content-Type': 'application/json', // Importante: Enviamos JSON
-          },
-          body: JSON.stringify(dataToSend), 
-        });
-
-        const result = await response.json();
-
-        if (response.ok) { 
-          if(!user){
-            alert('Sus datos seran validados en breve por un empleado');
-            navigate("/Login");
-          }else{
-            if(user.rol=== 'admin'){
-                alert('Se registro un empleado');
-            }
-          }
-
-        } else {
-          alert(`Error al registrar. Código: ${response.status}`);
-          console.error('Error en el registro:', result);
-        }
-      } catch (error) {
-        console.error('Error al enviar el formulario:', error);
-        alert('Hubo un problema de conexión. Por favor, inténtalo de nuevo.');
-      }
+    if (file) {
+      reader.readAsDataURL(file);
     }
   };
 
-  return (<>
-    {user&&(<Header/>)}
-    <div className="signup-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Registro</h2>
+  const handleSubmit = async () => {
+    try {
+      // Paso 1: Crear usuario de autenticación
+      const authResponse = await fetch('http://localhost:5000/Auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: 'ejemplo@gmail.com',
+          password: 'Password123',
+          confirmPassword: 'Password123',
+          role: 'Cliente'
+        })
+      });
 
-        <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={formData.nombre} />
-        {errors.nombre && <p className="error-message">{errors.nombre}</p>}
+      if (!authResponse.ok) throw new Error('Error creando autenticación');
+      console.log("error de /register "+authResponse);
+      // Paso 2: Crear usuario completo
+      const userResponse = await fetch('http://localhost:5000/api/Usuario', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: 'ejemplo@correo.com',
+          dni: '12345678',
+          nombre: 'Juan',
+          apellido: 'Pérez',
+          edad: 30,
+          telefono: '2214567890',
+          calle: 'Falsa',
+          altura: '123',
+          dpto: '1',
+          entreCalles: 'Primera y Segunda',
+          permisosEspeciales: [],
+          roleName: 'Cliente'
+        })
+      });
 
-        <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} value={formData.apellido} />
-        {errors.apellido && <p className="error-message">{errors.apellido}</p>}
+      if (!userResponse.ok) throw new Error('Error creando usuario');
+      console.log(userResponse);
+      const usuario = await userResponse.json();
 
-        <input type="text" name="dni" placeholder="DNI" onChange={handleChange} value={formData.dni} />
-        {errors.dni && <p className="error-message">{errors.dni}</p>}
+      // Paso 3: Crear cliente
+      const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(usuario)
+      });
 
-        <label htmlFor="fotoDNI" className="file-label">Foto DNI (frente):</label>
-        <input type="file" name="fotoDNI" id="fotoDNI" accept=".jpg,.jpeg,.png,.pdf" onChange={handleChange} />
-        {errors.fotoDNI && <p className="error-message">{errors.fotoDNI}</p>}
+      if (!clienteResponse.ok) throw new Error('Error creando cliente');
 
-        <input type="number" name="edad" placeholder="Edad" onChange={handleChange} value={formData.edad} />
-        {errors.edad && <p className="error-message">{errors.edad}</p>}
+      const cliente = await clienteResponse.json();
 
-        <input
-          type="text"
-          name="telefono"
-          placeholder="Código y número (Ej: 221 555 5555)"
-          onChange={handleChange}
-          value={formData.telefono}
-        />
-        {errors.telefono && <p className="error-message">{errors.telefono}</p>}
+      // Paso 5: Subir archivo DNI si existe
+      if (dniBase64) {
+        const archivoResponse = await fetch('http://localhost:5000/api/Archivo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            entidadID: cliente.dni, // Usa el DNI como entidadID
+            tipoEntidad: 3,
+            nombre: 'DNI',
+            descripcion: `DNI de ${cliente.nombre}`,
+            archivo: dniBase64
+          })
+        });
 
-        <input type="text" name="calle" placeholder="Calle" onChange={handleChange} value={formData.calle} />
-        <input type="text" name="altura" placeholder="Altura" onChange={handleChange} value={formData.altura} />
-        <input type="text" name="departamento" placeholder="Departamento (opcional)" onChange={handleChange} value={formData.departamento} />
-        <input type="text" name="entreCalles" placeholder="Entre calles (opcional)" onChange={handleChange} value={formData.entreCalles} />
-        {errors.direccion && <p className="error-message">{errors.direccion}</p>}
+        if (!archivoResponse.ok) throw new Error('Error subiendo archivo DNI');
+      }
 
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
-        {errors.email && <p className="error-message">{errors.email}</p>}
+      alert('Usuario registrado correctamente');
+    } catch (error) {
+      console.log(error);
+      //console.error('Error:', error);
+      alert('Ocurrió un error. Revisa la consola.');
+    }
+  };
 
-        <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} value={formData.password} />
-        {errors.password && <p className="error-message">{errors.password}</p>}
-
-        <input type="password" name="confirmPassword" placeholder="Confirmar Contraseña" onChange={handleChange} value={formData.confirmPassword} />
-        {errors.confirmPassword && <p className="error-message">{errors.confirmPassword}</p>}
-
-        <button type="submit">Registrarse</button>
-      </form>
+  return (
+    <div style={{ padding: 20 }}>
+      <h2>Registro de Usuario</h2>
+      <input type="file" accept="image/*" onChange={handleImageChange} />
+      <br /><br />
+      <button onClick={handleSubmit}>Registrar usuario con DNI</button>
     </div>
-    </>
   );
-};
+}
 
 export default SignUp;
