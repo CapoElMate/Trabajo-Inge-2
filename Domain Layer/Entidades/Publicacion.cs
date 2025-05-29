@@ -11,6 +11,7 @@ namespace Domain_Layer.Entidades
     {
         [Key]
         public int idPublicacion { get; set; }
+        public bool isDeleted { get; set; }
         public string Status { get; set; } = null!;
         public double PrecioPorDia { get; set; }
         public string Descripcion { get; set; } = null!;

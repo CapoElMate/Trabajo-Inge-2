@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Data_Access_Layer.DataAccessLayer.Migrations
+namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -54,19 +54,16 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
             modelBuilder.Entity("Domain_Layer.Entidades.Archivo", b =>
                 {
                     b.Property<int>("idArchivo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<int>("EntidadID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("TipoEntidad")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("EntidadID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -83,7 +80,12 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("idArchivo", "EntidadID", "TipoEntidad");
+                    b.Property<string>("TipoEntidad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("idArchivo");
 
                     b.ToTable("Archivos");
                 });
@@ -252,8 +254,11 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("MarcaName")
+                    b.Property<string>("ModeloName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ModeloName1")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Tipo")
@@ -267,6 +272,9 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.Property<int>("anioFabricacion")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -274,7 +282,9 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
 
                     b.HasKey("idMaquina");
 
-                    b.HasIndex("MarcaName");
+                    b.HasIndex("ModeloName");
+
+                    b.HasIndex("ModeloName1");
 
                     b.HasIndex("Tipo");
 
@@ -301,9 +311,10 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("MarcaName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ModeloName", "MarcaName");
+                    b.HasKey("ModeloName");
 
                     b.HasIndex("MarcaName");
 
@@ -378,6 +389,9 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("idMaquina")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("idPublicacion");
@@ -660,11 +674,15 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("dniVerificado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("isDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("mailVerificado")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("roleName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.HasKey("DNI");
 
@@ -1074,11 +1092,15 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
 
             modelBuilder.Entity("Domain_Layer.Entidades.Maquina", b =>
                 {
-                    b.HasOne("Domain_Layer.Entidades.Marca", "Marca")
+                    b.HasOne("Domain_Layer.Entidades.Modelo", "Modelo")
                         .WithMany()
-                        .HasForeignKey("MarcaName")
+                        .HasForeignKey("ModeloName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Modelo", null)
+                        .WithMany("Maquinas")
+                        .HasForeignKey("ModeloName1");
 
                     b.HasOne("Domain_Layer.Entidades.TipoMaquina", null)
                         .WithMany("Maquinas")
@@ -1092,7 +1114,7 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Marca");
+                    b.Navigation("Modelo");
 
                     b.Navigation("TipoMaquina");
                 });
@@ -1353,8 +1375,7 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
 
                     b.Navigation("Comentarios");
 
-                    b.Navigation("Empleado")
-                        .IsRequired();
+                    b.Navigation("Empleado");
 
                     b.Navigation("Reembolsos");
 
@@ -1389,6 +1410,11 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
             modelBuilder.Entity("Domain_Layer.Entidades.Marca", b =>
                 {
                     b.Navigation("Modelos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Modelo", b =>
+                {
+                    b.Navigation("Maquinas");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Pago", b =>

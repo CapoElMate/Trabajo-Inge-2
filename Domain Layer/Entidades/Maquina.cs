@@ -11,11 +11,12 @@ namespace Domain_Layer.Entidades
     {
         [Key]
         public int idMaquina { get; set; }
+        public bool isDeleted { get; set; }
         public string status { get; set; } = null!;
         public int anioFabricacion { get; set; }
         public ICollection<Empleado_Maquina> Empleado_Maquinas { get; set; } = new List<Empleado_Maquina>();
-        public string MarcaName { get; set; }
-        public Marca Marca { get; set; } = null!;
+        public string ModeloName { get; set; }
+        public Modelo Modelo { get; set; } = null!;
         public ICollection<TagMaquina> TagsMaquina { get; set; } = new List<TagMaquina>();
         public string Tipo { get; set; }
         public TipoMaquina TipoMaquina { get; set; } = null!;
