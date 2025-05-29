@@ -30,5 +30,9 @@ namespace Bussines_Logic_Layer.DTOs
         [DefaultValue("https://localhost:5173/pending")]
         public string backUrlPending { get; set; }
 
+        [DefaultValue("9999")]
+        public string idProducto { get; set; }
+
+
     }
 }

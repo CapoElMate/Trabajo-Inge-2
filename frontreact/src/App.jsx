@@ -39,7 +39,7 @@ function App() {
                 <p>Haz clic en el botón para realizar el pago.</p>
                 {/* Renderiza el botón de pago */}
                 <div style={{ width: '300px' }}>
-                    <Wallet initialization={{ preferenceId: '2462257991-a5f98ebb-8c23-49e4-82e8-0bff20c34578' }} />
+                    <Wallet initialization={{ preferenceId: '2462257991-f2e4c7a7-7e31-47e8-a9d5-98f035aac74c' }} />
                 </div>
             </div>
                     
