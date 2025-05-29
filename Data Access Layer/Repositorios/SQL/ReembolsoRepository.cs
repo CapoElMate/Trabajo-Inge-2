@@ -24,7 +24,12 @@ namespace Data_Access_Layer.Repositorios.SQL
             return await _context.Reembolsos
                 .ToListAsync();
         }
-        
+        public async Task<IEnumerable<Reembolso?>> GetByDNIAsync(string dni)
+        {
+            return await _context.Reembolsos
+                .Where(r => r.DNICliente.Equals(dni))
+                .ToListAsync();
+        }
         public async Task AddAsync(Reembolso Reembolso)
         {
             await _context.Reembolsos.AddAsync(Reembolso);

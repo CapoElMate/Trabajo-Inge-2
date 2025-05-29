@@ -27,14 +27,17 @@ namespace Bussines_Logic_Layer.Services
         {
             var alquileres = await _repo.GetAllAsync();
             return _mapper.Map<IEnumerable<AlquilerDto>>(alquileres);
-        }
-
+        }        
         public async Task<AlquilerDto?> GetByIdAsync(int id)
         {
             var alquiler = await _repo.GetByIdAsync(id);
             return alquiler == null ? null : _mapper.Map<AlquilerDto>(alquiler);
         }
-
+        public async Task<IEnumerable<AlquilerDto?>> GetByDNIAsync(string dni)
+        {
+            var alquileres = await _repo.GetByDNIAsync(dni);
+            return _mapper.Map<IEnumerable<AlquilerDto>>(alquileres);
+        }
         public async Task<AlquilerDto> CreateAsync(CreateAlquilerDto dto)
         {
             var alquiler = _mapper.Map<Alquiler>(dto);
@@ -71,6 +74,15 @@ namespace Bussines_Logic_Layer.Services
 
             alquiler.isDeleted = true;
             await _repo.UpdateAsync(alquiler);
+            return true;
+        }
+
+        public async Task<bool> ReservarAlquiler(int idAlquiler, int idReserva)
+        {
+            var alquiler = await _repo.GetByIdAsync(idAlquiler);
+            if (alquiler == null)
+                return false;
+            await _repo.Efectivizar(alquiler, idReserva);
             return true;
         }
     }

@@ -28,7 +28,11 @@ namespace Bussines_Logic_Layer.Services
             var reembolsos = await _repo.GetAllAsync();
             return _mapper.Map<IEnumerable<ReembolsoDto>>(reembolsos);
         }
-
+        public async Task<IEnumerable<ReembolsoDto?>> GetByDNIAsync(string dni)
+        {
+            var reembolsos = await _repo.GetByDNIAsync(dni);
+            return _mapper.Map<IEnumerable<ReembolsoDto>>(reembolsos);
+        }
         public async Task<ReembolsoDto?> GetByIdAsync(int id)
         {
             var reembolso = await _repo.GetByIdAsync(id);

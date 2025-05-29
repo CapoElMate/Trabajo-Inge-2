@@ -33,6 +33,15 @@ namespace API_Layer.Controllers
 
             return Ok(reserva);
         }
+        [HttpGet("byDNI")]
+        public async Task<ActionResult<IEnumerable<ReservaDto?>>> GetReservaByDNI(string DNI)
+        {
+            var reservas = await _service.GetByDNIAsync(DNI);
+            if (reservas == null)
+                return NotFound("El cliente no tiene reservas a su nombre.");
+
+            return Ok(reservas);
+        }
 
         [HttpPost]
         public async Task<ActionResult<ReservaDto>> PostReserva(CreateReservaDto dto)

@@ -12,9 +12,12 @@ namespace Bussines_Logic_Layer.Interfaces
     {
         Task<IEnumerable<AlquilerDto>> GetAllAsync();
         Task<AlquilerDto?> GetByIdAsync(int id);
+        Task<IEnumerable<AlquilerDto?>> GetByDNIAsync(string dni);
         Task<AlquilerDto> CreateAsync(CreateAlquilerDto dto);
         Task<bool> UpdateAsync(AlquilerDto dto);
         Task<bool> DeleteAsync(int id);
         Task<bool> LogicDeleteAsync(int id);
+        Task<bool> ReservarAlquiler(int idAlquiler, int idReserva);
+        
     }
 }

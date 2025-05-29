@@ -26,7 +26,7 @@ namespace Bussines_Logic_Layer.Resolvers.Reserva
                                            , Domain_Layer.Entidades.Publicacion destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.Publicaciones.FirstOrDefault(p => p.idPublicacion.Equals(source.Publicacion.idPublicacion));
+            var tipoExistente = _context.Publicaciones.FirstOrDefault(p => p.idPublicacion.Equals(source.IdPublicacion));
 
             if (tipoExistente == null)
             {

@@ -25,7 +25,13 @@ namespace Data_Access_Layer.Repositorios.SQL
                 .Include(p => p.InfoAsentada)
                 .ToListAsync();
         }
-        
+        public async Task<IEnumerable<Alquiler>> GetByDNIAsync(string dni)
+        {
+            return await _context.Alquileres
+                .Include(p => p.InfoAsentada)
+                .Where(a => a.DNICliente.Equals(dni))
+                .ToListAsync();
+        }
         public async Task AddAsync(Alquiler Alquiler)
         {
             await _context.Alquileres.AddAsync(Alquiler);
@@ -55,6 +61,20 @@ namespace Data_Access_Layer.Repositorios.SQL
         {
             _context.Alquileres.Update(Alquiler);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> Efectivizar(Alquiler alquiler, int idReserva)
+        {
+            var reserva = await _context.Reservas
+                .FirstOrDefaultAsync(r => r.idReserva == idReserva);
+
+            if (reserva == null)
+                return false;
+
+            reserva.Alquiler = alquiler;
+            reserva.idAlquiler = alquiler.idAlquiler;
+            _context.Reservas.Update(reserva);
+            return true;
         }
     }
 }

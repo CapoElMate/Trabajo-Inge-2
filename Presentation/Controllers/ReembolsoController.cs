@@ -16,9 +16,15 @@ namespace API_Layer.Controllers
         }
 
         [HttpGet("all")]
-        public async Task<ActionResult<IEnumerable<ReembolsoDto>>> GetReembolsoes()
+        public async Task<ActionResult<IEnumerable<ReembolsoDto>>> GetReembolsos()
         {
             var reembolsos = await _service.GetAllAsync();
+            return Ok(reembolsos);
+        }
+        [HttpGet("byDNI")]
+        public async Task<ActionResult<IEnumerable<ReembolsoDto?>>> GetReembolsosByDNI(string dni)
+        {
+            var reembolsos = await _service.GetByDNIAsync(dni);
             return Ok(reembolsos);
         }
 

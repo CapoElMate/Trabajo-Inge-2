@@ -10,6 +10,7 @@ namespace Data_Access_Layer.Interfaces
     public interface IReembolsoRepository
     {
         Task<IEnumerable<Reembolso>> GetAllAsync();
+        Task<IEnumerable<Reembolso?>> GetByDNIAsync(string dni);
         Task<Reembolso?> GetByIdAsync(int id);
         Task AddAsync(Reembolso reembolso);
         Task UpdateAsync(Reembolso reembolso);

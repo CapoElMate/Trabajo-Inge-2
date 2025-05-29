@@ -11,6 +11,8 @@ namespace Bussines_Logic_Layer.Interfaces
     public interface IReembolsoService
     {
         Task<IEnumerable<ReembolsoDto>> GetAllAsync();
+        Task<IEnumerable<ReembolsoDto?>> GetByDNIAsync(string dni);
+        
         Task<ReembolsoDto?> GetByIdAsync(int id);
         Task<ReembolsoDto> CreateAsync(CreateReembolsoDto dto);
         Task<bool> UpdateAsync(ReembolsoDto dto);

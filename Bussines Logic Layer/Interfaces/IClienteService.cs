@@ -15,6 +15,7 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<ClienteDto?> GetByEmailAsync(string email);
         Task<ClienteDto> CreateAsync(ClienteDto dto);
         Task<bool> UpdateAsync(string dni, ClienteDto dto);
+        Task<bool> ConfirmDNI(string dni);
         Task<bool> DeleteByDNIAsync(string dni);
         Task<bool> DeleteByEmailAsync(string email);
     }

@@ -76,7 +76,7 @@ namespace Bussines_Logic_Layer.Services
                 // Obtiene la ruta base de la API Layer o la carpeta "Presentation" de forma dinámica
                 var basePath = AppContext.BaseDirectory;
                 var directoryInfo = new DirectoryInfo(basePath);
-                var uploadsFolder = Path.Combine(directoryInfo.FullName.Split("bin")[0], "Archivos");
+                var uploadsFolder = Path.Combine(directoryInfo.FullName.Split("bin")[0], "Archivos", dto.TipoEntidad.ToString(), $"{dto.TipoEntidad.ToString()} - {dto.EntidadID.ToString()}");
 
                 if (!Directory.Exists(uploadsFolder))
                 {

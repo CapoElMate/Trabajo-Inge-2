@@ -54,7 +54,7 @@ namespace API_Layer.Controllers
 
         // GET: Descarga un archivo específico por su IdArchivo.
         // Ejemplo de uso: GET /api/Archivos/download/5
-        [HttpGet("download/{idArchivo}")]
+        [HttpGet("download")]
         public async Task<IActionResult> GetArchivoById(int idArchivo)
         {
             try
@@ -84,7 +84,7 @@ namespace API_Layer.Controllers
         }
 
         // GET: Obtiene una lista de metadatos de archivos asociados a una entidad específica.
-        [HttpGet("byEntidad/{tipoEntidad}/{entidadId}")]
+        [HttpGet("byEntidad")]
         public async Task<ActionResult<IEnumerable<ArchivoDtoReponse>>> GetArchivosByEntidad(
             int entidadId,
             TipoEntidadArchivo tipoEntidad) // ASP.NET Core mapea automáticamente el string del path a tu enum
@@ -106,9 +106,51 @@ namespace API_Layer.Controllers
             }
         }
 
+        // GET: Obtiene una lista de metadatos de archivos asociados a una entidad específica.
+        [HttpGet("User/PermisosEspeciales")]
+        public async Task<ActionResult<IEnumerable<ArchivoDtoReponse>>> GetPermisosEspecialesUser(string DNI)
+        {
+            try
+            {
+                var archivos = await _service.GetFilesByEntidadAsync(Int32.Parse(DNI), TipoEntidadArchivo.PermisoEspecial);
+
+                if (archivos == null || !archivos.Any())
+                {
+                    return NotFound($"No se encontraron permisos especiales asociados al usuario: {DNI}.");
+                }
+
+                return Ok(archivos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor al obtener la lista de archivos por entidad: {ex.Message}");
+            }
+        }
+
+        // GET: Obtiene una lista de metadatos de archivos asociados a una entidad específica.
+        [HttpGet("User/DNI")]
+        public async Task<ActionResult<ArchivoDtoReponse>> GetDNI(string DNI)
+        {
+            try
+            {
+                var archivos = await _service.GetFilesByEntidadAsync(Int32.Parse(DNI), TipoEntidadArchivo.DNI);
+
+                if (archivos == null || !archivos.Any())
+                {
+                    return NotFound($"No se encontraron permisos especiales asociados al usuario: {DNI}.");
+                }
+
+                return Ok(archivos.First());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno del servidor al obtener la lista de archivos por entidad: {ex.Message}");
+            }
+        }
+
         // DELETE: Elimina un archivo por su IdArchivo (puede ser lógico o físico según la implementación del servicio).
         // Ejemplo de uso: DELETE /api/Archivos/5
-        [HttpDelete("{idArchivo}")]
+        [HttpDelete("byId")]
         public async Task<IActionResult> DeleteArchivo(int idArchivo)
         {
             try

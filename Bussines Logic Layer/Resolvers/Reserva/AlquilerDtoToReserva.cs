@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Bussines_Logic_Layer.Resolvers.Reserva
 {
-    public class AlquilerDtoToReserva : IValueResolver<ReservaDto, Domain_Layer.Entidades.Reserva, Alquiler>
+    public class AlquilerDtoToReserva : IValueResolver<ReservaDto, Domain_Layer.Entidades.Reserva, Domain_Layer.Entidades.Alquiler>
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -22,18 +22,19 @@ namespace Bussines_Logic_Layer.Resolvers.Reserva
             _context = context;
         }
 
-        public Alquiler Resolve(ReservaDto source, Domain_Layer.Entidades.Reserva destination
-                                           , Alquiler destMember, ResolutionContext context)
+        public Domain_Layer.Entidades.Alquiler Resolve(ReservaDto source, Domain_Layer.Entidades.Reserva destination
+                                           , Domain_Layer.Entidades.Alquiler destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.Alquileres.FirstOrDefault(a => a.idAlquiler.Equals(source.Alquiler.idAlquiler));
+            var tipoExistente = _context.Alquileres.FirstOrDefault(a => a.idAlquiler.Equals(source.IdAlquiler));
 
             if (tipoExistente == null)
             {
-                throw new Exception("No existe un alquiler para los valores proporcionados");
+                return null;
+                //throw new Exception("No existe un alquiler para los valores proporcionados");
             }
 
-            return _mapper.Map<Alquiler>(tipoExistente);
+            return _mapper.Map<Domain_Layer.Entidades.Alquiler>(tipoExistente);
         }
     }
 }

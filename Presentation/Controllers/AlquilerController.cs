@@ -32,12 +32,27 @@ namespace API_Layer.Controllers
 
             return Ok(alquiler);
         }
+        [HttpGet("byDNI")]
+        public async Task<ActionResult<IEnumerable<AlquilerDto?>>> GetAlquileresByDNI(string dni)
+        {
+            var alquileres = await _service.GetByDNIAsync(dni);
+            if (alquileres == null)
+                return NotFound("El cliente no tiene alquileres a su nombre.");
+
+            return Ok(alquileres);
+        }
 
         [HttpPost]
         public async Task<ActionResult<AlquilerDto>> PostAlquiler(CreateAlquilerDto dto)
         {
             var created = await _service.CreateAsync(dto);
             return CreatedAtAction(nameof(GetAlquiler), new { id = created }, created);
+        }
+        [HttpPut("EfectivizarAlquiler")]
+        public async Task<ActionResult<AlquilerDto>> PostAlquiler(int idAlquiler, int idReserva)
+        {
+            var created = await _service.ReservarAlquiler(idAlquiler, idReserva);
+            return Ok("Alquiler efectivizado.");
         }
 
         [HttpPut("byId")]

@@ -11,6 +11,7 @@ namespace Data_Access_Layer.Interfaces
     {
         Task<IEnumerable<Reserva>> GetAllAsync();
         Task<Reserva?> GetByIdAsync(int id);
+        Task<IEnumerable<Reserva>> GetByDNIAsync(string DNI);
         Task AddAsync(Reserva reserva);
         Task UpdateAsync(Reserva reserva);
         Task DeleteAsync(Reserva reserva);

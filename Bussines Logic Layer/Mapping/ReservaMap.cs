@@ -28,9 +28,9 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.idReserva, opt => opt.MapFrom(src => src.idReserva))
                 .ForMember(dest => dest.TipoEntrega, opt => opt.MapFrom<TipoEntregaToReservaDto>())
                 .ForMember(dest => dest.Pago, opt => opt.MapFrom<PagoToReservaDto>())
-                .ForMember(dest => dest.Alquiler, opt => opt.MapFrom<AlquilerToReservaDto>())
-                .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteToReservaDto>())
-                .ForMember(dest => dest.Publicacion, opt => opt.MapFrom<PublicacionToReservaDto>())
+                //.ForMember(dest => dest.Alquiler, opt => opt.MapFrom<AlquilerToReservaDto>())
+                //.ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteToReservaDto>())
+                //.ForMember(dest => dest.Publicacion, opt => opt.MapFrom<PublicacionToReservaDto>())
                 .ForMember(dest => dest.fecInicio, opt => opt.MapFrom(src => src.fecInicio))
                 .ForMember(dest => dest.fecFin, opt => opt.MapFrom(src => src.fecFin))
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
@@ -38,7 +38,10 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles));
+                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
+                .ForMember(dest => dest.idReserva, opt => opt.MapFrom(src => src.idReserva))
+                .ForMember(dest => dest.IdAlquiler, opt => opt.MapFrom(src => src.idAlquiler))
+                .ForMember(dest => dest.DNICliente, opt => opt.MapFrom(src => src.DNI));
 
             CreateMap<ReservaDto,Reserva>()
                 .ForMember(dest => dest.idReserva, opt => opt.MapFrom(src => src.idReserva))

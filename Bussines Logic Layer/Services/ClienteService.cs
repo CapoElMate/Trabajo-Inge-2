@@ -59,6 +59,17 @@ namespace Bussines_Logic_Layer.Services
             return true;
         }
 
+        public async Task<bool> ConfirmDNI(string dni)
+        {
+            var usuario = await _repo.GetByDNIAsync(dni);
+            if (usuario == null)
+                return false;
+
+            usuario.UsuarioRegistrado.dniVerificado = true; 
+            await _repo.UpdateAsync(usuario);
+            return true;
+        }
+
         public async Task<bool> DeleteByDNIAsync(string DNI)
         {
             var usuario = await _repo.GetByDNIAsync(DNI);
