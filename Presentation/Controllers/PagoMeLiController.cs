@@ -10,9 +10,9 @@ namespace API_Layer.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class PagoController : Controller
+    public class PagoMeLiController : Controller
     {
-        [HttpPost]
+        [HttpPost("generarPreferenciaDePago")]
         public Task<Preference> GenerarPreferenciaDePago(PreferenciaDePagoDto parametros)
         {
             GenerarPreferenciaDePago genPref = new GenerarPreferenciaDePago();
@@ -21,13 +21,14 @@ namespace API_Layer.Controllers
             return preferencia;
         }
 
-        [HttpPost]
-        public string getWebhookConfirmacion(PreferenciaDePagoDto parametros)
+        [HttpPost("getConfirmacionWebhook")]
+        public IActionResult getWebhookConfirmacion(string parametros)
         {
-            GenerarPreferenciaDePago genPref = new GenerarPreferenciaDePago();
 
-            var preferencia = genPref.getPreferenciaAsync(parametros);
-            return string;
+            //imprimir parametros
+            Console.WriteLine("Webhook de confirmacion recibido: " + parametros);
+
+            return Ok("Webhook de confirmacion recibido correctamente.");
         }
 
     }
