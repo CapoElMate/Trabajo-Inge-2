@@ -87,12 +87,21 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 });
 
-builder.Services.ConfigureApplicationCookie(options =>
-{
-    options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-    options.SlidingExpiration = true;
-});
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddCookie(IdentityConstants.ApplicationScheme, options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        options.SlidingExpiration = true;
+    });
+
+//builder.Services.ConfigureApplicationCookie(options =>
+//{
+//    options.Cookie.HttpOnly = true;
+    
+//});
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
