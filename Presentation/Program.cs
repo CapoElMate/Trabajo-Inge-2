@@ -46,7 +46,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 
-//añado autoriazacion
+//aï¿½ado autoriazacion
 builder.Services.AddAuthorization();
 builder.Services.AddAuthentication();
 
