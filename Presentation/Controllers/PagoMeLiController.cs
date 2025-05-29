@@ -1,4 +1,5 @@
 ﻿using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.Interfaces;
 using Bussines_Logic_Layer.Managers;
 using Humanizer;
 using MercadoPago.Http;
@@ -23,6 +24,16 @@ namespace API_Layer.Controllers
     [ApiController]
     public class PagoMeLiController : Controller
     {
+        IReservaService _reservaService;
+
+        public PagoMeLiController(IReservaService service)
+        {
+            _reservaService = service;
+        }
+
+
+
+
         [HttpPost("generarPreferenciaDePago")]
         public Task<Preference> GenerarPreferenciaDePago(PreferenciaDePagoDto parametros)
         {
@@ -98,10 +109,17 @@ namespace API_Layer.Controllers
                 PropertyNameCaseInsensitive = true // Esto permite que las propiedades C# coincidan con JSON sin importar mayúsculas/minúsculas
             });
 
-            Console.WriteLine("rta: " + Convert.ToInt64(paymentDetails.additional_info.items.First().id));
+            var id = Convert.ToInt32(paymentDetails.additional_info.items.First().id);
+
+            Console.WriteLine("rta: " + id);
+
+            _reservaService.UpdatePayment(id,Convert.ToInt32(result["data"]["id"]));
 
 
-
+            Console.WriteLine("-ok-");
+            Console.WriteLine("---");
+            Console.WriteLine("---");
+            Console.WriteLine("---");
 
 
             return Ok("Webhook de confirmacion recibido correctamente.");

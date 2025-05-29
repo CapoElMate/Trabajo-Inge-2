@@ -53,6 +53,20 @@ namespace Bussines_Logic_Layer.Services
             return true;
         }
 
+        public async Task<bool> UpdatePayment(int idReserva, int idPago)
+        {
+            var reserva = await _repo.GetByIdAsync(idReserva);
+            if (reserva == null)
+                return false;
+
+            reserva.nroPago = idPago;
+            reserva.Status = "Confirmada";
+
+            await _repo.UpdateAsync(reserva);
+            return true;
+        }
+
+
         public async Task<bool> DeleteAsync(int id)
         {
             var reserva = await _repo.GetByIdAsync(id);

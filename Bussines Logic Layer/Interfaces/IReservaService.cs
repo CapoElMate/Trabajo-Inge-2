@@ -13,6 +13,7 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<ReservaDto?> GetByIdAsync(int id);
         Task<ReservaDto> CreateAsync(CreateReservaDto dto);
         Task<bool> UpdateAsync(int id, ReservaDto dto);
+        Task<bool> UpdatePayment(int idReserva,int idPago);
         Task<bool> DeleteAsync(int id);
     }
 }
