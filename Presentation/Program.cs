@@ -12,11 +12,16 @@ using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Repositorios.SQL;
 using Bussines_Logic_Layer.Mapping;
 using MercadoPago.Config;
+using Bussines_Logic_Layer.Managers;
 
 
 //añado el acces token de MeLi:
-MercadoPagoConfig.AccessToken = "APP_USR-7358553432925364-052814-bea62fcaedc85041522284dcca5d1ad2-363087617";
+MercadoPagoConfig.AccessToken = "APP_USR-4881163094293484-052818-fc4523c66bcc46bbe3fe8b914c3dea29-2462257991";
 
+//var rp = new GenerarPreferenciaDePago();
+//var pref = rp.getPreferencia("aaaa",1,1999.1m,"https://localhost/success", "http://localhost/failure", "http://localhost/pending"); //no recomienda awaiter, solo para pruebas,
+
+//Console.WriteLine("idPreferencia: " + pref.Id);
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +30,7 @@ builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
+    options.ListenAnyIP(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -79,7 +84,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173") // Permite el origen de tu frontend
+                          policy.WithOrigins("http://localhost:5173")
+                                .WithOrigins("http://192.168.1.0")// Permite el origen de tu frontend
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();

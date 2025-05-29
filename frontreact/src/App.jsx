@@ -4,6 +4,12 @@ import axios from 'axios';
 
 import './App.css';
 
+// Importa el SDK de Mercado Pago
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+
+// Inicializa Mercado Pago con tu public key
+initMercadoPago('APP_USR-17034ece-e13c-4fa1-9151-a1e3335e6f39');
+
 
 //componentes 
 import InputPersona from "./components/InputPersona.jsx"
@@ -20,12 +26,24 @@ function App() {
 
     return (
         <Fragment>
-            <div classname="container">
-                {/*<InputPersona setPersonas={setPersonas}/>*/}
-                <h2>Lista Usuarios Registrados</h2>
-                <ListaPersonas personas={personas} setPersonas={setPersonas} />
+            {/*<div classname="container">*/}
+            {/*    */}{/*<InputPersona setPersonas={setPersonas}/>*/}
+            {/*    <h2>Lista Usuarios Registrados</h2>*/}
+            {/*    <ListaPersonas personas={personas} setPersonas={setPersonas} />*/}
+            {/*</div>*/}
+
+            mercadolibrestuff
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
+                <h1>Botón de Pago</h1>
+                <p>Haz clic en el botón para realizar el pago.</p>
+                {/* Renderiza el botón de pago */}
+                <div style={{ width: '300px' }}>
+                    <Wallet initialization={{ preferenceId: '2462257991-530d21b6-1932-4af3-9cf7-8afca08a7444' }} />
+                </div>
             </div>
-        
+                    
+
         </Fragment>
     );
 
