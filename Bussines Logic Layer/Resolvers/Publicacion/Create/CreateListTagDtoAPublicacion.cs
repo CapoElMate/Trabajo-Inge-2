@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using System;
@@ -34,7 +34,7 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion.Create
 
             if (tagsPublicacion == null || !tagsPublicacion.Any())
             {
-                throw new Exception("No existen tags de publicacionria para los valores proporcionados");
+                throw new Exception("No existen tags de publicacion para los valores proporcionados");
             }
 
             return tagsPublicacion;

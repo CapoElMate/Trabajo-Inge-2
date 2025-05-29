@@ -14,5 +14,6 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<MaquinaDto> CreateAsync(CreateMaquinaDto dto);
         Task<bool> UpdateAsync(int id, MaquinaDto dto);
         Task<bool> DeleteAsync(int id);
+        Task<bool> LogicDeleteAsync(int id);
     }
 }

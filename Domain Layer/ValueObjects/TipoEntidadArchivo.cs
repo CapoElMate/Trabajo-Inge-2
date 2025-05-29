@@ -8,7 +8,9 @@ namespace Domain_Layer.ValueObjects
 {
     public enum TipoEntidadArchivo
     {
-        Publicacion = 1,
-        Maquinaria = 2
+        Publicacion = 0,
+        Maquinaria = 1,
+        PermisoEspecial = 2,
+        DNI = 3,
     }
 }

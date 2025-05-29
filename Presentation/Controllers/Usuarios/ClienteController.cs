@@ -12,7 +12,6 @@ namespace API_Layer.Controllers.Usuarios
     public class ClienteController : ControllerBase
     {
         private readonly IClienteService _serviceCliente;
-
         public ClienteController(IClienteService serviceCliente)
         {
             _serviceCliente = serviceCliente;
@@ -52,6 +51,19 @@ namespace API_Layer.Controllers.Usuarios
             return CreatedAtAction(nameof(GetUsuarioByDNI), new { dni = created }, created);
         }
 
+        [HttpPut("ConfirmDNI")]
+        public async Task<IActionResult> ValidarDNI(string dni)
+        {
+            var cliente = await _serviceCliente.GetByDNIAsync(dni);
+            if (cliente == null || dni != cliente.UsuarioRegistrado.DNI)
+                return BadRequest("El cliente no existe.");
+
+            var updated = await _serviceCliente.ConfirmDNI(dni);
+            if (!updated)
+                return NotFound();
+
+            return NoContent();
+        }
         //[HttpPut]
         //public async Task<IActionResult> PutMaquina(string dni, ClienteDto dto)
         //{

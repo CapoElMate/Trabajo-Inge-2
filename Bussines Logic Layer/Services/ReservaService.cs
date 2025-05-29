@@ -35,6 +35,12 @@ namespace Bussines_Logic_Layer.Services
             return reserva == null ? null : _mapper.Map<ReservaDto>(reserva);
         }
 
+        public async Task<IEnumerable<ReservaDto>> GetByDNIAsync(string DNI)
+        {
+            var reservas = await _repo.GetByDNIAsync(DNI);
+            return reservas == null ? null : _mapper.Map<IEnumerable<ReservaDto>>(reservas);
+        }
+        
         public async Task<ReservaDto> CreateAsync(CreateReservaDto dto)
         {
             Reserva reserva= _mapper.Map<Reserva>(dto);

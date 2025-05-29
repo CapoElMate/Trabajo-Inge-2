@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain_Layer.Entidades;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 
 namespace Bussines_Logic_Layer.Resolvers.Publicacion
 {

@@ -26,7 +26,7 @@ namespace Bussines_Logic_Layer.Resolvers.Reserva
                                            , Cliente destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.Clientes.FirstOrDefault(c => c.DNI.Equals(source.Cliente.UsuarioRegistrado.DNI));
+            var tipoExistente = _context.Clientes.FirstOrDefault(c => c.DNI.Equals(source.DNICliente));
 
             if (tipoExistente == null)
             {

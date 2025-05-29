@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain_Layer.Entidades;
 using Bussines_Logic_Layer.DTOs.Reserva;
+using Bussines_Logic_Layer.DTOs.Alquiler;
 
 namespace Bussines_Logic_Layer.Resolvers.Reserva
 {

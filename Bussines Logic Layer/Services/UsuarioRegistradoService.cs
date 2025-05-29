@@ -9,6 +9,7 @@ using Bussines_Logic_Layer.DTOs.Usuarios;
 using Bussines_Logic_Layer.Interfaces;
 using Data_Access_Layer.Interfaces;
 using Domain_Layer.Entidades;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bussines_Logic_Layer.Services
 {
@@ -16,11 +17,19 @@ namespace Bussines_Logic_Layer.Services
     {
         private readonly IUsuarioRegistradoRepository _repo;
         private readonly IMapper _mapper;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsuarioRegistradoService(IUsuarioRegistradoRepository repo, IMapper mapper)
+        public UsuarioRegistradoService(
+            IUsuarioRegistradoRepository repo,
+            IMapper mapper,
+            UserManager<IdentityUser> userManager,
+            RoleManager<IdentityRole> roleManager)
         {
             _repo = repo;
             _mapper = mapper;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<IEnumerable<UsuarioRegistradoDTO>> GetAllAsync()
@@ -45,6 +54,30 @@ namespace Bussines_Logic_Layer.Services
         {
             var usuario = _mapper.Map<UsuarioRegistrado>(dto);
             await _repo.AddAsync(usuario);
+
+            // Crear usuario en Identity si no existe
+            var identityUser = await _userManager.FindByEmailAsync(dto.Email);
+
+            if(identityUser == null)
+            {
+                return null;
+            }
+
+            // Asignar rol si corresponde
+            if (!string.IsNullOrEmpty(dto.roleName))
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(dto.roleName);
+                if (!roleExists)
+                {
+                    throw new Exception("Role does not exist.");
+                }
+
+                if (!await _userManager.IsInRoleAsync(identityUser, dto.roleName))
+                {
+                    await _userManager.AddToRoleAsync(identityUser, dto.roleName);
+                }
+            }
+
             return _mapper.Map<UsuarioRegistradoDTO>(usuario);
         }
 

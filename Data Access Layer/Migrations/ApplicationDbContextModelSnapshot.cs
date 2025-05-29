@@ -54,19 +54,16 @@ namespace Data_Access_Layer.Migrations
             modelBuilder.Entity("Domain_Layer.Entidades.Archivo", b =>
                 {
                     b.Property<int>("idArchivo")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
-
-                    b.Property<int>("EntidadID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("TipoEntidad")
-                        .HasMaxLength(50)
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("EntidadID")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -83,7 +80,12 @@ namespace Data_Access_Layer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("idArchivo", "EntidadID", "TipoEntidad");
+                    b.Property<string>("TipoEntidad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("idArchivo");
 
                     b.ToTable("Archivos");
                 });
@@ -270,6 +272,9 @@ namespace Data_Access_Layer.Migrations
                     b.Property<int>("anioFabricacion")
                         .HasColumnType("INTEGER");
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -384,6 +389,9 @@ namespace Data_Access_Layer.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("idMaquina")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("idPublicacion");

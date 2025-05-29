@@ -54,7 +54,7 @@ namespace API_Layer.Controllers
             return NoContent();
         }
 
-        [HttpDelete]
+        [HttpDelete("byId")]
         public async Task<IActionResult> DeleteMaquina(int id)
         {
             var maquina = await _service.GetByIdAsync(id);
@@ -62,6 +62,20 @@ namespace API_Layer.Controllers
                 return BadRequest("La maquina no existe.");
 
             var deleted = await _service.DeleteAsync(id);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpDelete("byId/logic")]
+        public async Task<IActionResult> LogicDeleteMaquina(int id)
+        {
+            var maquina = await _service.GetByIdAsync(id);
+            if (maquina == null || id != maquina.IdMaquina)
+                return BadRequest("La maquina no existe.");
+
+            var deleted = await _service.LogicDeleteAsync(id);
             if (!deleted)
                 return NotFound();
 

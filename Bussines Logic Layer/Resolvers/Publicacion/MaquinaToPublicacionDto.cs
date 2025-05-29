@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
 using Bussines_Logic_Layer.DTOs.Maquina;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using System;

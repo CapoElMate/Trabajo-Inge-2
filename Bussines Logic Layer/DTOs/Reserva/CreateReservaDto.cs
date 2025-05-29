@@ -1,4 +1,6 @@
-﻿using Domain_Layer.Entidades;
+﻿using Bussines_Logic_Layer.DTOs.Alquiler;
+using Bussines_Logic_Layer.DTOs.Publicacion;
+using Domain_Layer.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +21,11 @@ namespace Bussines_Logic_Layer.DTOs.Reserva
         public string EntreCalles { get; set; } = null!;
         public TipoEntregaDto TipoEntrega { get; set; } = null!;
         public PagoDto Pago { get; set; } = null!;
-        public AlquilerDto? Alquiler { get; set; }
-        public Usuarios.ClienteDto Cliente { get; set; } = null!;
-        public PublicacionDto Publicacion { get; set; } = null!;
+        public int IdAlquiler { get; set; }
+        public string DNICliente { get; set; }
+        public int IdPublicacion { get; set; }
+        //public AlquilerDto? Alquiler { get; set; }
+        //public Usuarios.ClienteDto Cliente { get; set; } = null!;
+        //public PublicacionDto Publicacion { get; set; } = null!;
     }
 }

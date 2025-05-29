@@ -49,6 +49,8 @@ namespace API_Layer.Controllers.Usuarios
         public async Task<ActionResult<UsuarioRegistradoDTO>> PostUsuario(UsuarioRegistradoDTO dto)
         {
             var created = await _serviceUsuario.CreateAsync(dto);
+            if (created == null)
+                return BadRequest("El usuario no se encuentra en identity, utiliza /register antes de registrar el usuario.");
             return CreatedAtAction(nameof(GetUsuarioByDNI), new { dni = created }, created);
         }
 

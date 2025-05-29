@@ -1,0 +1,288 @@
+{
+  "users": [
+    {
+      "id": "45f8",
+      "nombre": "Marcos",
+      "apellido": "Matias",
+      "dni": "44222222",
+      "edad": "18",
+      "telefono": "2216316176",
+      "calle": "221",
+      "altura": "45",
+      "departamento": "",
+      "entreCalles": "",
+      "email": "usuario.registrado@ejemplo.com",
+      "password": "@User123",
+      "rol": "cliente",
+      "fotoDNI_name": "Captura.PNG"
+    }
+  ],
+  "pendingUsers": [],
+  "passwordResetRequests": [
+    {
+      "id": "6cfc",
+      "email": "capoeldavo@gmail.com",
+      "approvedAt": "2025-05-23T00:01:40.118Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "ec0a",
+      "email": "marcosmatias086@gmail.com",
+      "approvedAt": "2025-05-23T15:26:27.646Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "f538",
+      "email": "davoxx086@gmail.com",
+      "approvedAt": "2025-05-23T20:51:17.122Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "f389",
+      "email": "capoeldavo@gmail.com",
+      "approvedAt": "2025-05-23T21:20:32.883Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "d7bf",
+      "email": "usuario.registrado@ejemplo.com",
+      "approvedAt": "2025-05-28T20:44:39.974Z",
+      "type": "user_approved_email_registration"
+    },
+    {
+      "id": "9ddb",
+      "emailOrPhone": "usuario.registrado@ejemplo.com",
+      "timestamp": "2025-05-28T21:49:07.441Z",
+      "status": "pending"
+    }
+  ],
+  "publicaciones": [
+    {
+      "id": "pub1",
+      "maquinaId": "maq101",
+      "nombreMaquina": "Excavadora Caterpillar 320",
+      "politicaCancelacion": "devolucion total del dinero",
+      "ubicacionActual": {
+        "calle": "Calle Falsa",
+        "altura": "123",
+        "departamento": "A",
+        "entreCalles": "Entre Av. Siempreviva y Calle Siempre Viva"
+      },
+      "precioPorDia": 10999,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF5733/FFFFFF?text=Excavadora+1",
+        "https://via.placeholder.com/400x300/33FF57/FFFFFF?text=Excavadora+2"
+      ],
+      "tagsAdicionales": [
+        "ofertas",
+        "construccion"
+      ],
+      "disponible": true
+    },
+    {
+      "id": "pub2",
+      "maquinaId": "maq102",
+      "nombreMaquina": "Minicargadora Bobcat S70",
+      "politicaCancelacion": "devolucion parcial",
+      "ubicacionActual": {
+        "calle": "Avenida Siempre Viva",
+        "altura": "742"
+      },
+      "precioPorDia": 5500,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/3357FF/FFFFFF?text=Minicargadora+1"
+      ],
+      "tagsAdicionales": [
+        "compacta"
+      ],
+      "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    },
+    {
+      "id": "pub3",
+      "maquinaId": "maq103",
+      "nombreMaquina": "Rodillo Compactador Vibratorio",
+      "politicaCancelacion": "sin devolucion del dinero",
+      "ubicacionActual": {
+        "calle": "Ruta 2",
+        "altura": "Km 50"
+      },
+      "precioPorDia": 8000,
+      "imagenes": [
+        "https://via.placeholder.com/400x300/FF33A1/FFFFFF?text=Rodillo+1",
+        "https://via.placeholder.com/400x300/A1FF33/FFFFFF?text=Rodillo+2",
+        "https://via.placeholder.com/400x300/33A1FF/FFFFFF?text=Rodillo+3"
+      ],
+      "tagsAdicionales": [],
+      "disponible": true
+    }
+  ],
+  "maquinas": [
+    {
+      "id": "maq101",
+      "nombre": "Excavadora Caterpillar 320",
+      "tipo": "Excavadora",
+      "modelo": "320"
+    },
+    {
+      "id": "maq102",
+      "nombre": "Minicargadora Bobcat S70",
+      "tipo": "Minicargadora",
+      "modelo": "S70"
+    },
+    {
+      "id": "maq103",
+      "nombre": "Rodillo Compactador Vibratorio",
+      "tipo": "Compactador",
+      "modelo": "Vibratorio"
+    }
+  ],
+  "marcas": [
+    {
+      "id": "CAT",
+      "nombre": "Caterpillar",
+      "modelos": [
+        {
+          "id": "CAT-320D",
+          "nombre": "Excavadora 320D"
+        },
+        {
+          "id": "CAT-D6T",
+          "nombre": "Tractor D6T"
+        },
+        {
+          "id": "CAT-966M",
+          "nombre": "Cargadora 966M"
+        }
+      ]
+    },
+    {
+      "id": "JCB",
+      "nombre": "JCB",
+      "modelos": [
+        {
+          "id": "JCB-3CX",
+          "nombre": "Retroexcavadora 3CX"
+        },
+        {
+          "id": "JCB-JS200",
+          "nombre": "Excavadora JS200"
+        }
+      ]
+    },
+    {
+      "id": "KOM",
+      "nombre": "Komatsu",
+      "modelos": [
+        {
+          "id": "KOM-PC200",
+          "nombre": "Excavadora PC200"
+        },
+        {
+          "id": "KOM-D85EX",
+          "nombre": "Bulldozer D85EX"
+        }
+      ]
+    },
+    {
+      "id": "VOL",
+      "nombre": "Volvo Construction Equipment",
+      "modelos": [
+        {
+          "id": "VOL-EC210D",
+          "nombre": "Excavadora EC210D"
+        },
+        {
+          "id": "VOL-L90H",
+          "nombre": "Cargadora L90H"
+        }
+      ]
+    }
+  ],
+  "empleados": [],
+  "alquileres": [
+    {
+      "Maquinaria": "Excavadora CAT 320",
+      "fechaVencimiento": "2025-07-01",
+      "precio": 50000
+    },
+    {
+      "Maquinaria": "Retroexcavadora Komatsu",
+      "fechaVencimiento": "2025-06-15",
+      "precio": 65000
+    },
+    {
+      "Maquinaria": "Grúa Liebherr LTM 1050",
+      "fechaVencimiento": "2025-08-10",
+      "precio": 55000
+    },
+    {
+      "Maquinaria": "Cargadora Volvo L90H",
+      "fechaVencimiento": "2025-07-25",
+      "precio": 72000
+    },
+    {
+      "Maquinaria": "Niveladora John Deere 770G",
+      "fechaVencimiento": "2025-06-30",
+      "precio": 48000
+    },
+    {
+      "Maquinaria": "Compactadora Bomag BW213",
+      "fechaVencimiento": "2025-07-20",
+      "precio": 53000
+    }
+  ]
+}

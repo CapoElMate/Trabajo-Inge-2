@@ -17,6 +17,8 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<bool> DeleteAsync(string Permiso);
         Task<ICollection<PermisoEspecialUsuarioDto>> GetByUserAsync(string dni);
         Task<bool> actualizarPermisoAsync(PermisoEspecialUsuarioDto dto);
+        Task<bool> confirmPermisoEspecial(string dni, string permisoEspecial);
+
         Task<bool> borrarPermisoUsuarioAsync(PermisoEspecialUsuarioDto permiso);
         Task<PermisoEspecialUsuarioDto> AgregarPermisoEspecialUsuarioAsync(PermisoEspecialUsuarioDto dto);
     }

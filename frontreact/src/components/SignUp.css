@@ -1,0 +1,66 @@
+/* SignUp.css */
+
+.signup-container {
+  max-width: 500px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.signup-container h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2em;
+}
+
+.signup-container input[type="text"],
+.signup-container input[type="number"],
+.signup-container input[type="email"],
+.signup-container input[type="password"] {
+  width: calc(100% - 20px);
+  padding: 12px 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1em;
+  box-sizing: border-box; /* Asegura que el padding no aumente el ancho total */
+}
+
+.signup-container input[type="file"] {
+  width: calc(100% - 20px);
+  padding: 12px 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 0.9em;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+}
+
+.signup-container p {
+  color: #e74c3c;
+  font-size: 0.9em;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+
+.signup-container button {
+  width: 100%;
+  padding: 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.signup-container button:hover {
+  background-color: #0056b3;
+}

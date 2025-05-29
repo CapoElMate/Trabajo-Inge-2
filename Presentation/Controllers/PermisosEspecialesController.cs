@@ -68,14 +68,27 @@ namespace API_Layer.Controllers
 
         //    return NoContent();
         //}
-        [HttpPut("actualizarPermisoUsuario")]
-        public async Task<IActionResult> actualizarPermisoUsuario(PermisoEspecialUsuarioDto dto)
+        //[HttpPut("actualizarPermisoUsuario")]
+        //public async Task<IActionResult> actualizarPermisoUsuario(PermisoEspecialUsuarioDto dto)
+        //{
+        //    var permisos = await _service.GetByUserAsync(dto.DNICliente);
+        //    if (permisos == null || !permisos.Any(p => p.Permiso.Equals(dto.Permiso)))
+        //        return BadRequest("El permiso no existe.");
+
+        //    var updated = await _service.actualizarPermisoAsync(dto);
+        //    if (!updated)
+        //        return NotFound();
+
+        //    return NoContent();
+        //}
+        [HttpPut("confirmPermisoEspecial")]
+        public async Task<IActionResult> actualizarPermisoUsuario(string DNI, string permisoEspecial)
         {
-            var permisos = await _service.GetByUserAsync(dto.DNICliente);
-            if (permisos == null || !permisos.Any(p => p.Permiso.Equals(dto.Permiso)))
+            var permisos = await _service.GetByUserAsync(DNI);
+            if (permisos == null || !permisos.Any(p => p.Permiso.Equals(permisoEspecial)))
                 return BadRequest("El permiso no existe.");
 
-            var updated = await _service.actualizarPermisoAsync(dto);
+            var updated = await _service.confirmPermisoEspecial(DNI, permisoEspecial);
             if (!updated)
                 return NotFound();
 

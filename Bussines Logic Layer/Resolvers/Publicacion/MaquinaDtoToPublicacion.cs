@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Bussines_Logic_Layer.DTOs;
 using Data_Access_Layer;
 using Domain_Layer.Entidades;
 using System;
@@ -8,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Bussines_Logic_Layer.DTOs.Maquina;
+using Bussines_Logic_Layer.DTOs.Publicacion;
 
 
 

@@ -1,4 +1,4 @@
-﻿using Bussines_Logic_Layer.DTOs;
+﻿using Bussines_Logic_Layer.DTOs.Publicacion;
 using Bussines_Logic_Layer.Interfaces;
 using Domain_Layer.Entidades;
 using Microsoft.AspNetCore.Http;
@@ -68,7 +68,20 @@ namespace API_Layer.Controllers
 
             return NoContent();
         }
-        
+
+        [HttpDelete("byId/logic")]
+        public async Task<IActionResult> LogicDeletePublicacion(int id)
+        {
+            var publi = await _service.GetByIdAsync(id);
+            if (publi == null || !id.Equals(publi.idPublicacion))
+                return BadRequest("La publicacion no existe.");
+
+            var deleted = await _service.LogicDeleteAsync(id);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
+        }
 
     }
 }
