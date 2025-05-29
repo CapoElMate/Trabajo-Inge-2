@@ -15,6 +15,21 @@
       "password": "@User123",
       "rol": "cliente",
       "fotoDNI_name": "Captura.PNG"
+    },
+    {
+      "id": "470a",
+      "email": "usuario.registrado@ejemplo.com",
+      "password": "@User123"
+    },
+    {
+      "id": "0572",
+      "email": "usuario.registrado@ejemplo.com",
+      "password": "@User123"
+    },
+    {
+      "id": "1bfe",
+      "email": "usuario.registrado@ejemplo.com",
+      "password": "@User123"
     }
   ],
   "pendingUsers": [],
@@ -257,32 +272,38 @@
     {
       "Maquinaria": "Excavadora CAT 320",
       "fechaVencimiento": "2025-07-01",
-      "precio": 50000
+      "precio": 50000,
+      "id": "268d"
     },
     {
       "Maquinaria": "Retroexcavadora Komatsu",
       "fechaVencimiento": "2025-06-15",
-      "precio": 65000
+      "precio": 65000,
+      "id": "b3a1"
     },
     {
       "Maquinaria": "Grúa Liebherr LTM 1050",
       "fechaVencimiento": "2025-08-10",
-      "precio": 55000
+      "precio": 55000,
+      "id": "8c03"
     },
     {
       "Maquinaria": "Cargadora Volvo L90H",
       "fechaVencimiento": "2025-07-25",
-      "precio": 72000
+      "precio": 72000,
+      "id": "d955"
     },
     {
       "Maquinaria": "Niveladora John Deere 770G",
       "fechaVencimiento": "2025-06-30",
-      "precio": 48000
+      "precio": 48000,
+      "id": "04dd"
     },
     {
       "Maquinaria": "Compactadora Bomag BW213",
       "fechaVencimiento": "2025-07-20",
-      "precio": 53000
+      "precio": 53000,
+      "id": "a9ef"
     }
   ]
 }
