@@ -1,0 +1,119 @@
+/* ValidateUser.css */
+
+.validate-user-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.validate-user-container h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  font-size: 2.2em;
+}
+
+.validate-user-container .error-message {
+  color: #e74c3c;
+  text-align: center;
+  font-size: 1.1em;
+  padding: 20px;
+  background-color: #ffebee;
+  border-left: 5px solid #e74c3c;
+  margin-bottom: 20px;
+}
+
+.validate-user-container p {
+  text-align: center;
+  font-size: 1.1em;
+  color: #555;
+}
+
+.users-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
+
+.user-card {
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.user-card h3 {
+  color: #007bff;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.6em;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.user-card p {
+  font-size: 0.95em;
+  margin-bottom: 8px;
+  color: #444;
+  text-align: left;
+}
+
+.user-card p strong {
+  color: #333;
+}
+
+.user-card a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.user-card a:hover {
+  text-decoration: underline;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.card-actions button {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  flex-grow: 1;
+  margin: 0 5px;
+}
+
+.approve-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.approve-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+}
+
+.reject-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.reject-btn:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+}

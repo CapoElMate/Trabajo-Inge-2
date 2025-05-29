@@ -1,33 +1,42 @@
-import React, { Fragment } from "react";
-import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import HomePage from './components/HomePage';
+import { AuthProvider } from './AuthContext';
+import SignUp from './components/SignUp';
+import ForgotPassword from './components/ForgotPassword';
+import ValidateUser from './components/ValidateUser';
+import PostDetail from './components/PostDetail';
+import Header from './components/Header';
+import HomePageAdmin from './components/HomePageAdmin';
+import './components/App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Leases from './components/Leases';
+import Rentals from './components/Rentals';
+import ResetPassword from './components/ResetPassword';
+import PermitFileUploader from './components/PermitFileUploader';
+import Profile from './components/Profile';
+const App = () => {
+  return (
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/HomePage" element={<HomePage />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/SignUp" element={<SignUp />} />
+        <Route path='/ValidateUser' element={<ValidateUser />}/> 
+        <Route path='/PostDetail/:id' element={<PostDetail />}/> 
+        <Route path='/Header' element={<Header/>} />
+        <Route path='/HomePageAdmin' element={<HomePageAdmin/>} />
+        <Route path='/Leases' element={<Leases/>}/>
+        <Route path='/Rentals' element={<Rentals/>}/>      
+        <Route path='/Profile' element={<Profile/>}/>
+        <Route path='/ResetPassword' element={<ResetPassword/>}/>
+        <Route path='/PermitFileUploader' element={<PermitFileUploader/>}/>
+      
+      </Routes>
+    </AuthProvider>
+  );
+};
 
-
-
-import './App.css';
-
-
-//componentes 
-import InputPersona from "./components/InputPersona.jsx"
-import ListaPersonas from "./components/ListPersona.jsx"
-
-//aplicacion principal
-function App() {
-
-    //defino el hook para actualizar la lista de personas, lo paso como
-    //referencia a listaPersonas e InputPersona para que los modulos individuales puedan actualizar a los demas.
-    //personas es como una variable que cuando modifico con la funcion setPersonas(), se actualiza graficamente el cuadro.
-    const [personas, setPersonas] = useState([]);
-
-
-    return (
-        <Fragment>
-            <div classname="container">
-                <InputPersona setPersonas={setPersonas}/>
-                <ListaPersonas personas={personas} setPersonas={setPersonas} />
-            </div>
-        
-        </Fragment>
-    );
-}
-
-export default App
+export default App;

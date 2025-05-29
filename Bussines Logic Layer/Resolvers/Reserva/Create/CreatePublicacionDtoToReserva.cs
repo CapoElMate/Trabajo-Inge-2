@@ -1,0 +1,39 @@
+﻿using AutoMapper;
+using Bussines_Logic_Layer.DTOs;
+using Bussines_Logic_Layer.DTOs.Reserva;
+using Data_Access_Layer;
+using Domain_Layer.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Bussines_Logic_Layer.Resolvers.Reserva
+{
+    public class CreatePublicacionDtoToReserva : IValueResolver<CreateReservaDto, Domain_Layer.Entidades.Reserva , Domain_Layer.Entidades.Publicacion>
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
+
+        public CreatePublicacionDtoToReserva(ApplicationDbContext context, IMapper mapper)
+        {
+            _mapper = mapper;
+            _context = context;
+        }
+
+        public Domain_Layer.Entidades.Publicacion Resolve(CreateReservaDto source, Domain_Layer.Entidades.Reserva destination
+                                           , Domain_Layer.Entidades.Publicacion destMember, ResolutionContext context)
+        {
+
+            var tipoExistente = _context.Publicaciones.FirstOrDefault(p => p.idPublicacion.Equals(source.IdPublicacion));
+
+            if (tipoExistente == null)
+            {
+                throw new Exception("No existe una publicacion para los valores proporcionados");
+            }
+
+            return _mapper.Map<Domain_Layer.Entidades.Publicacion>(tipoExistente);
+        }
+    }
+}

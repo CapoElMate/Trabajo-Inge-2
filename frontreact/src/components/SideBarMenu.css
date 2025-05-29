@@ -1,0 +1,50 @@
+
+.menu-toggle-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.menu-toggle-button .menu-icon { 
+  color: white; 
+  font-size: 2.5em; 
+}
+
+.offcanvas-nav-list {
+  list-style: none; 
+  padding: 0;
+  margin: 0;
+}
+
+.offcanvas-nav-list li {
+  margin-bottom: 15px; /* Espacio entre los elementos del menú */
+}
+
+.offcanvas-nav-list li a {
+  text-decoration: none; /* Quita el subrayado de los enlaces */
+  color: #333; /* Color del texto de los enlaces */
+  font-size: 1.2em; /* Tamaño de los enlaces */
+  display: block; /* Para que ocupen todo el ancho y el padding funcione */
+  padding: 5px 0;
+  transition: color 0.3s ease; 
+}
+
+.offcanvas-nav-list li a:hover {
+  color: white;
+  background-color:#cc0000;
+}
+
+.offcanvas .offcanvas-header {
+  background-color: #cc0000;
+  color: white;
+}
+
+.offcanvas .offcanvas-header .offcanvas-title {
+  color: white;
+  font-weight: bold;
+}
+
+.offcanvas .offcanvas-header .btn-close {
+  filter: invert(1);
+}

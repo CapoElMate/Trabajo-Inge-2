@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Data_Access_Layer.DataAccessLayer.Migrations
+namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -16,6 +16,79 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Alquiler", b =>
+                {
+                    b.Property<int>("idAlquiler")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DNICliente")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DNIEmpleado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fecEfectivizacion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idReserva")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("idAlquiler");
+
+                    b.HasIndex("DNICliente");
+
+                    b.HasIndex("DNIEmpleado");
+
+                    b.ToTable("Alquileres");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Archivo", b =>
+                {
+                    b.Property<int>("idArchivo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("EntidadID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Ruta")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TipoContenido")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("TipoEntidad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("idArchivo");
+
+                    b.ToTable("Archivos");
+                });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Cliente", b =>
                 {
@@ -27,7 +100,84 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.HasIndex("DNI")
                         .IsUnique();
 
-                    b.ToTable("Cliente");
+                    b.ToTable("Clientes");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Comentario", b =>
+                {
+                    b.Property<int>("idComentario")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("idPublicacion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DNICliente")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fec")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idRespuesta")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("idComentario", "idPublicacion");
+
+                    b.HasIndex("DNICliente");
+
+                    b.HasIndex("idPublicacion");
+
+                    b.HasIndex("idRespuesta")
+                        .IsUnique();
+
+                    b.ToTable("Comentarios");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Devolucion", b =>
+                {
+                    b.Property<int>("idDevolucion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DNIEmpleado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UbicacionName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fecDevolucion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idAlquiler")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("idDevolucion");
+
+                    b.HasIndex("DNIEmpleado");
+
+                    b.HasIndex("UbicacionName");
+
+                    b.HasIndex("idAlquiler")
+                        .IsUnique();
+
+                    b.ToTable("Devoluciones");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Empleado", b =>
@@ -46,26 +196,146 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.HasIndex("nroEmpleado")
                         .IsUnique();
 
-                    b.ToTable("Empleado");
+                    b.ToTable("Empleados");
                 });
 
-            modelBuilder.Entity("Domain_Layer.Entidades.Permiso", b =>
+            modelBuilder.Entity("Domain_Layer.Entidades.Empleado_Maquina", b =>
                 {
-                    b.Property<int>("idPermiso")
+                    b.Property<string>("DNIEmpleado")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("IdMaquina")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("FecFin")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("FecInicio")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DNIEmpleado", "IdMaquina");
+
+                    b.HasIndex("IdMaquina");
+
+                    b.ToTable("Empleado_Maquina");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.InfoAsentada", b =>
+                {
+                    b.Property<int>("idInfo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("idAlquiler")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DNIEmpleado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fec")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("idInfo", "idAlquiler");
+
+                    b.HasIndex("DNIEmpleado");
+
+                    b.HasIndex("idAlquiler");
+
+                    b.ToTable("InfoAsentada");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Maquina", b =>
+                {
+                    b.Property<int>("idMaquina")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Descripcion")
+                    b.Property<string>("ModeloName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("ModeloName1")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tipo")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("idPermiso");
+                    b.Property<string>("TipoMaquinaTipo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("Permiso");
+                    b.Property<int>("anioFabricacion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("idMaquina");
+
+                    b.HasIndex("ModeloName");
+
+                    b.HasIndex("ModeloName1");
+
+                    b.HasIndex("Tipo");
+
+                    b.HasIndex("TipoMaquinaTipo");
+
+                    b.ToTable("Maquinas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Marca", b =>
+                {
+                    b.Property<string>("MarcaName")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MarcaName");
+
+                    b.ToTable("Marcas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Modelo", b =>
+                {
+                    b.Property<string>("ModeloName")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MarcaName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ModeloName");
+
+                    b.HasIndex("MarcaName");
+
+                    b.ToTable("Modelos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Pago", b =>
+                {
+                    b.Property<int>("nroPago")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("fecPago")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idReserva")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("nroPago");
+
+                    b.ToTable("Pagos");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.PermisoEspecial", b =>
@@ -76,22 +346,284 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
 
                     b.HasKey("Permiso");
 
-                    b.ToTable("PermisoEspeciales");
+                    b.ToTable("PermisosEspeciales");
                 });
 
-            modelBuilder.Entity("Domain_Layer.Entidades.Rol", b =>
+            modelBuilder.Entity("Domain_Layer.Entidades.PoliticaDeCancelacion", b =>
                 {
-                    b.Property<int>("idRol")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Politica")
+                        .HasColumnType("TEXT");
 
-                    b.Property<string>("Nombre")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("idRol");
+                    b.HasKey("Politica");
 
-                    b.ToTable("Rol");
+                    b.ToTable("PoliticasDeCancelacion");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Publicacion", b =>
+                {
+                    b.Property<int>("idPublicacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Politica")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("PrecioPorDia")
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UbicacionName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idMaquina")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("idPublicacion");
+
+                    b.HasIndex("Politica");
+
+                    b.HasIndex("UbicacionName");
+
+                    b.HasIndex("idMaquina");
+
+                    b.ToTable("Publicaciones");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Recargo", b =>
+                {
+                    b.Property<int>("idRecargo")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("idDevolucion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("idRecargo", "idDevolucion");
+
+                    b.HasIndex("idDevolucion");
+
+                    b.ToTable("Recargos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Reembolso", b =>
+                {
+                    b.Property<int>("idReembolso")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DNICliente")
+                        .HasColumnType("TEXT");
+
+                    b.Property<double>("Monto")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("REAL");
+
+                    b.Property<string>("Motivo")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idAlquiler")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("idReembolso", "DNICliente");
+
+                    b.HasIndex("DNICliente");
+
+                    b.HasIndex("idAlquiler")
+                        .IsUnique();
+
+                    b.ToTable("Reembolsos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Reserva", b =>
+                {
+                    b.Property<int>("idReserva")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Altura")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Calle")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DNI")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Dpto")
+                        .HasMaxLength(70)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EntreCalles")
+                        .IsRequired()
+                        .HasMaxLength(70)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Entrega")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fecFin")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fecInicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("idAlquiler")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("idPublicacion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("montoTotal")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("nroPago")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("idReserva");
+
+                    b.HasIndex("DNI");
+
+                    b.HasIndex("Entrega");
+
+                    b.HasIndex("idAlquiler")
+                        .IsUnique();
+
+                    b.HasIndex("idPublicacion");
+
+                    b.HasIndex("idReserva")
+                        .IsUnique();
+
+                    b.HasIndex("nroPago")
+                        .IsUnique();
+
+                    b.ToTable("Reservas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Respuesta", b =>
+                {
+                    b.Property<int>("idRespuesta")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Contenido")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DNIEmpleado")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("fec")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("idRespuesta");
+
+                    b.HasIndex("DNIEmpleado");
+
+                    b.ToTable("Respuestas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.TagMaquina", b =>
+                {
+                    b.Property<string>("Tag")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Tag");
+
+                    b.ToTable("TagsMaquina");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.TagPublicacion", b =>
+                {
+                    b.Property<string>("Tag")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Tag");
+
+                    b.ToTable("TagsPublicacion");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.TipoEntrega", b =>
+                {
+                    b.Property<string>("Entrega")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Entrega");
+
+                    b.ToTable("TiposEntrega");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.TipoMaquina", b =>
+                {
+                    b.Property<string>("Tipo")
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Tipo");
+
+                    b.ToTable("TiposMaquina");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Ubicacion", b =>
+                {
+                    b.Property<string>("UbicacionName")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("UbicacionName");
+
+                    b.HasKey("UbicacionName");
+
+                    b.ToTable("Ubicaciones");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.UsuarioRegistrado", b =>
@@ -142,13 +674,13 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .HasMaxLength(16)
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("dniVerificado")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("isDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.Property<bool>("mailVerificado")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("passwordHash")
+                    b.Property<string>("roleName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -158,9 +690,6 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .IsUnique();
 
                     b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("passwordHash")
                         .IsUnique();
 
                     b.ToTable("UsuariosRegistrados");
@@ -191,19 +720,260 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.ToTable("UsuarioRegistrado_PermisoEspecial");
                 });
 
-            modelBuilder.Entity("PermisoRol", b =>
+            modelBuilder.Entity("MaquinaPermisoEspecial", b =>
                 {
-                    b.Property<int>("PermisosidPermiso")
+                    b.Property<int>("MaquinariaidMaquina")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RolesidRol")
+                    b.Property<string>("PermisosEspecialesPermiso")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MaquinariaidMaquina", "PermisosEspecialesPermiso");
+
+                    b.HasIndex("PermisosEspecialesPermiso");
+
+                    b.ToTable("MaquinaPermisoEspecial");
+                });
+
+            modelBuilder.Entity("MaquinaTagMaquina", b =>
+                {
+                    b.Property<int>("MaquinasidMaquina")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("PermisosidPermiso", "RolesidRol");
+                    b.Property<string>("TagsMaquinaTag")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("RolesidRol");
+                    b.HasKey("MaquinasidMaquina", "TagsMaquinaTag");
 
-                    b.ToTable("PermisoRol");
+                    b.HasIndex("TagsMaquinaTag");
+
+                    b.ToTable("MaquinaTagMaquina");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderKey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LoginProvider")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("PublicacionTagPublicacion", b =>
+                {
+                    b.Property<int>("PublicacionesidPublicacion")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TagsPublicacionTag")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PublicacionesidPublicacion", "TagsPublicacionTag");
+
+                    b.HasIndex("TagsPublicacionTag");
+
+                    b.ToTable("PublicacionTagPublicacion");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Alquiler", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Cliente", "Cliente")
+                        .WithMany("Alquileres")
+                        .HasForeignKey("DNICliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Empleado", "Empleado")
+                        .WithMany("Alquileres")
+                        .HasForeignKey("DNIEmpleado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Empleado");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Cliente", b =>
@@ -211,10 +981,64 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.HasOne("Domain_Layer.Entidades.UsuarioRegistrado", "UsuarioRegistrado")
                         .WithOne("Cliente")
                         .HasForeignKey("Domain_Layer.Entidades.Cliente", "DNI")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("UsuarioRegistrado");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Comentario", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Cliente", "Cliente")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("DNICliente")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Publicacion", "Publicacion")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("idPublicacion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Respuesta", "Respuesta")
+                        .WithOne("Comentario")
+                        .HasForeignKey("Domain_Layer.Entidades.Comentario", "idRespuesta")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Publicacion");
+
+                    b.Navigation("Respuesta");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Devolucion", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Empleado", "Empleado")
+                        .WithMany("Devoluciones")
+                        .HasForeignKey("DNIEmpleado")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Ubicacion", "Ubicacion")
+                        .WithMany("Devoluciones")
+                        .HasForeignKey("UbicacionName")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Alquiler", "Alquiler")
+                        .WithOne("Devolucion")
+                        .HasForeignKey("Domain_Layer.Entidades.Devolucion", "idAlquiler")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Alquiler");
+
+                    b.Navigation("Empleado");
+
+                    b.Navigation("Ubicacion");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Empleado", b =>
@@ -226,6 +1050,195 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Empleado_Maquina", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Empleado", "Empleado")
+                        .WithMany("Empleado_Maquinas")
+                        .HasForeignKey("DNIEmpleado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Maquina", "Maquina")
+                        .WithMany("Empleado_Maquinas")
+                        .HasForeignKey("IdMaquina")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Empleado");
+
+                    b.Navigation("Maquina");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.InfoAsentada", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Empleado", "Empleado")
+                        .WithMany("InfoAsentada")
+                        .HasForeignKey("DNIEmpleado")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Alquiler", "Alquiler")
+                        .WithMany("InfoAsentada")
+                        .HasForeignKey("idAlquiler")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Alquiler");
+
+                    b.Navigation("Empleado");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Maquina", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Modelo", "Modelo")
+                        .WithMany()
+                        .HasForeignKey("ModeloName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Modelo", null)
+                        .WithMany("Maquinas")
+                        .HasForeignKey("ModeloName1");
+
+                    b.HasOne("Domain_Layer.Entidades.TipoMaquina", null)
+                        .WithMany("Maquinas")
+                        .HasForeignKey("Tipo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.TipoMaquina", "TipoMaquina")
+                        .WithMany()
+                        .HasForeignKey("TipoMaquinaTipo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Modelo");
+
+                    b.Navigation("TipoMaquina");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Modelo", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Marca", "Marca")
+                        .WithMany("Modelos")
+                        .HasForeignKey("MarcaName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Marca");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Publicacion", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.PoliticaDeCancelacion", "PoliticaDeCancelacion")
+                        .WithMany("Publicaciones")
+                        .HasForeignKey("Politica")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Ubicacion", "Ubicacion")
+                        .WithMany("Publicaciones")
+                        .HasForeignKey("UbicacionName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Maquina", "Maquina")
+                        .WithMany("Publicaciones")
+                        .HasForeignKey("idMaquina")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Maquina");
+
+                    b.Navigation("PoliticaDeCancelacion");
+
+                    b.Navigation("Ubicacion");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Recargo", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Devolucion", "Devolucion")
+                        .WithMany("Recargos")
+                        .HasForeignKey("idDevolucion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Devolucion");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Reembolso", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Cliente", "Cliente")
+                        .WithMany("Reembolsos")
+                        .HasForeignKey("DNICliente")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Alquiler", "Alquiler")
+                        .WithOne("Reembolso")
+                        .HasForeignKey("Domain_Layer.Entidades.Reembolso", "idAlquiler")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Alquiler");
+
+                    b.Navigation("Cliente");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Reserva", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Cliente", "Cliente")
+                        .WithMany("Reservas")
+                        .HasForeignKey("DNI")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.TipoEntrega", "TipoEntrega")
+                        .WithMany("Reservas")
+                        .HasForeignKey("Entrega")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Alquiler", "Alquiler")
+                        .WithOne("Reserva")
+                        .HasForeignKey("Domain_Layer.Entidades.Reserva", "idAlquiler")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Publicacion", "Publicacion")
+                        .WithMany("Reservas")
+                        .HasForeignKey("idPublicacion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.Pago", "Pago")
+                        .WithOne("Reserva")
+                        .HasForeignKey("Domain_Layer.Entidades.Reserva", "nroPago")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Alquiler");
+
+                    b.Navigation("Cliente");
+
+                    b.Navigation("Pago");
+
+                    b.Navigation("Publicacion");
+
+                    b.Navigation("TipoEntrega");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Respuesta", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Empleado", "Empleado")
+                        .WithMany("Respuestas")
+                        .HasForeignKey("DNIEmpleado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Empleado");
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.UsuarioRegistrado_PermisoEspecial", b =>
@@ -247,24 +1260,166 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.Navigation("UsuarioRegistrado");
                 });
 
-            modelBuilder.Entity("PermisoRol", b =>
+            modelBuilder.Entity("MaquinaPermisoEspecial", b =>
                 {
-                    b.HasOne("Domain_Layer.Entidades.Permiso", null)
+                    b.HasOne("Domain_Layer.Entidades.Maquina", null)
                         .WithMany()
-                        .HasForeignKey("PermisosidPermiso")
+                        .HasForeignKey("MaquinariaidMaquina")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain_Layer.Entidades.Rol", null)
+                    b.HasOne("Domain_Layer.Entidades.PermisoEspecial", null)
                         .WithMany()
-                        .HasForeignKey("RolesidRol")
+                        .HasForeignKey("PermisosEspecialesPermiso")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MaquinaTagMaquina", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Maquina", null)
+                        .WithMany()
+                        .HasForeignKey("MaquinasidMaquina")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.TagMaquina", null)
+                        .WithMany()
+                        .HasForeignKey("TagsMaquinaTag")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PublicacionTagPublicacion", b =>
+                {
+                    b.HasOne("Domain_Layer.Entidades.Publicacion", null)
+                        .WithMany()
+                        .HasForeignKey("PublicacionesidPublicacion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain_Layer.Entidades.TagPublicacion", null)
+                        .WithMany()
+                        .HasForeignKey("TagsPublicacionTag")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Alquiler", b =>
+                {
+                    b.Navigation("Devolucion")
+                        .IsRequired();
+
+                    b.Navigation("InfoAsentada");
+
+                    b.Navigation("Reembolso");
+
+                    b.Navigation("Reserva")
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain_Layer.Entidades.Cliente", b =>
                 {
-                    b.Navigation("Empleado")
+                    b.Navigation("Alquileres");
+
+                    b.Navigation("Comentarios");
+
+                    b.Navigation("Empleado");
+
+                    b.Navigation("Reembolsos");
+
+                    b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Devolucion", b =>
+                {
+                    b.Navigation("Recargos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Empleado", b =>
+                {
+                    b.Navigation("Alquileres");
+
+                    b.Navigation("Devoluciones");
+
+                    b.Navigation("Empleado_Maquinas");
+
+                    b.Navigation("InfoAsentada");
+
+                    b.Navigation("Respuestas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Maquina", b =>
+                {
+                    b.Navigation("Empleado_Maquinas");
+
+                    b.Navigation("Publicaciones");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Marca", b =>
+                {
+                    b.Navigation("Modelos");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Modelo", b =>
+                {
+                    b.Navigation("Maquinas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Pago", b =>
+                {
+                    b.Navigation("Reserva")
                         .IsRequired();
                 });
 
@@ -273,10 +1428,44 @@ namespace Data_Access_Layer.DataAccessLayer.Migrations
                     b.Navigation("UsuariosRegistrados");
                 });
 
+            modelBuilder.Entity("Domain_Layer.Entidades.PoliticaDeCancelacion", b =>
+                {
+                    b.Navigation("Publicaciones");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Publicacion", b =>
+                {
+                    b.Navigation("Comentarios");
+
+                    b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Respuesta", b =>
+                {
+                    b.Navigation("Comentario")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.TipoEntrega", b =>
+                {
+                    b.Navigation("Reservas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.TipoMaquina", b =>
+                {
+                    b.Navigation("Maquinas");
+                });
+
+            modelBuilder.Entity("Domain_Layer.Entidades.Ubicacion", b =>
+                {
+                    b.Navigation("Devoluciones");
+
+                    b.Navigation("Publicaciones");
+                });
+
             modelBuilder.Entity("Domain_Layer.Entidades.UsuarioRegistrado", b =>
                 {
-                    b.Navigation("Cliente")
-                        .IsRequired();
+                    b.Navigation("Cliente");
 
                     b.Navigation("PermisosEspeciales");
                 });
