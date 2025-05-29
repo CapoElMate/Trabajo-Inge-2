@@ -16,7 +16,7 @@ function SideBarMenu() { // Renombrado para mayor claridad
     
     <>
       <Button
-        variant="link" // para que no tenga estilos predeterminados de botón de Bootstrap
+        variant="link" 
         onClick={handleShow}
         className="menu-toggle-button" 
       >
