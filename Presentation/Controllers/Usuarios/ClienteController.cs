@@ -12,7 +12,6 @@ namespace API_Layer.Controllers.Usuarios
     public class ClienteController : ControllerBase
     {
         private readonly IClienteService _serviceCliente;
-
         public ClienteController(IClienteService serviceCliente)
         {
             _serviceCliente = serviceCliente;
