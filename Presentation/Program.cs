@@ -48,13 +48,16 @@ builder.Services.AddControllers();
 
 //a�ado autoriazacion
 builder.Services.AddAuthorization();
-builder.Services.AddAuthentication();
+//builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+//    .AddCookie(IdentityConstants.ApplicationScheme)
+//    .AddCookie(IdentityConstants.ExternalScheme)
+//    .AddCookie(IdentityConstants.TwoFactorRememberMeScheme)
+//    .AddCookie(IdentityConstants.TwoFactorUserIdScheme);
 
 //configuro la bdd
 builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-// Replace the problematic line with the following:
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -87,21 +90,14 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 });
 
-builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
-    .AddCookie(IdentityConstants.ApplicationScheme, options =>
-    {
-        options.Cookie.HttpOnly = true;
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.Strict;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
-        options.SlidingExpiration = true;
-    });
-
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    options.Cookie.HttpOnly = true;
-    
-//});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.SlidingExpiration = true;
+});
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
