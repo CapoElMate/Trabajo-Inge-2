@@ -23,10 +23,10 @@ namespace Bussines_Logic_Layer.DTOs
         public int nroPago { get; set; }
         public Pago Pago { get; set; } = null!;
         public int idAlquiler { get; set; }
-        public Alquiler? Alquiler { get; set; }
+        public Domain_Layer.Entidades.Alquiler? Alquiler { get; set; }
         public string DNI { get; set; }
         public Cliente Cliente { get; set; } = null!;
         public int idPublicacion { get; set; }
-        public Publicacion Publicacion { get; set; } = null!;
+        public Domain_Layer.Entidades.Publicacion Publicacion { get; set; } = null!;
     }
 }

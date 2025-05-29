@@ -21,7 +21,7 @@ namespace Domain_Layer.Entidades
         public string EntreCalles { get; set; } = null!;
         public string Entrega { get; set; } = null!;
         public TipoEntrega TipoEntrega { get; set; } = null!;
-        public int nroPago { get; set; }
+        public long nroPago { get; set; }
         public Pago Pago { get; set; } = null!;
         public int idAlquiler { get; set; }
         public Alquiler? Alquiler { get; set; }

@@ -113,7 +113,12 @@ namespace API_Layer.Controllers
 
             Console.WriteLine("rta: " + id);
 
-            _reservaService.UpdatePayment(id,Convert.ToInt32(result["data"]["id"]));
+            var dataId = Convert.ToInt64(result["data"]["id"]);
+
+            Console.WriteLine("data_id: " + dataId);
+            
+
+            _reservaService.UpdatePayment(id,dataId);
 
 
             Console.WriteLine("-ok-");

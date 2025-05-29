@@ -59,7 +59,7 @@ namespace Bussines_Logic_Layer.Services
             return true;
         }
 
-        public async Task<bool> UpdatePayment(int idReserva, int idPago)
+        public async Task<bool> UpdatePayment(int idReserva, long idPago)
         {
             var reserva = await _repo.GetByIdAsync(idReserva);
             if (reserva == null)

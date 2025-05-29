@@ -13,6 +13,8 @@ using Data_Access_Layer.Repositorios.SQL;
 using Bussines_Logic_Layer.Mapping;
 using MercadoPago.Config;
 using Bussines_Logic_Layer.Managers;
+using Mailjet.Client;
+using Microsoft.Extensions.Options;
 
 
 //añado el acces token de MeLi:
