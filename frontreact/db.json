@@ -291,7 +291,7 @@
         "ofertas",
         "construccion"
       ],
-      "disponible": true
+      "disponible": false
     },
     {
       "id": "pub2",
@@ -309,7 +309,7 @@
       "tagsAdicionales": [
         "compacta"
       ],
-      "disponible": true
+      "disponible": false
     },
     {
       "id": "pub3",
@@ -503,6 +503,27 @@
       "fechaVencimiento": "2025-07-20",
       "precio": 53000,
       "id": "a9ef"
+    }
+  ],
+  "pendingRentals": [],
+  "leases": [
+    {
+      "id": "efee",
+      "publicationId": "pub2",
+      "publicationName": "Minicargadora Bobcat S70",
+      "publicationPricePerDay": 5500,
+      "fechaInicio": "2025-05-31",
+      "fechaFin": "2025-06-30",
+      "tipoEntrega": "Retiro en sucursal",
+      "calleEntrega": "",
+      "numeroEntrega": "",
+      "clientId": "516b",
+      "clientDni": "21212122",
+      "clientName": "Marcos",
+      "clientApellido": "Matias",
+      "totalPrice": "170.500",
+      "reservationDate": "2025-05-30T14:26:32.841Z",
+      "status": "accepted"
     }
   ]
 }

@@ -1,0 +1,40 @@
+/* HomePageAdmin.css */
+
+.admin-homepage-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center;     /* Center vertically */
+  min-height: calc(100vh - 60px); /* Take full viewport height minus Header height */
+  padding: 20px; /* Add some padding around the container */
+  background-color: #f0f2f5; /* Light background for the page */
+}
+
+.admin-action-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  padding: 40px 60px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* To stack icon/text if needed */
+  min-width: 250px; /* Minimum width for the card */
+  min-height: 150px; /* Minimum height for the card */
+  font-size: 1.5em; /* Larger text */
+  font-weight: bold;
+  color: #333; /* Darker text color */
+}
+
+.admin-action-card:hover {
+  background-color: #e9f0f7; /* Lighter background on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
+  transform: translateY(-5px); /* Slightly lift the card */
+  color:  #cc0000; /* Change text color on hover */
+}
+
+.card-text {
+  /* No specific styles needed here, parent handles it */
+}

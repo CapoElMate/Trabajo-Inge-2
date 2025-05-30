@@ -1,34 +1,67 @@
-.leases-container{
-    display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.lease-info {
-  width: 300px;
-  height: 300px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 8px;
+/* Leases.css */
+
+.leases-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.lease-info:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
-}
-
-.lease-info p {
-  margin: 6px 0;
-  font-size: 16px;
-}
-
-.lease-info strong {
-  font-size: 18px;
+.leases-container h1 {
   color: #333;
+  margin-bottom: 25px;
+}
+
+.leases-container p {
+  color: #555;
+  font-size: 1.1em;
+}
+
+.leases-list {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  margin-top: 30px;
+}
+
+.lease-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease-in-out;
+}
+
+.lease-card:hover {
+  transform: translateY(-5px);
+}
+
+.lease-card h3 {
+  color: #007bff; /* Or a color that matches your theme */
+  margin-bottom: 15px;
+  font-size: 1.3em;
+}
+
+.lease-card p {
+  margin-bottom: 8px;
+  font-size: 0.95em;
+  color: #444;
+}
+
+.lease-card p strong {
+  color: #333;
+}
+
+.error-message {
+  color: #dc3545;
+  font-weight: bold;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  padding: 10px;
+  border-radius: 5px;
 }
