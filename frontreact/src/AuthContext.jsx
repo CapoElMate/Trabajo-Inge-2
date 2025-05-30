@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -7,6 +7,14 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // 🟡 Cargar sesión desde LocalStorage
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
 
   const login = async (email, password) => {
     try {
@@ -21,12 +29,16 @@ export const AuthProvider = ({ children }) => {
       if (usersFound.length > 0) {
         const usuarioLogueado = usersFound[0];
         setUser(usuarioLogueado);
-        setError(null); // limpiar error si login fue exitoso
+        localStorage.setItem("user", JSON.stringify(usuarioLogueado)); // 🟢 Guardar en LocalStorage
+        setError(null);
 
-        if (usuarioLogueado.rol === "admin") {
+        if (usuarioLogueado.rol === "dueño") {
           navigate("/HomePageAdmin");
         } else if (usuarioLogueado.rol === "cliente") {
           navigate("/HomePage");
+        }
+        if(usuarioLogueado.rol==="empleado"){
+          navigate("/EmployeeHome");
         }
       } else {
         setError("Email o contraseña incorrectos. Por favor, inténtalo de nuevo.");
@@ -38,6 +50,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
+    localStorage.removeItem("user"); // 🔴 Limpiar sesión
     setUser(null);
     setError(null);
     navigate("/Login");

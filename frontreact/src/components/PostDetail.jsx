@@ -180,8 +180,7 @@ function PostDetail() {
               className="reservar-button"
               onClick={() => {
                 if(!user){
-                  alert("debe registrarse");
-
+                  navigate("/Login");
                   return;
                 }
                 setShowReservationForm(!showReservationForm)

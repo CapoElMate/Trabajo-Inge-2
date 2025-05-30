@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+
 import './SignUp.css';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../AuthContext';
 import Header from './Header';
 const SignUp = () => {
+  const [mensajeExito, setMensajeExito] = useState('');
   const {user} = useAuth();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -24,7 +26,14 @@ const SignUp = () => {
   });
 
   const [errors, setErrors] = useState({});
-
+  const convertirArchivoABase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result); // Devuelve el string base64 completo (data:<tipo>;base64,...)
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+};
   const validarEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
@@ -83,57 +92,83 @@ const SignUp = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+    const handleSubmit = async (e) => {
+  e.preventDefault();
+  let ruta = 'pendingUsers';
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let ruta = 'pendingUsers';
-    if (validate()) {
-      const dataToSend = { ...formData };
-      delete dataToSend.fotoDNI; 
-      delete dataToSend.confirmPassword; 
-      if (formData.fotoDNI) {
-        const simulatedImageName = formData.fotoDNI.name;
-        dataToSend.fotoDNI_name = simulatedImageName; 
-      }
-      if(user){
-        if(user.rol==='admin'){
-          dataToSend.rol==='empleado';
-          ruta='users';
-        }
-      }
-      try {
-        const response = await fetch(`http://localhost:3001/${ruta}`, {
-          method: 'POST', // Siempre POST para enviar nuevos recursos
-          headers: {
-            'Content-Type': 'application/json', // Importante: Enviamos JSON
-          },
-          body: JSON.stringify(dataToSend), 
-        });
+  if (!validate()) return;
 
-        const result = await response.json();
+  try {
+    // 1. Traer todos los usuarios actuales
+    const res = await fetch('http://localhost:3001/users');
+    const usuarios = await res.json();
 
-        if (response.ok) { 
-          if(!user){
-            alert('Sus datos seran validados en breve por un empleado');
-            navigate("/Login");
-          }else{
-            if(user.rol=== 'admin'){
-                alert('Se registro un empleado');
-            }
-          }
+    // 2. Verificar si ya existe un usuario con ese email o DNI
+    const emailExistente = usuarios.find(u => u.email === formData.email);
+    const dniExistente = usuarios.find(u => u.dni === formData.dni);
 
-        } else {
-          alert(`Error al registrar. Código: ${response.status}`);
-          console.error('Error en el registro:', result);
-        }
-      } catch (error) {
-        console.error('Error al enviar el formulario:', error);
-        alert('Hubo un problema de conexión. Por favor, inténtalo de nuevo.');
-      }
+    if (emailExistente || dniExistente) {
+      const newErrors = {};
+      if (emailExistente) newErrors.email = 'Ya existe un usuario con este email.';
+      if (dniExistente) newErrors.dni = 'Ya existe un usuario con este DNI.';
+      setErrors(newErrors);
+      return;
     }
-  };
+
+    const dataToSend = { ...formData };
+    delete dataToSend.confirmPassword;
+
+    // 3. Convertir imagen a base64 si está presente
+    if (formData.fotoDNI) {
+      const base64 = await convertirArchivoABase64(formData.fotoDNI);
+      dataToSend.fotoDNI = base64;
+      dataToSend.fotoDNI_name = formData.fotoDNI.name;
+    }
+
+    // 4. Si es dueño quien registra, cambia a 'empleado'
+    if (user && user.rol === 'dueño') {
+      dataToSend.rol = 'empleado';
+      ruta = 'users';
+    }
+
+    // 5. Enviar al backend
+    const response = await fetch(`http://localhost:3001/${ruta}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(dataToSend),
+    });
+
+    const result = await response.json();
+
+    if (response.ok) {
+  if (!user) {
+    setMensajeExito('Sus datos serán verificados en breve por un empleado de Bob el Alquilador');
+    setTimeout(() => {
+      navigate("/HomePage");
+    }, 3000); // Espera 3 segundos antes de redirigir
+  } else if (user.rol === 'dueño') {
+    setMensajeExito('Se ha registrado un empleado exitosamente');
+  }
+}
+
+
+  } catch (error) {
+    console.error('Error al enviar el formulario:', error);
+    alert('Hubo un problema de conexión. Por favor, inténtalo de nuevo.');
+  }
+};
+
+  
+
 
   return (<>
+    {mensajeExito && (
+  <div className="popup-exito">
+    <p>{mensajeExito}</p>
+  </div>
+)}
     {user&&(<Header/>)}
     <div className="signup-container">
       <form onSubmit={handleSubmit}>
