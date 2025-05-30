@@ -29,7 +29,8 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
                 .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
                 .ForMember(dest => dest.roleName, opt => opt.MapFrom(src => src.roleName))
-                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesToUsuarioRegistradoDtoResolver>());
+                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesToUsuarioRegistradoDtoResolver>())
+                .ForMember(dest => dest.dniVerificado, opt => opt.MapFrom(src => src.dniVerificado));
 
             CreateMap<UsuarioRegistradoDTO, UsuarioRegistrado>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
@@ -43,7 +44,8 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
                 .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
                 .ForMember(dest => dest.roleName, opt => opt.MapFrom(src => src.roleName))
-                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesDtoToUsuarioRegistradoResolver>());
+                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesDtoToUsuarioRegistradoResolver>())
+                .ForMember(dest => dest.dniVerificado, opt => opt.Ignore());
         }
     }
 }

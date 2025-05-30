@@ -142,8 +142,8 @@ builder.Services.AddScoped<IAlquilerService, AlquilerService>();
 builder.Services.AddScoped<IReembolsoService, ReembolsoService>();
 builder.Services.AddScoped<IUbicacionService, UbicacionService>();
 builder.Services.AddScoped<IArchivoService, ArchivoService>();
-
 builder.Services.AddScoped<IReservaService, ReservaService>();
+builder.Services.AddScoped<IEmails, MailjetEmailSender>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

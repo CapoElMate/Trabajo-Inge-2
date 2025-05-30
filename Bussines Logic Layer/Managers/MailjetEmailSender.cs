@@ -355,7 +355,6 @@ namespace Bussines_Logic_Layer.Managers
 
             return SendEmailAsync(email, "¡Tu DNI ha sido validado en " + appName + "!", htmlMessage);
         }
-
     public Task SendPagoConfirmation(string email, string userName, string userLastName)
         {
             string appName = "Bob El Alquilador";
@@ -497,7 +496,6 @@ namespace Bussines_Logic_Layer.Managers
 
             return SendEmailAsync(email, "¡Registro Exitoso en " + appName + "!", htmlMessage);
         }
-
     public Task SendPermisoEspecialApproveConfirmation(string email, string userName, string userLastName, string permiso)
         {
             string appName = "Bob El Alquilador";
@@ -545,7 +543,6 @@ namespace Bussines_Logic_Layer.Managers
 
             return SendEmailAsync(email, "Permiso Aprobado en " + appName, htmlMessage);
         }
-
     public Task SendPermisoEspecialRejectConfirmation(string email, string userName, string userLastName, string permiso, string reasonOfReject)
         {
             string appName = "Bob El Alquilador";
