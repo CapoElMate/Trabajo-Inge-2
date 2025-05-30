@@ -1,6 +1,6 @@
 import { useState } from "react";
 import './HomePage.css';
-export default function TagSelector({ tags, setTags, opciones }) {
+export default function TagSelector({ tags, setTags, opciones, modo="Tags" }) {
   const [selected, setSelected] = useState("");
 
   const handleAdd = () => {
@@ -16,7 +16,7 @@ export default function TagSelector({ tags, setTags, opciones }) {
 
   return (
     <div>
-      <label className="block mb-1 font-medium">Tags</label>
+      <label className="block mb-1 font-medium">{modo}</label>
       <div className="flex gap-2">
         <select
           value={selected}

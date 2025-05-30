@@ -3,27 +3,47 @@ import TextInput from "../components/TextInput";
 import SelectInput from "../components/SelectInput";
 import TagSelector from "./TagSelector";
 import FormButtons from "../components/FormButtons";
-import Header2 from "./Header2";
+import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import MaquinariaForm from "./FormMaquinaria";
 
 export default function CargarMaquinaria({initialData = {}, modo = 'Crear'}) {
-  
+  /*
   const [tags, setTags] = useState([]);
   const opcionesDeTags = ["Pesado", "Ligero"];
-  const [anio, setAnio] = useState(initialData.anioFabricacion || "");
-  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
-  const [modelosDisponibles, setModelosDisponibles] = useState([]);
+
   const [modelo, setModelo] = useState(initialData.marca?.modelo || "");
   const [tipo, setTipo] = useState(initialData.tipo || "");
   const handleMarcaChange = (marca) => {
     setMarcaSeleccionada(marca);
     setModelosDisponibles(modelosPorMarca[marca] || []);
   };
-
+  const [anio, setAnio] = useState(initialData.anioFabricacion || "");
+  const [marcaSeleccionada, setMarcaSeleccionada] = useState("");
+  const [modelosDisponibles, setModelosDisponibles] = useState([]);*/
   const navigate = useNavigate(); 
-  const handleSubmit = async () => {
-    if (!marca || !modelo || !año) {
+  const handleSubmit =(data) => {
+    console.log(data)
+    const body = {//mapear al formato
+      "id":data.id,
+      "marca": data.marca, 
+      "modelo": data.modelo,
+      "anioFabricacion": data.anio,
+      "tipo": data.tipo,
+      "permisosEspeciales": data.permisos.map((p)=>({"permiso":p })),
+      "tagsMaquina":data.tags.map((t)=>({"tag":t })),
+    };
+     
+    fetch('http://localhost:3001/maquinas', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }).then(() =>{ 
+      //"¡Maquinaria 'Caterpillar D6N LGP' creada correctamente!"
+      navigate("/maquinarias");});
+/**/
+   /*
+       if (!marca || !modelo || !año) {
       alert("Por favor completá todos los campos obligatorios.");
       return;
     } 
@@ -43,8 +63,8 @@ export default function CargarMaquinaria({initialData = {}, modo = 'Crear'}) {
       "tagsMaquina":tags.map((t)=>({"tag":t })),
     };
     console.log("Datos en cargar maquinariasubmit: ", data);
-    /*
-     
+    
+   
     try {
       const res = await fetch("api/maquinarias", {
         method: "POST",
@@ -65,12 +85,12 @@ export default function CargarMaquinaria({initialData = {}, modo = 'Crear'}) {
    
   const handleCancel = () => {
     console.log("Cancelado");
-    navigate('/HomePage');
+    navigate('/maquinarias');
   };
   return (
     <>
-      <Header2 />       
-         <MaquinariaForm onSubmit={handleSubmit} onCancel={handleCancel}/>
+      <Header/>       
+         <MaquinariaForm  onSubmit={handleSubmit} onCancel={handleCancel}/>
     </>
   )
 }

@@ -1,6 +1,7 @@
 // pages/MaquinariaList.jsx
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Header from "./Header";
 
 export default function MaquinariaList() {
   const [maquinarias, setMaquinarias] = useState([]);
@@ -12,8 +13,10 @@ export default function MaquinariaList() {
   }, []);
 
   return (
+    <>
+    <Header/>
     <div className="p-4">
-      <h2 className="text-xl mb-4">Listado de Maquinarias</h2>
+      <h2 className="text-xl mb-4">Listado de Maquinarias Provisorio</h2>
       <ul className="space-y-2">
         {maquinarias.map((maq) => (
           <li key={maq.id} className="border p-2 rounded shadow">
@@ -27,5 +30,6 @@ export default function MaquinariaList() {
         ))}
       </ul>
     </div>
+    </>
   );
 }

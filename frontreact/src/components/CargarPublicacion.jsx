@@ -5,42 +5,71 @@ import TagSelector from "./TagSelector";
 import FormButtons from "../components/FormButtons";
 import ImageUploader from "./ImageUploader";
 import ImagePreviewList from "./ImagePreviwList"; 
-import Header2 from "./Header2";
+import Header from "./Header";
+import { useNavigate } from "react-router-dom";
+import PublicacionForm from "./FormPublicacion"
 
-export default function CargarPublicacion() {
-  const [tags, setTags] = useState([]);
-  const opcionesDeTags = ["Urgente", "Nuevo", "Oferta"];
-  const [imagenes, setImagenes] = useState([]);
+export default function CargarPublicacion() {  
+  const navigate = useNavigate(); 
+  const handleSubmit =(data) => {
+    console.log(data) 
+     //como ya lo recibo en el formato que quiero no lo modifico
+    fetch('http://localhost:3001/publicaciones', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    }).then(() =>{  
+      navigate("/HomePage");});//ir al listado de publicaciones
+/**/
+   /*
+       if (!marca || !modelo || !año) {
+      alert("Por favor completá todos los campos obligatorios.");
+      return;
+    } 
+    const data = {
+      "marcaName": marca,
+      "marca": {
+        "marcaName": marca,
+        "modelos": [
+          {
+            "modeloName": modelo,
+            "marcaName":marca,
+          }
+      ]},
+      "anioFabricacion": año,
+      "tipo": tipo,
+      "permisosEspeciales": permisos.map((p)=>({"permiso":p })),//mapear al formato
+      "tagsMaquina":tags.map((t)=>({"tag":t })),
+    };
+    console.log("Datos en cargar maquinariasubmit: ", data);
+    
+   
+    try {
+      const res = await fetch("api/maquinarias", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-  const handleImagenesChange = (e) => { 
-    const files = Array.from(e.target.files);
-    console.log("Archivos seleccionados:", files);
-    setImagenes((prev) => [...prev, ...Array.from(e.target.files)]); // o podés agregarlas a las ya cargadas
+      if (!res.ok) throw new Error("Error en el servidor");
+       
+      alert("maquinaria cargada exitosamente")
+    } catch (err) {
+      console.error("Error al enviar:", err)
+      alert("Ha ocurrido un error")
+    }*/
   };
-  const handleEliminar = (index) => {
-  setImagenes((prev) => prev.filter((_, i) => i !== index));
+   
+  const handleCancel = () => {
+    console.log("Cancelado");
+    navigate('/HomePage');
   };
   return (
-    < >
-    <Header2/>
-     <div className="detalle-contenedor">
-    <form className="max-w-md mx-auto p-4 border rounded space-y-4">
-      <h2 className="text-xl font-semibold text-center">Cargar Publicación</h2>
-
-      <SelectInput label="Maquinaria " options={["Maquina A", "Maquina B"]} />
-      <SelectInput label="Politica de Cancelacion " options={["Politica por Tardanza", "Politica por daños"]} />
-      
-      <TextInput label="Ubicacion " />
-      <TextInput label="Precio por dia " type="number" />
-      
-      <TagSelector tags={tags} setTags={setTags} opciones={opcionesDeTags} />
-      
-      <ImageUploader onChange={handleImagenesChange} />
-      <ImagePreviewList imagenes={imagenes} handleEliminar= {handleEliminar} />
-      <FormButtons onCancel={() => console.log("Cancelado")} />
-     </form>
-     </div>
+    <>
+      <Header/>       
+         <PublicacionForm  onSubmit={handleSubmit} onCancel={handleCancel}/>
     </>
-  );
+  )
 }
-

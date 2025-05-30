@@ -1,43 +1,61 @@
-// pages/MaquinariaDetail.jsx
+ // pages/MaquinariaDetail.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "./Header";
 
-export default function MaquinariaDetail() {
+export default function PublicacionDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [maquinaria, setMaquinaria] = useState(null);
+  const [publicacion, setPublicacion] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/maquinas/${id}`)
+    fetch(`http://localhost:3001/publicaciones/${id}`)
       .then((res) => res.json())
-      .then((data) => setMaquinaria(data));
+      .then((data) => setPublicacion(data));
   }, [id]);
 
   const handleEliminar = () => {
-    fetch(`http://localhost:3001/maquinas/${id}`, {
+    fetch(`http://localhost:3001/publicaciones/${id}`, {
       method: "DELETE",
     }).then(() => navigate("/"));
-    // "Maquinaria eliminada satisfactoriamente.
+    // "publicacion eliminada satisfactoriamente.
   };
  
 
-  if (!maquinaria) return <p>Cargando...</p>;
+  if (!publicacion) return <p>Cargando...</p>;
 
   return (
     <>
     <Header/>
     <div className="p-4 detalle-contenedor">
-      <h2 className="text-xl mb-2"> {maquinaria.modelo}</h2>
-      <p>Año: {maquinaria.anioFabricacion}</p>
-      <p>Tipo: {maquinaria.tipo}</p>
-      <p>Permisos: {maquinaria.permisosEspeciales?.map(p => p.permiso.permiso).join(", ")}</p>
+      <h2 className="text-xl mb-2"> {publicacion.titulo}</h2>
+      <p>Descripcion: {publicacion.descripcion}</p>
+      <p>Ubicacion: {publicacion.ubicacion}</p>
+      <p>Politica: {publicacion.politica}</p>
+      <p>Precio: {publicacion.precio}</p>
+      <p>Tags: {publicacion.tags?.map(t => t.tag).join(", ")}</p>
+      <p>Maquinaria: {publicacion.maquinaria.id}</p> 
+      {/*"id": "maq103",
+      "marca": "Marca A",
+      "modelo": "",
+      "anioFabricacion": "",
+      "tipo": "Compactador",
+      "permisosEspeciales": [],
+      "tagsMaquina": []
+    }, */}
+       <p>Imagenes:</p>
+       {publicacion.imagenes.map((i)=>(
+        <img key={i.img.name} src={i.img.src} width="120px" height="120px" />
+       )
 
+       )}
+        
+        
       <div className="flex gap-2 mt-4">
        
         <button
-          style={{ // gris claro
-          color: "#111827",           // casi negro
+          style={{ 
+          color: "#111827",           
           padding: "10px 16px",
           border: "1px solid #d1d5db",
           borderRadius: "8px",
@@ -49,11 +67,11 @@ export default function MaquinariaDetail() {
         }}
         onMouseOver={(e) => (e.target.style.backgroundColor = "#d1d5db")}
         onMouseOut={(e) => (e.target.style.backgroundColor = "#e5e7eb")} 
-        onClick={() => navigate(`/modificar/${maquinaria.id}`)} >Modificar</button>
+        onClick={() => navigate(`/EditarPublicacion/${publicacion.id}`)} >Modificar</button>
         <button 
           style={{ 
            backgroundColor: "#dd433d",
-          color: "#111827",           // casi negro
+          color: "#111827",          
           padding: "10px 16px",
           border: "1px solid #d1d5db",
           borderRadius: "8px",
@@ -66,16 +84,16 @@ export default function MaquinariaDetail() {
         onMouseOver={(e) => (e.target.style.backgroundColor = "#C8797D")}
         onMouseOut={(e) => (e.target.style.backgroundColor = "#dd433d")}
         onClick={() => {
-      const confirmado = window.confirm("¿Estás seguro de que querés eliminar esta maquinaria?");
+      const confirmado = window.confirm("¿Estás seguro de que querés eliminar esta publicacion?");
       if (confirmado) {
         handleEliminar();  
        }
         }} >Eliminar</button>
         
         <button 
-          style={{  // gris claro
+          style={{   
           backgroundColor: "#2563eb",
-          color: "#111827",           // casi negro
+          color: "#111827",            
           padding: "10px 16px",
           border: "1px solid #d1d5db",
           borderRadius: "8px",
@@ -87,7 +105,7 @@ export default function MaquinariaDetail() {
         }}
         onMouseOver={(e) => (e.target.style.backgroundColor = "#1e40af")}
         onMouseOut={(e) => (e.target.style.backgroundColor = "#2563eb")}
-        onClick={() => navigate(`/duplicar/${maquinaria.id}`)}  >Duplicar</button>
+        onClick={() => navigate(`/DuplicarPublicacion/${publicacion.id}`)}  >Duplicar</button>
       </div>
     </div>
     </>

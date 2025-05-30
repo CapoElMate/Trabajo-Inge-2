@@ -12,7 +12,8 @@ export default function ImagePreviewList({ imagenes, handleEliminar }) {
         {imagenes.map((img, idx) => (
         <div key={img.name} className="relative w-24 h-24">
             <img
-            src={URL.createObjectURL(img)}
+
+            src={img.src}
             alt={`img-${idx}`}
             className="w-full h-full object-cover rounded"
             style={{
