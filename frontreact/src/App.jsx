@@ -7,6 +7,19 @@ import ForgotPassword from './components/ForgotPassword';
 import ValidateUser from './components/ValidateUser';
 import PostDetail from './components/PostDetail';
 import Header from './components/Header';
+
+import CargarPublicacion from './components/CargarPublicacion';
+import EditarPublicacion from './components/EditarPublicacion';
+import DuplicarPublicacion from  './components/DuplicarPublicacion';
+import PublicacionDetail from  './components/DetallePublicacion';
+
+import CargarMaquinaria from './components/CargarMaquinaria';
+import EditarMaquinaria from './components/EditarMaquinaria';
+import DuplicarMaquinaria from './components/DuplicarMaquinaria';
+import MaquinariaDetail from './components/DetalleMaquinaria';
+import MaquinariaList from './components/MaquinariaList';
+
+
 import HomePageAdmin from './components/HomePageAdmin';
 import './components/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -30,6 +43,15 @@ const App = () => {
         <Route path='/ValidateUser' element={<ValidateUser />}/> 
         <Route path='/PostDetail/:id' element={<PostDetail />}/> 
         <Route path='/Header' element={<Header/>} />
+        <Route path='/CargarPublicacion' element={<CargarPublicacion/>} />
+        <Route path='/EditarPublicacion/:id' element={<EditarPublicacion/>} />
+        <Route path="/DuplicarPublicacion/:id" element={<DuplicarPublicacion/>}/>
+        <Route path="/DetallePublicacion/:id" element={<PublicacionDetail/>}/>
+        <Route path='/CargarMaquinaria' element={<CargarMaquinaria/>} />
+        <Route path="/modificar/:id" element={<EditarMaquinaria />} />
+        <Route path="/duplicar/:id" element={<DuplicarMaquinaria />} />       
+        <Route path="/maquinaria/:id" element={<MaquinariaDetail />} />
+        <Route path='/maquinarias' element={<MaquinariaList/>}/>
         <Route path='/HomePageAdmin' element={<HomePageAdmin/>} />
         <Route path='/Leases' element={<Leases/>}/>
         <Route path='/Rentals' element={<Rentals/>}/>      
