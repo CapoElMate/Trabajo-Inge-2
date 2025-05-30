@@ -54,118 +54,116 @@ function SignUp() {
         })
 
         var jsonCliente = JSON.stringify({usuarioRegistrado: JSON.parse(jsonUsuario)});
-        const authResponse = await fetch(`http://localhost:5000/api/Cliente/ConfirmDNI?dni=${12345678}`,{
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-        });
+
+
 
         //console.log("jsonRegister: "+jsonRegister);
         //console.log("jsonUsuario: "+jsonUsuario);
         //console.log("cliente: "+ jsonCliente);
 
-      // Paso 1: Crear usuario de autenticación
-      // const authResponse = await fetch('http://localhost:5000/Auth/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: jsonRegister,
-      // });
+      //Paso 1: Crear usuario de autenticación
+      const authResponse = await fetch('http://localhost:5000/Auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonRegister,
+      });
 
-      // const errorData = await authResponse.json(); // Intenta parsear el cuerpo como JSON
+      const errorData = await authResponse.json(); // Intenta parsear el cuerpo como JSON
 
-      // console.error('Error de registro (400 Bad Request):', authResponse.status);
-      // for (const key in errorData) {
-      //     if (Object.hasOwnProperty.call(errorData, key)) {
-      //         const errors = errorData[key];
-      //         if (Array.isArray(errors)) {
-      //             errors.forEach(errorMessage => {
-      //                 if (key === "") {
-      //                     console.error(`Error general: ${errorMessage}`);
-      //                 } else {
-      //                     console.error(`Error en el campo '${key}': ${errorMessage}`);
-      //                 }
-      //             });
-      //         }
-      //     }
-      // }
-      // if (!authResponse.ok) throw new Error('Error creando autenticación');
+      console.error('Error de registro (400 Bad Request):', authResponse.status);
+      for (const key in errorData) {
+          if (Object.hasOwnProperty.call(errorData, key)) {
+              const errors = errorData[key];
+              if (Array.isArray(errors)) {
+                  errors.forEach(errorMessage => {
+                      if (key === "") {
+                          console.error(`Error general: ${errorMessage}`);
+                      } else {
+                          console.error(`Error en el campo '${key}': ${errorMessage}`);
+                      }
+                  });
+              }
+          }
+      }
+      if (!authResponse.ok) throw new Error('Error creando autenticación');
 
-      // //Paso 2: Crear usuario completo
-      // const userResponse = await fetch('http://localhost:5000/api/Usuario', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: jsonUsuario,
-      // });
+      //Paso 2: Crear usuario completo
+      const userResponse = await fetch('http://localhost:5000/api/Usuario', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonUsuario,
+      });
 
-      // if (!userResponse.ok) throw new Error('Error creando usuario');
-      // console.log(userResponse);
+      if (!userResponse.ok) throw new Error('Error creando usuario');
+      console.log(userResponse);
 
-      // // Paso 3: Crear cliente
-      // const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: jsonCliente,
-      // });
+      // Paso 3: Crear cliente
+      const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: jsonCliente,
+      });
 
       
-      // const cliente = await clienteResponse.json();
-      // console.log(clienteResponse);
+      const cliente = await clienteResponse.json();
+      console.log(clienteResponse);
       
-      // if (!clienteResponse.ok) throw new Error('Error creando cliente');
+      if (!clienteResponse.ok) throw new Error('Error creando cliente');
       
-      // //Paso 4: Subir archivo DNI si existe
-      // if (dniBase64) {
-      //   let archivoBlob;
-      //   let fileName = 'dni_document.png';
+      //Paso 4: Subir archivo DNI si existe
+      if (dniBase64) {
+        let archivoBlob;
+        let fileName = 'dni_document.png';
 
-      //   const parts = dniBase64.match(/^data:(.*?);base64,(.*)$/);
-      //   if (!parts) {
-      //       console.error("Formato de Base64 del DNI inválido.");
-      //       alert('Error: Formato de imagen DNI inválido.');
-      //       return;
-      //   }
-      //   const contentType = parts[1];
+        const parts = dniBase64.match(/^data:(.*?);base64,(.*)$/);
+        if (!parts) {
+            console.error("Formato de Base64 del DNI inválido.");
+            alert('Error: Formato de imagen DNI inválido.');
+            return;
+        }
+        const contentType = parts[1];
 
-      //   // **Asegurarse de que el tipo de contenido sea permitido antes de crear el Blob**
-      //   const allowedImageTypes = ['image/jpeg', 'image/png'];
-      //   if (!allowedImageTypes.includes(contentType)) {
-      //       console.error(`Tipo de archivo no permitido: ${contentType}`);
-      //       alert('Error: Solo se permiten imágenes JPG y PNG.');
-      //       return; // Detiene la ejecución si el tipo no es válido
-      //   }
+        // **Asegurarse de que el tipo de contenido sea permitido antes de crear el Blob**
+        const allowedImageTypes = ['image/jpeg', 'image/png'];
+        if (!allowedImageTypes.includes(contentType)) {
+            console.error(`Tipo de archivo no permitido: ${contentType}`);
+            alert('Error: Solo se permiten imágenes JPG y PNG.');
+            return; // Detiene la ejecución si el tipo no es válido
+        }
 
-      //   archivoBlob = base64ToBlob(dniBase64, contentType);
+        archivoBlob = base64ToBlob(dniBase64, contentType);
 
-      //   // Inferir el nombre y extensión del archivo basado en el contentType
-      //   if (contentType === 'image/jpeg') {
-      //       fileName = 'dni_image.jpeg';
-      //   } else if (contentType === 'image/png') {
-      //       fileName = 'dni_image.png';
-      //   } else {
-      //        // Esto no debería ejecutarse si la validación anterior funciona, pero es una buena práctica
-      //       fileName = 'dni_image_unknown.jpg';
-      //   }
+        // Inferir el nombre y extensión del archivo basado en el contentType
+        if (contentType === 'image/jpeg') {
+            fileName = 'dni_image.jpeg';
+        } else if (contentType === 'image/png') {
+            fileName = 'dni_image.png';
+        } else {
+             // Esto no debería ejecutarse si la validación anterior funciona, pero es una buena práctica
+            fileName = 'dni_image_unknown.jpg';
+        }
 
-      //   const formData = new FormData();
-      //   formData.append('EntidadID', cliente.dni);
-      //   formData.append('TipoEntidad', 3);
-      //   formData.append('Nombre', 'DNI');
-      //   formData.append('Descripcion', `DNI de ${cliente.nombre} ${cliente.apellido}`);
-      //   formData.append('Archivo', archivoBlob, fileName);
+        const formData = new FormData();
+        formData.append('EntidadID', cliente.dni);
+        formData.append('TipoEntidad', 3);
+        formData.append('Nombre', 'DNI');
+        formData.append('Descripcion', `DNI de ${cliente.nombre} ${cliente.apellido}`);
+        formData.append('Archivo', archivoBlob, fileName);
 
-      //   const archivoResponse = await fetch('http://localhost:5000/api/Archivo', {
-      //     method: 'POST',
-      //     body: formData,
-      //   });
+        const archivoResponse = await fetch('http://localhost:5000/api/Archivo', {
+          method: 'POST',
+          body: formData,
+        });
 
-      //   if (!archivoResponse.ok) {
-      //     const errorBody = await archivoResponse.json();
-      //     console.error('Error subiendo archivo DNI:', archivoResponse.status, errorBody);
-      //     throw new Error('Error subiendo archivo DNI.');
-      //   }
-      //   console.log('Archivo DNI subido exitosamente.');
-      // }
+        if (!archivoResponse.ok) {
+          const errorBody = await archivoResponse.json();
+          console.error('Error subiendo archivo DNI:', archivoResponse.status, errorBody);
+          throw new Error('Error subiendo archivo DNI.');
+        }
+        console.log('Archivo DNI subido exitosamente.');
+      }
 
-      // alert('Usuario registrado correctamente!');
+      alert('Usuario registrado correctamente!');
     } catch (error) {
       console.log(error);
       //console.error('Error:', error);
