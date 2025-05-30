@@ -2,6 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "./Header";
+import DetalleMaquinariaSimple from "./DetalleMaquinariaSimple";
 
 export default function MaquinariaDetail() {
   const { id } = useParams();
@@ -28,12 +29,9 @@ export default function MaquinariaDetail() {
     <>
     <Header/>
     <div className="p-4 detalle-contenedor">
-      <h2 className="text-xl mb-2"> {maquinaria.modelo}</h2>
-      <p>Año: {maquinaria.anioFabricacion}</p>
-      <p>Tipo: {maquinaria.tipo}</p>
-      <p>Permisos: {maquinaria.permisosEspeciales?.map(p => p.permiso.permiso).join(", ")}</p>
-
-      <div className="flex gap-2 mt-4">
+      <>
+        <DetalleMaquinariaSimple maquinaria={maquinaria} />
+      </><div className="flex gap-2 mt-4">
        
         <button
           style={{ // gris claro

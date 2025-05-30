@@ -6,6 +6,7 @@ import FormButtons from "../components/FormButtons";
 import ImageUploader from "./ImageUploader";
 import ImagePreviewList from "./ImagePreviwList"; 
 import Header from "./Header";
+import DetalleMaquinariaSimple from "./DetalleMaquinariaSimple";
 
  const fileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -95,10 +96,7 @@ export default function PublicacionForm ({ initialData = {}, onSubmit={},onCance
       <h2 className="text-xl font-semibold text-center">{modo} Publicación</h2>
      {maquinaria && modo == "Editar"? 
       (<>
-      <h2 className="text-xl mb-2"> {maquinaria.marca} {maquinaria.modelo}</h2>
-      <p>Año: {maquinaria.anioFabricacion}</p>
-      <p>Tipo: {maquinaria.tipo}</p>
-      <p>Permisos: {maquinaria.permisosEspeciales?.map(p => p.permiso.permiso).join(", ")}</p>
+        <DetalleMaquinariaSimple maquinaria={maquinaria} />
       </>
       )
       :(

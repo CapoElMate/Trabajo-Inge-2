@@ -2,6 +2,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "./Header";
+import DetalleMaquinariaSimple from "./DetalleMaquinariaSimple";
 
 export default function PublicacionDetail() {
   const { id } = useParams();
@@ -34,21 +35,18 @@ export default function PublicacionDetail() {
       <p>Politica: {publicacion.politica}</p>
       <p>Precio: {publicacion.precio}</p>
       <p>Tags: {publicacion.tags?.map(t => t.tag).join(", ")}</p>
-      <p>Maquinaria: {publicacion.maquinaria.id}</p> 
-      {/*"id": "maq103",
-      "marca": "Marca A",
-      "modelo": "",
-      "anioFabricacion": "",
-      "tipo": "Compactador",
-      "permisosEspeciales": [],
-      "tagsMaquina": []
-    }, */}
-       <p>Imagenes:</p>
+      <p>Imagenes:</p>
        {publicacion.imagenes.map((i)=>(
-        <img key={i.img.name} src={i.img.src} width="120px" height="120px" />
-       )
+        <img key={i.img.name} src={i.img.src} width="120px" height="120px" />  )
 
        )}
+      <p>Maquinaria: </p>
+      <>
+        <DetalleMaquinariaSimple maquinaria={publicacion.maquinaria} />
+      </> 
+     
+       
+     
         
         
       <div className="flex gap-2 mt-4">
