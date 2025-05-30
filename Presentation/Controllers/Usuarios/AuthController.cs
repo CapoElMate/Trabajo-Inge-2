@@ -187,12 +187,13 @@ namespace API_Layer.Controllers.Usuarios
                     await _userManager.DeleteAsync(user);
                     return StatusCode(500, new { message = "Error al asignar rol al usuario." });
                 }
-                _logger.LogInformation("Usuario '{Email}' asignado al rol '{Role}' exitosamente.", model.Email);
+                _logger.LogInformation("Usuario '{Email}' asignado al rol '{Role}' exitosamente.", model.Email, model.Role);
                 return Ok(new { message = "Registro exitoso. Se ha enviado un email de confirmación." });
             }
 
             foreach (var error in result.Errors)
             {
+                Console.WriteLine($"Identity Error - Código: {error.Code}, Mensaje: {error.Description}");
                 ModelState.AddModelError(string.Empty, error.Description);
             }
 

@@ -39,7 +39,6 @@ namespace Data_Access_Layer.Repositorios.SQL
 
         public async Task AddAsync(Cliente usuario)
         {
-            await _context.UsuariosRegistrados.AddAsync(usuario.UsuarioRegistrado);
             await _context.Clientes.AddAsync(usuario);
             await _context.SaveChangesAsync();
         }
