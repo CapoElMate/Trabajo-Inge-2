@@ -27,7 +27,7 @@ function ForgotPassword() {
 
     try {
 
-      const response = await fetch('http://localhost:3000/passwordResetRequests', {
+      const response = await fetch('http://localhost:3001/passwordResetRequests', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ function ForgotPassword() {
 
       if (response.ok) {
         const result = await response.json();
-        setMessage('Si tu cuenta existe, se te han enviado los pasos para cambiar tu contraseña a tu correo electrónico o celular.');
+        setMessage('Se han enviado las instrucciones para restablecer tu contraseña a tu email. Por favor, revisa tu bandeja de entrada (incluyendo la carpeta de spam)');
         setIsError(false);
         console.log('Solicitud de recuperación registrada en JSON Server:', result);
       } else {
@@ -100,7 +100,7 @@ function ForgotPassword() {
               className="search-button"
               disabled={isLoading}
             >
-              {isLoading ? 'Buscando...' : 'Buscar'}
+              {isLoading ? 'Buscando...' : 'Restablecer contraseña'}
             </button>
           </div>
         </form>

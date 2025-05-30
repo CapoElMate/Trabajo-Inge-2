@@ -28,6 +28,9 @@ import Rentals from './components/Rentals';
 import ResetPassword from './components/ResetPassword';
 import PermitFileUploader from './components/PermitFileUploader';
 import Profile from './components/Profile';
+import ValidatePermit from './components/ValidatePermit';
+import EmployeeHome from './components/EmployeeHome';
+import ConfirmReservations from './components/ConfrmReservations';
 const App = () => {
   return (
     <AuthProvider>
@@ -55,7 +58,9 @@ const App = () => {
         <Route path='/Profile' element={<Profile/>}/>
         <Route path='/ResetPassword' element={<ResetPassword/>}/>
         <Route path='/PermitFileUploader' element={<PermitFileUploader/>}/>
-      
+        <Route path='/ValidatePermit' element={<ValidatePermit/>}/>
+        <Route path='/EmployeeHome' element={<EmployeeHome/>}/>
+        <Route path='/ConfirmReservations' element={<ConfirmReservations/>}/>
       </Routes>
     </AuthProvider>
   );

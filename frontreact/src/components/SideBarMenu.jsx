@@ -1,42 +1,75 @@
-// src/components/Example.js (o donde hayas guardado tu Offcanvas)
-
 import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { TbMenu2 } from "react-icons/tb"; 
 import './SideBarMenu.css'; 
 import { useAuth } from '../AuthContext';
-function SideBarMenu() { // Renombrado para mayor claridad
+import { useNavigate } from 'react-router-dom';
+
+function SideBarMenu() {
   const [show, setShow] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const navigate = useNavigate();
+
+  const handleNavigate = (path, restricted = false) => {
+    if (restricted && !user) {
+      navigate("/Login");
+    } else {
+      navigate(path);
+    }
+    setShow(false); // cerrar menú luego de navegación
+  };
+
+  // Elementos del menú por rol
+  const menuItems = [];
+
+  if (!user || user.rol === "cliente") {
+    menuItems.push(
+      { label: "Inicio", path: "/HomePage", restricted: false },
+      { label: "Mi perfil", path: "/Profile", restricted: true },
+      { label: "Mis reservas", path: "/rentals", restricted: true },
+      { label: "Mis alquileres", path: "/Leases", restricted: true }
+    );
+  } else if (user.rol === "empleado") {
+    menuItems.push(
+      { label: "Inicio", path: "/EmployeeHome", restricted: false },
+      { label: "Mi perfil", path: "/Profile", restricted: false },
+      { label: "Mis reservas", path: "/rentals", restricted: false },
+      { label: "Mis alquileres", path: "/Leases", restricted: false },
+      { label: "Publicaciones", path: "/HomePage", restricted: false }
+    );
+  } else if (user.rol === "dueño") {
+    menuItems.push(
+      { label: "Inicio", path: "/HomePageAdmin", restricted: false },
+      { label: "Mi perfil", path: "/Profile", restricted: false },
+      { label: "Publicaciones", path: "/HomePage", restricted: false }
+    );
+  }
 
   return (
     <>
       <Button
-        variant="link" // para que no tenga estilos predeterminados de botón de Bootstrap
+        variant="link"
         onClick={handleShow}
-        className="menu-toggle-button" 
+        className="menu-toggle-button"
       >
         <TbMenu2 className="menu-icon" />
       </Button>
 
       <Offcanvas show={show} onHide={handleClose} className="custom-offcanvas">
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>
-            Menú 
-          </Offcanvas.Title>
+          <Offcanvas.Title>Menú</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <ul className="offcanvas-nav-list">
-            <li><a href="/HomePage">Inicio</a></li>
-            <li><a href="/Profile">Mi perfil</a></li>
-            <li><a href="/Rentals">Mis reservas</a></li>
-            
-            <li><a href="/Leases">Mis alquileres</a></li>
-            </ul>
-
+            {menuItems.map((item, index) => (
+              <li key={index} onClick={() => handleNavigate(item.path, item.restricted)}>
+                <a>{item.label}</a>
+              </li>
+            ))}
+          </ul>
           <p>
             <small>Horario de atención: L-V 9-18hs</small>
           </p>
@@ -46,4 +79,4 @@ function SideBarMenu() { // Renombrado para mayor claridad
   );
 }
 
-export default SideBarMenu; 
+export default SideBarMenu;

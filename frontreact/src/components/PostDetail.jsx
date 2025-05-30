@@ -3,14 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './PostDetail.css'; // Create this CSS file
 import { useAuth } from '../AuthContext';
 import Header from './Header';
+import { useRef } from 'react';
+
 function PostDetail() {
+  const section = useRef(null);
   const { id } = useParams(); // Get the publication ID from the URL
   const navigate = useNavigate();
   const [publicacion, setPublicacion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showReservationForm, setShowReservationForm] = useState(false);
-  const {user} = useAuth();
+  const { user } = useAuth(); // Destructure user from useAuth()
+
   // Reservation form state
   const [fechaInicio, setFechaInicio] = useState('');
   const [fechaFin, setFechaFin] = useState('');
@@ -19,6 +23,7 @@ function PostDetail() {
   const [numeroEntrega, setNumeroEntrega] = useState('');
   const [formErrors, setFormErrors] = useState({});
   const [reservationMessage, setReservationMessage] = useState({ type: '', text: '' });
+
   useEffect(() => {
     const fetchPublicacion = async () => {
       try {
@@ -87,7 +92,7 @@ function PostDetail() {
 
   const handleReservationSubmit = async (e) => {
     e.preventDefault();
-    
+
     setFormErrors({});
     setReservationMessage({ type: '', text: '' });
 
@@ -101,9 +106,9 @@ function PostDetail() {
 
     if (paymentSuccessful) {
       try {
-        // Update publication availability in db.json
+        // Step 1: Update publication availability in db.json
         const updatedPublicacion = { ...publicacion, disponible: false };
-        const response = await fetch(`http://localhost:3001/publicaciones/${id}`, {
+        const updatePublicationResponse = await fetch(`http://localhost:3001/publicaciones/${id}`, {
           method: 'PUT', // Use PUT to replace the resource
           headers: {
             'Content-Type': 'application/json',
@@ -111,16 +116,46 @@ function PostDetail() {
           body: JSON.stringify(updatedPublicacion),
         });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (!updatePublicationResponse.ok) {
+          throw new Error(`HTTP error! status: ${updatePublicationResponse.status}`);
+        }
+
+        // Step 2: Create a pending rental entry
+        const pendingRental = {
+          publicationId: publicacion.id,
+          publicationName: publicacion.nombreMaquina,
+          publicationPricePerDay: publicacion.precioPorDia,
+          fechaInicio: fechaInicio,
+          fechaFin: fechaFin,
+          tipoEntrega: tipoEntrega,
+          calleEntrega: tipoEntrega === 'A domicilio' ? calleEntrega : '',
+          numeroEntrega: tipoEntrega === 'A domicilio' ? numeroEntrega : '',
+          clientId: user.id,
+          clientDni: user.dni,
+          clientName: user.nombre,
+          clientApellido: user.apellido,
+          totalPrice: calculateTotalPrice(),
+          reservationDate: new Date().toISOString(), // Timestamp of the reservation
+        };
+
+        const createRentalResponse = await fetch('http://localhost:3001/pendingRentals', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(pendingRental),
+        });
+
+        if (!createRentalResponse.ok) {
+          throw new Error(`HTTP error! status: ${createRentalResponse.status}`);
         }
 
         setPublicacion(updatedPublicacion); // Update local state
-        setReservationMessage({ type: 'success', text: `La reserva de la maquinaria "${publicacion.nombreMaquina}" se registró con éxito. La publicación ahora no está disponible.` });
+        setReservationMessage({ type: 'success', text: `La reserva de la maquinaria "${publicacion.nombreMaquina}" se registró con éxito. La publicación ahora no está disponible y la reserva está pendiente.` });
         setShowReservationForm(false); // Hide the form after success
       } catch (err) {
-        console.error("Error updating publication availability:", err);
-        setReservationMessage({ type: 'error', text: 'Hubo un error al registrar la reserva y actualizar la disponibilidad. Intenta de nuevo.' });
+        console.error("Error handling reservation:", err);
+        setReservationMessage({ type: 'error', text: 'Hubo un error al registrar la reserva y/o actualizar la disponibilidad. Intenta de nuevo.' });
       }
     } else {
       setReservationMessage({ type: 'error', text: 'El pago no pudo ser procesado. Intenta de nuevo.' });
@@ -141,147 +176,148 @@ function PostDetail() {
 
   return (
     <>
-    <Header/>
-    <div className="detalle-container">
-      <button onClick={() => navigate('/HomePage')} className="back-button">Volver al inicio</button>
-      <h1>Detalle de la Publicación</h1>
-      <div className="publicacion-detalle-card">
-        <div className="detalle-imagen">
-          <img src={publicacion.imagenes[0] || 'https://via.placeholder.com/600x400/CCCCCC/000000?text=No+Image'} alt={publicacion.nombreMaquina} />
-        </div>
-        <div className="detalle-info">
-          <h2>{publicacion.nombreMaquina}</h2>
-          <p>
-            <strong>Precio por día:</strong> ${publicacion.precioPorDia.toLocaleString('es-AR')}
-          </p>
-          <p>
-            <strong>Ubicación:</strong> {publicacion.ubicacionActual.calle},{' '}
-            {publicacion.ubicacionActual.altura}
-            {publicacion.ubicacionActual.departamento && `, Dpto. ${publicacion.ubicacionActual.departamento}`}
-            {publicacion.ubicacionActual.entreCalles && ` (${publicacion.ubicacionActual.entreCalles})`}
-          </p>
-          <p>
-            <strong>Política de Cancelación:</strong> {publicacion.politicaCancelacion}
-          </p>
-          {publicacion.tagsAdicionales && publicacion.tagsAdicionales.length > 0 && (
-            <p className="detalle-tags">
-              <strong>Tags:</strong> {publicacion.tagsAdicionales.join(', ')}
+      <Header />
+      <div className="detalle-container">
+        <button onClick={() => navigate('/HomePage')} className="back-button">Volver al inicio</button>
+        <h1>Detalle de la Publicación</h1>
+        <div className="publicacion-detalle-card">
+          <div className="detalle-imagen">
+            <img src={publicacion.imagenes[0] || 'https://via.placeholder.com/600x400/CCCCCC/000000?text=No+Image'} alt={publicacion.nombreMaquina} />
+          </div>
+          <div className="detalle-info">
+            <h2>{publicacion.nombreMaquina}</h2>
+            <p>
+              <strong>Precio por día:</strong> ${publicacion.precioPorDia.toLocaleString('es-AR')}
             </p>
-          )}
-          <p className={`disponibilidad-status ${publicacion.disponible ? 'disponible' : 'no-disponible'}`}>
-            Estado: {publicacion.disponible ? 'Disponible' : 'No Disponible'}
-          </p>
-
-          {publicacion.disponible ? (
-            <button
-              className="reservar-button"
-              onClick={() => {
-                if(!user){
-                  alert("debe registrarse");
-
-                  return;
-                }
-                setShowReservationForm(!showReservationForm)}}
-            >
-              {showReservationForm ? 'Cerrar Formulario de Reserva' : 'Reservar Maquinaria'}
-            </button>
-          ) : (
-            <button className="reservar-button disabled" disabled>
-              No Disponible para Reserva
-            </button>
-          )}
-        </div>
-      </div>
-
-      {showReservationForm && publicacion.disponible && (
-        <div className="reservation-form-card">
-          <h3>Formulario de Reserva</h3>
-          {reservationMessage.text && (
-            <div className={`message ${reservationMessage.type}`}>
-              {reservationMessage.text}
-            </div>
-          )}
-          <form onSubmit={handleReservationSubmit}>
-            <div className="form-group">
-              <label htmlFor="fechaInicio">Fecha Inicio de Alquiler:</label>
-              <input
-                type="date"
-                id="fechaInicio"
-                value={fechaInicio}
-                onChange={(e) => setFechaInicio(e.target.value)}
-                min={new Date().toISOString().split('T')[0]} // Cannot select past dates
-                required
-              />
-              {formErrors.fechaInicio && <span className="error-text">{formErrors.fechaInicio}</span>}
-            </div>
-            <div className="form-group">
-              <label htmlFor="fechaFin">Fecha Fin de Alquiler:</label>
-              <input
-                type="date"
-                id="fechaFin"
-                value={fechaFin}
-                onChange={(e) => setFechaFin(e.target.value)}
-                min={fechaInicio || new Date().toISOString().split('T')[0]} // Cannot select past dates or before start date
-                required
-              />
-              {formErrors.fechaFin && <span className="error-text">{formErrors.fechaFin}</span>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="tipoEntrega">Tipo de Entrega:</label>
-              <select
-                id="tipoEntrega"
-                value={tipoEntrega}
-                onChange={(e) => setTipoEntrega(e.target.value)}
-                required
-              >
-                <option value="">Seleccione</option>
-                <option value="A domicilio">A domicilio</option>
-                <option value="Retiro en sucursal">Retiro en sucursal</option>
-              </select>
-              {formErrors.tipoEntrega && <span className="error-text">{formErrors.tipoEntrega}</span>}
-            </div>
-
-            {tipoEntrega === 'A domicilio' && (
-              <>
-                <div className="form-group">
-                  <label htmlFor="calleEntrega">Calle de Entrega:</label>
-                  <input
-                    type="text"
-                    id="calleEntrega"
-                    value={calleEntrega}
-                    onChange={(e) => setCalleEntrega(e.target.value)}
-                    required
-                  />
-                  {formErrors.calleEntrega && <span className="error-text">{formErrors.calleEntrega}</span>}
-                </div>
-                <div className="form-group">
-                  <label htmlFor="numeroEntrega">Número de Entrega:</label>
-                  <input
-                    type="text"
-                    id="numeroEntrega"
-                    value={numeroEntrega}
-                    onChange={(e) => setNumeroEntrega(e.target.value)}
-                    required
-                  />
-                  {formErrors.numeroEntrega && <span className="error-text">{formErrors.numeroEntrega}</span>}
-                </div>
-              </>
+            <p>
+              <strong>Ubicación:</strong> {publicacion.ubicacionActual.calle},{' '}
+              {publicacion.ubicacionActual.altura}
+              {publicacion.ubicacionActual.departamento && `, Dpto. ${publicacion.ubicacionActual.departamento}`}
+              {publicacion.ubicacionActual.entreCalles && ` (${publicacion.ubicacionActual.entreCalles})`}
+            </p>
+            <p>
+              <strong>Política de Cancelación:</strong> {publicacion.politicaCancelacion}
+            </p>
+            {publicacion.tagsAdicionales && publicacion.tagsAdicionales.length > 0 && (
+              <p className="detalle-tags">
+                <strong>Tags:</strong> {publicacion.tagsAdicionales.join(', ')}
+              </p>
             )}
+            <p className={`disponibilidad-status ${publicacion.disponible ? 'disponible' : 'no-disponible'}`}>
+              Estado: {publicacion.disponible ? 'Disponible' : 'No Disponible'}
+            </p>
 
-            <div className="form-group">
-              <label>Monto Total Estimado:</label>
-              <p className="total-amount">${calculateTotalPrice()}</p>
-            </div>
-
-            <button type="submit" className="submit-reservation-button">
-              Confirmar Reserva
-            </button>
-          </form>
+            {publicacion.disponible ? (
+              <button
+                className="reservar-button"
+                onClick={() => {
+                  if (!user) {
+                    navigate("/Login");
+                    return;
+                  }
+                  setShowReservationForm(!showReservationForm);
+                  section.current?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                {showReservationForm ? 'Cerrar Formulario de Reserva' : 'Reservar Maquinaria'}
+              </button>
+            ) : (
+              <button className="reservar-button disabled" disabled>
+                No Disponible para Reserva
+              </button>
+            )}
+          </div>
         </div>
-      )}
-    </div>
-  </>
+
+        {showReservationForm && publicacion.disponible && (
+          <div ref={section} className="reservation-form-card">
+            <h3>Formulario de Reserva</h3>
+            {reservationMessage.text && (
+              <div className={`message ${reservationMessage.type}`}>
+                {reservationMessage.text}
+              </div>
+            )}
+            <form onSubmit={handleReservationSubmit}>
+              <div className="form-group">
+                <label htmlFor="fechaInicio">Fecha Inicio de Alquiler:</label>
+                <input
+                  type="date"
+                  id="fechaInicio"
+                  value={fechaInicio}
+                  onChange={(e) => setFechaInicio(e.target.value)}
+                  min={new Date().toISOString().split('T')[0]} // Cannot select past dates
+                  required
+                />
+                {formErrors.fechaInicio && <span className="error-text">{formErrors.fechaInicio}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="fechaFin">Fecha Fin de Alquiler:</label>
+                <input
+                  type="date"
+                  id="fechaFin"
+                  value={fechaFin}
+                  onChange={(e) => setFechaFin(e.target.value)}
+                  min={fechaInicio || new Date().toISOString().split('T')[0]} // Cannot select past dates or before start date
+                  required
+                />
+                {formErrors.fechaFin && <span className="error-text">{formErrors.fechaFin}</span>}
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="tipoEntrega">Tipo de Entrega:</label>
+                <select
+                  id="tipoEntrega"
+                  value={tipoEntrega}
+                  onChange={(e) => setTipoEntrega(e.target.value)}
+                  required
+                >
+                  <option value="">Seleccione</option>
+                  <option value="A domicilio">A domicilio</option>
+                  <option value="Retiro en sucursal">Retiro en sucursal</option>
+                </select>
+                {formErrors.tipoEntrega && <span className="error-text">{formErrors.tipoEntrega}</span>}
+              </div>
+
+              {tipoEntrega === 'A domicilio' && (
+                <>
+                  <div className="form-group">
+                    <label htmlFor="calleEntrega">Calle de Entrega:</label>
+                    <input
+                      type="text"
+                      id="calleEntrega"
+                      value={calleEntrega}
+                      onChange={(e) => setCalleEntrega(e.target.value)}
+                      required
+                    />
+                    {formErrors.calleEntrega && <span className="error-text">{formErrors.calleEntrega}</span>}
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="numeroEntrega">Número de Entrega:</label>
+                    <input
+                      type="text"
+                      id="numeroEntrega"
+                      value={numeroEntrega}
+                      onChange={(e) => setNumeroEntrega(e.target.value)}
+                      required
+                    />
+                    {formErrors.numeroEntrega && <span className="error-text">{formErrors.numeroEntrega}</span>}
+                  </div>
+                </>
+              )}
+
+              <div className="form-group">
+                <label>Monto Total Estimado:</label>
+                <p className="total-amount">${calculateTotalPrice()}</p>
+              </div>
+
+              <button type="submit" className="submit-reservation-button">
+                Confirmar Reserva
+              </button>
+            </form>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
 

@@ -30,7 +30,6 @@ function HomePage() {
 
     fetchPublicaciones();
   }, []);
-
   const handleCardClick = (id) => {
     navigate(`/PostDetail/${id}`); // Redirect to the detail page
   };
@@ -82,6 +81,7 @@ function HomePage() {
               </div>
             </div>
           ))}
+          
         </div>
       )}
     </div>

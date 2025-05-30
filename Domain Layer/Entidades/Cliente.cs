@@ -13,7 +13,7 @@ namespace Domain_Layer.Entidades
         [Key, ForeignKey(nameof(UsuarioRegistrado))]
         public string DNI { get; set; }
         public UsuarioRegistrado UsuarioRegistrado { get; set; }
-        public Empleado Empleado { get; set; }
+        public Empleado? Empleado { get; set; } //para mi va el ? , ya q es (0,1)
         public ICollection<Comentario>? Comentarios { get; set; } = new List<Comentario>();
         public ICollection<Reserva>? Reservas { get; set; } = new List<Reserva>();
         public ICollection<Alquiler>? Alquileres { get; set; } = new List<Alquiler>();

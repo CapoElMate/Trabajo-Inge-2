@@ -9,9 +9,12 @@ namespace Data_Access_Layer.Interfaces
 {
     public interface IUsuarioRegistradoRepository
     {
-        public UsuarioRegistrado get(string dni = "", string email = "");
-        public void update(UsuarioRegistrado usuarioRegistrado);
-        public void delete(string dni = "", string email = "");
-        public void create(UsuarioRegistrado usuarioRegistrado);
+        Task<IEnumerable<UsuarioRegistrado>> GetAllAsync();
+        Task<UsuarioRegistrado?> GetByDNIAsync(string DNI);
+        Task<UsuarioRegistrado?> GetByEmailAsync(string email);
+        Task AddAsync(UsuarioRegistrado cliente);
+        Task UpdateAsync(UsuarioRegistrado cliente);
+        Task DeleteAsync(UsuarioRegistrado cliente);
+        Task<bool> ExistsAsync(string DNI);
     }
 }

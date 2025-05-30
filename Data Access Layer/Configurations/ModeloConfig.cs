@@ -14,7 +14,7 @@ namespace Data_Access_Layer.Configurations
     {
         public void Configure(EntityTypeBuilder<Modelo> builder)
         {
-            builder.HasKey(m => new { m.ModeloName, m.MarcaName});
+            builder.HasKey(m => m.ModeloName);
             builder.Property(m => m.ModeloName)
                 .HasMaxLength(50);
 

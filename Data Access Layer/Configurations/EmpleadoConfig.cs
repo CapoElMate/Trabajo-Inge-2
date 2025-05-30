@@ -18,6 +18,8 @@ namespace Data_Access_Layer.Configurations
                 .IsRequired();
             builder.HasIndex(empleado => empleado.DNI)
                 .IsUnique();
+            builder.Property(c => c.DNI)
+                  .ValueGeneratedNever();
 
             builder.Property(empleado => empleado.nroEmpleado)
                 .IsRequired();

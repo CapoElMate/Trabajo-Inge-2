@@ -1,108 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Bussines_Logic_Layer.DTOs.Maquina;
+using Bussines_Logic_Layer.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Data_Access_Layer;
-using Domain_Layer.Entidades;
 
 namespace API_Layer.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class MaquinasController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IMaquinaService _service;
 
-        public MaquinasController(ApplicationDbContext context)
+        public MaquinasController(IMaquinaService service)
         {
-            _context = context;
+            _service = service;
         }
 
-        // GET: api/Maquinas
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Maquina>>> GetMaquinas()
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<MaquinaDto>>> GetMaquinas()
         {
-            return await _context.Maquinas.ToListAsync();
+            var maquinas = await _service.GetAllAsync();
+            return Ok(maquinas);
         }
 
-        // GET: api/Maquinas/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Maquina>> GetMaquina(int id)
+        [HttpGet("byId")]
+        public async Task<ActionResult<MaquinaDto>> GetMaquina(int id)
         {
-            var maquina = await _context.Maquinas.FindAsync(id);
-
+            var maquina = await _service.GetByIdAsync(id);
             if (maquina == null)
-            {
                 return NotFound();
-            }
 
-            return maquina;
+            return Ok(maquina);
         }
 
-        // PUT: api/Maquinas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutMaquina(int id, Maquina maquina)
+        [HttpPost]
+        public async Task<ActionResult<MaquinaDto>> PostMaquina(CreateMaquinaDto dto)
         {
-            if (id != maquina.idMaquina)
-            {
-                return BadRequest();
-            }
+            var created = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetMaquina), new { id = created }, created);
+        }
 
-            _context.Entry(maquina).State = EntityState.Modified;
+        [HttpPut]
+        public async Task<IActionResult> PutMaquina(int id, MaquinaDto dto)
+        {
+            var maquina = await _service.GetByIdAsync(id);
+            if (maquina == null || id != maquina.IdMaquina)
+                return BadRequest("La maquina no existe.");
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!MaquinaExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            var updated = await _service.UpdateAsync(id, dto);
+            if (!updated)
+                return NotFound();
 
             return NoContent();
         }
 
-        // POST: api/Maquinas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Maquina>> PostMaquina(Maquina maquina)
-        {
-            _context.Maquinas.Add(maquina);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMaquina", new { id = maquina.idMaquina }, maquina);
-        }
-
-        // DELETE: api/Maquinas/5
-        [HttpDelete("{id}")]
+        [HttpDelete("byId")]
         public async Task<IActionResult> DeleteMaquina(int id)
         {
-            var maquina = await _context.Maquinas.FindAsync(id);
-            if (maquina == null)
-            {
-                return NotFound();
-            }
+            var maquina = await _service.GetByIdAsync(id);
+            if (maquina == null || id != maquina.IdMaquina)
+                return BadRequest("La maquina no existe.");
 
-            _context.Maquinas.Remove(maquina);
-            await _context.SaveChangesAsync();
+            var deleted = await _service.DeleteAsync(id);
+            if (!deleted)
+                return NotFound();
 
             return NoContent();
         }
 
-        private bool MaquinaExists(int id)
+        [HttpDelete("byId/logic")]
+        public async Task<IActionResult> LogicDeleteMaquina(int id)
         {
-            return _context.Maquinas.Any(e => e.idMaquina == id);
+            var maquina = await _service.GetByIdAsync(id);
+            if (maquina == null || id != maquina.IdMaquina)
+                return BadRequest("La maquina no existe.");
+
+            var deleted = await _service.LogicDeleteAsync(id);
+            if (!deleted)
+                return NotFound();
+
+            return NoContent();
         }
     }
 }

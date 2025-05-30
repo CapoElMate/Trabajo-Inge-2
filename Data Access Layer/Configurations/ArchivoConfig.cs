@@ -13,7 +13,7 @@ namespace Data_Access_Layer.Configurations
     {
         public void Configure(EntityTypeBuilder<Archivo> builder)
         {
-            builder.HasKey(a => new { a.idArchivo, a.EntidadID, a.TipoEntidad });
+            builder.HasKey(a =>a.idArchivo);
             builder.Property(a => a.EntidadID)
                 .IsRequired();
             builder.Property(a => a.TipoEntidad)
