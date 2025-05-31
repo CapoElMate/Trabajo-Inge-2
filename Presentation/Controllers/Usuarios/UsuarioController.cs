@@ -2,6 +2,8 @@
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Bussines_Logic_Layer.DTOs.Usuarios;
 using Bussines_Logic_Layer.Interfaces;
+using Bussines_Logic_Layer.Managers;
+using Mailjet.Client;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Layer.Controllers.Usuarios
@@ -12,10 +14,11 @@ namespace API_Layer.Controllers.Usuarios
     public class UsuarioController : ControllerBase
     {
         private readonly IUsuarioRegistradoService _serviceUsuario;
-
-        public UsuarioController(IUsuarioRegistradoService serviceUsuario)
+        private readonly IEmails mailjetClient;
+        public UsuarioController(IUsuarioRegistradoService serviceUsuario, IEmails mailjetClient)
         {
             _serviceUsuario = serviceUsuario;
+            this.mailjetClient = mailjetClient;
         }
 
         [HttpGet("all")]
@@ -51,6 +54,7 @@ namespace API_Layer.Controllers.Usuarios
             var created = await _serviceUsuario.CreateAsync(dto);
             if (created == null)
                 return BadRequest("El usuario no se encuentra en identity, utiliza /register antes de registrar el usuario.");
+            //mailjetClient.SendRegisterConfirmation(created.Email, created.Nombre, created.Apellido);
             return CreatedAtAction(nameof(GetUsuarioByDNI), new { dni = created }, created);
         }
 

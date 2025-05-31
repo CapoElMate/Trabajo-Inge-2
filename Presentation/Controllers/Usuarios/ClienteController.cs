@@ -2,6 +2,7 @@
 using Bussines_Logic_Layer.DTOs.Maquina;
 using Bussines_Logic_Layer.DTOs.Usuarios;
 using Bussines_Logic_Layer.Interfaces;
+using Mailjet.Client;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API_Layer.Controllers.Usuarios
@@ -12,10 +13,11 @@ namespace API_Layer.Controllers.Usuarios
     public class ClienteController : ControllerBase
     {
         private readonly IClienteService _serviceCliente;
-
-        public ClienteController(IClienteService serviceCliente)
+        private readonly IEmails _mailjetClient;
+        public ClienteController(IClienteService serviceCliente, IEmails mailjetClient)
         {
             _serviceCliente = serviceCliente;
+            _mailjetClient = mailjetClient;
         }
 
         [HttpGet("all")]
@@ -33,6 +35,16 @@ namespace API_Layer.Controllers.Usuarios
                 return NotFound();
 
             return Ok(usuario);
+        }
+
+        [HttpGet("isValidateDNI")]
+        public async Task<ActionResult<UsuarioRegistradoDTO>> IsValidateDNI(string DNI)
+        {
+            var usuario = await _serviceCliente.GetByDNIAsync(DNI);
+            if (usuario == null)
+                return NotFound();
+
+            return Ok(usuario.UsuarioRegistrado.dniVerificado);
         }
 
         [HttpGet("byEmail")]
@@ -55,15 +67,15 @@ namespace API_Layer.Controllers.Usuarios
         [HttpPut("ConfirmDNI")]
         public async Task<IActionResult> ValidarDNI(string dni)
         {
-            var cliente = await _serviceCliente.GetByDNIAsync(dni);
-            if (cliente == null || dni != cliente.UsuarioRegistrado.DNI)
-                return BadRequest("El cliente no existe.");
+            //var cliente = await _serviceCliente.GetByDNIAsync(dni);
+            //if (cliente == null || dni != cliente.UsuarioRegistrado.DNI)
+            //    return BadRequest("El cliente no existe.");
 
             var updated = await _serviceCliente.ConfirmDNI(dni);
             if (!updated)
-                return NotFound();
-
-            return NoContent();
+                return BadRequest("No se pudo validar el DNI.");
+            //_mailjetClient.SendDNIValidationConfirmation(cliente.UsuarioRegistrado.Email, cliente.UsuarioRegistrado.Nombre, cliente.UsuarioRegistrado.Apellido);
+            return Ok("DNI Validado correctamente.");
         }
         //[HttpPut]
         //public async Task<IActionResult> PutMaquina(string dni, ClienteDto dto)
