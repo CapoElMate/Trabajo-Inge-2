@@ -25,7 +25,6 @@ namespace Bussines_Logic_Layer.Services
             "image/png",
             "image/jpeg",
             "application/pdf",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // DOCX
         };
 
         private static readonly string[] _allowedExtensions = new string[]
@@ -34,7 +33,6 @@ namespace Bussines_Logic_Layer.Services
             ".jpg",
             ".jpeg",
             ".pdf",
-            ".docx"
         };
 
         // Tamaño máximo de archivo (ej. 10 MB)
@@ -104,7 +102,7 @@ namespace Bussines_Logic_Layer.Services
                     EntidadID = dto.EntidadID,
                     TipoContenido = dto.Archivo.ContentType,
                     Descripcion = dto.Descripcion,
-                    Ruta = relativePath
+                    Ruta = filePath
                 };
                 await _repo.AddAsync(nuevoArchivoDb);
 
@@ -139,14 +137,22 @@ namespace Bussines_Logic_Layer.Services
                 return false;
             }
 
-            var basePath = AppContext.BaseDirectory;
-            var directoryInfo = new DirectoryInfo(basePath);
-            var filePath = Path.Combine(directoryInfo.FullName.Split("bin")[0], archivo.Ruta.TrimStart('/'));
-            if (System.IO.File.Exists(filePath))
+            if (System.IO.File.Exists(archivo.Ruta))
             {
-                System.IO.File.Delete(filePath);
+                System.IO.File.Delete(archivo.Ruta);
+
+                // Quitar el nombre del archivo del final de la ruta
+                var directory = Path.GetDirectoryName(archivo.Ruta.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar));
+                if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory))
+                {
+                    // Solo elimina si la carpeta está vacía
+                    if (!Directory.EnumerateFileSystemEntries(directory).Any())
+                    {
+                        Directory.Delete(directory);
+                    }
+                }
             }
-            //await _repo.DeleteAsync(archivo); // Actualiza el estado en la DB
+            await _repo.DeleteAsync(archivo); // Actualiza el estado en la DB
 
             return true;
         }
