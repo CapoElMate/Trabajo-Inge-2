@@ -71,8 +71,20 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
     //localStorage.removeItem("user"); // 🔴 Limpiar sesión
+    const response = await fetch(`http://localhost:5000/Auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include'
+    });
+
+    console.log("Respuesta del servidor al cerrar sesión:", await response.json());
+    if (!response.ok) {
+      throw new Error(`Error en la conexión o el servidor respondió con estado: ${response.status}`);
+    }
     setUser(null);
     setError(null);
     navigate("/Login");

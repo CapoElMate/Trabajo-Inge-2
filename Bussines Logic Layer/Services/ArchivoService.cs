@@ -146,7 +146,7 @@ namespace Bussines_Logic_Layer.Services
             {
                 System.IO.File.Delete(filePath);
             }
-            await _repo.DeleteAsync(archivo); // Actualiza el estado en la DB
+            //await _repo.DeleteAsync(archivo); // Actualiza el estado en la DB
 
             return true;
         }

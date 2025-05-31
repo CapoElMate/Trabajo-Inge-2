@@ -346,5 +346,29 @@ namespace API_Layer.Controllers.Usuarios
 
             return Ok(new { UserName = userName, UserId = userId, Roles = userRoles, Message = "Estás autenticado." });
         }
+
+        [HttpDelete("delete-user")]
+        //[Authorize(Roles = "Dueño,Empleado")]
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+
+            if(user == null)
+            {
+                return NotFound(new { message = "Usuario no encontrado." });
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok(new { message = "Usuario eliminado exitosamente." });
+            }
+            else
+            {
+                return StatusCode(500, new { message = "Error al eliminar el usuario.", errors = result.Errors.Select(e => e.Description) });
+            }
+        }
+
+
     }
 }
