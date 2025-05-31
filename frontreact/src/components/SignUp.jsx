@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import './SignUp.css';
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import { useAuth } from '../AuthContext';
 import Header from './Header';
 const SignUp = () => {
@@ -22,7 +22,7 @@ const SignUp = () => {
     password: '',
     confirmPassword: '',
     fotoDNI: null,
-    rol:'cliente',
+    rol:'Cliente',
   });
 
   const [errors, setErrors] = useState({});
@@ -94,13 +94,13 @@ const SignUp = () => {
   };
     const handleSubmit = async (e) => {
   e.preventDefault();
-  let ruta = 'pendingUsers';
+  //let ruta = 'pendingUsers';
 
   if (!validate()) return;
 
   try {
     // 1. Traer todos los usuarios actuales
-    const res = await fetch('http://localhost:3001/users');
+    const res = await fetch('http://localhost:5000/api/Usuario/all');
     const usuarios = await res.json();
 
     // 2. Verificar si ya existe un usuario con ese email o DNI
@@ -127,31 +127,127 @@ const SignUp = () => {
 
     // 4. Si es dueño quien registra, cambia a 'empleado'
     if (user && user.rol === 'dueño') {
-      dataToSend.rol = 'empleado';
-      ruta = 'users';
+      dataToSend.rol = 'Empleado';
+      //ruta = 'users';
     }
 
     // 5. Enviar al backend
-    const response = await fetch(`http://localhost:3001/${ruta}`, {
+    //1-Registrar Auth
+    const responseAuth = await fetch(`http://localhost:5000/Auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(dataToSend),
+      body: JSON.stringify({
+        "email": dataToSend.email,
+        "password": dataToSend.password,
+        "confirmPassword": dataToSend.password,
+        "role": dataToSend.rol,
+      }),
     });
 
-    const result = await response.json();
+    console.log('Auth registrada:', await responseAuth.json());
 
-    if (response.ok) {
-  if (!user) {
-    setMensajeExito('Sus datos serán verificados en breve por un empleado de Bob el Alquilador');
-    setTimeout(() => {
-      navigate("/HomePage");
-    }, 3000); // Espera 3 segundos antes de redirigir
-  } else if (user.rol === 'dueño') {
-    setMensajeExito('Se ha registrado un empleado exitosamente');
-  }
-}
+    if (responseAuth.ok) {
+      //2-Registrar Usuario
+      const responseRegistrarUsuario = await fetch(`http://localhost:5000/api/Usuario`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          "email": dataToSend.email,
+          "password": dataToSend.password,
+          "dni": dataToSend.dni,
+          "nombre": dataToSend.nombre,
+          "apellido": dataToSend.apellido,
+          "edad": dataToSend.edad,
+          "telefono": dataToSend.telefono,
+          "calle": dataToSend.calle,
+          "altura": dataToSend.altura,
+          "dpto": dataToSend.departamento,
+          "entreCalles": dataToSend.entreCalles,
+          "permisosEspeciales": [],
+          "roleName": dataToSend.rol,
+          "dniVerificado": false,
+        }),
+      });
+
+      console.log('Usuario registrado:', await responseRegistrarUsuario.json());
+      
+      if (responseRegistrarUsuario.ok) {
+        //3-Registrar Cliente
+        const responseRegistrarCliente = await fetch(`http://localhost:5000/api/Cliente`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              "usuarioRegistrado": {
+              "email": dataToSend.email,
+              "password": dataToSend.password,
+              "dni": dataToSend.dni,
+              "nombre": dataToSend.nombre,
+              "apellido": dataToSend.apellido,
+              "edad": dataToSend.edad,
+              "telefono": dataToSend.telefono,
+              "calle": dataToSend.calle,
+              "altura": dataToSend.altura,
+              "dpto": dataToSend.departamento,
+              "entreCalles": dataToSend.entreCalles,
+              "permisosEspeciales": [],
+              "roleName": dataToSend.rol,
+              "dniVerificado": false,
+            }
+          }),
+        });
+
+        console.log('Cliente registrado:', await responseRegistrarCliente.json());
+
+        if (!responseRegistrarCliente.ok) {
+          if(dataToSend.rol === 'Empleado') {
+            //3-Registrar Cliente
+            const responseRegistrarEmpleado = await fetch(`http://localhost:5000/api/Empleado`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                "cliente": {
+                    "usuarioRegistrado": {
+                    "email": dataToSend.email,
+                    "password": dataToSend.password,
+                    "dni": dataToSend.dni,
+                    "nombre": dataToSend.nombre,
+                    "apellido": dataToSend.apellido,
+                    "edad": dataToSend.edad,
+                    "telefono": dataToSend.telefono,
+                    "calle": dataToSend.calle,
+                    "altura": dataToSend.altura,
+                    "dpto": dataToSend.departamento,
+                    "entreCalles": dataToSend.entreCalles,
+                    "permisosEspeciales": [],
+                    "roleName": dataToSend.rol,
+                    "dniVerificado": false,
+                  }
+                }
+              }),
+            });
+
+            console.log('Empleado registrado:', await responseRegistrarEmpleado.json());
+          }
+
+          if (!user) {
+            setMensajeExito('Sus datos serán verificados en breve por un empleado de Bob el Alquilador');
+            setTimeout(() => {
+              navigate("/HomePage");
+            }, 3000); // Espera 3 segundos antes de redirigir
+          } else if (user.rol === 'dueño') {
+            setMensajeExito('Se ha registrado un empleado exitosamente');
+          }
+        }
+      }
+    }
 
 
   } catch (error) {

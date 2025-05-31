@@ -326,7 +326,6 @@ namespace API_Layer.Controllers.Usuarios
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            _logger.LogInformation("Usuario cerró sesión.");
             return Ok(new { message = "Cierre de sesión exitoso." });
         }
 

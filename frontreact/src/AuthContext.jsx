@@ -18,26 +18,48 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await fetch(`http://localhost:3001/users?email=${email}&password=${password}`);
+      const response = await fetch(`http://localhost:5000/Auth/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          "email": email,
+          "password": password,
+          "rememberMe": true
+        }),
+        credentials: 'include'
+      });
 
       if (!response.ok) {
         throw new Error(`Error en la conexión o el servidor respondió con estado: ${response.status}`);
       }
 
-      const usersFound = await response.json();
+      console.log("Respuesta del servidor:", await response.json());
 
-      if (usersFound.length > 0) {
-        const usuarioLogueado = usersFound[0];
-        setUser(usuarioLogueado);
-        localStorage.setItem("user", JSON.stringify(usuarioLogueado)); // 🟢 Guardar en LocalStorage
+      const responseMe = await fetch(`http://localhost:5000/Auth/me`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include'
+      });
+
+      let usersFound = await responseMe.json();
+
+
+
+      if (usersFound) {
+        setUser(usersFound);
+        //localStorage.setItem("user", JSON.stringify(usuarioLogueado)); // 🟢 Guardar en LocalStorage
         setError(null);
 
-        if (usuarioLogueado.rol === "dueño") {
+        if (usersFound.roles.includes("Dueño")) {
           navigate("/HomePageAdmin");
-        } else if (usuarioLogueado.rol === "cliente") {
+        } else if (usersFound.roles.includes("Cliente")) {
           navigate("/HomePage");
         }
-        if(usuarioLogueado.rol==="empleado"){
+        if(usersFound.roles.includes("Empelado")){
           navigate("/EmployeeHome");
         }
       } else {
@@ -50,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("user"); // 🔴 Limpiar sesión
+    //localStorage.removeItem("user"); // 🔴 Limpiar sesión
     setUser(null);
     setError(null);
     navigate("/Login");
