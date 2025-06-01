@@ -8,16 +8,16 @@ import ValidateUser from './components/ValidateUser';
 import PostDetail from './components/PostDetail';
 import Header from './components/Header';
 
-import CargarPublicacion from './components/CargarPublicacion';
-import EditarPublicacion from './components/EditarPublicacion';
-import DuplicarPublicacion from  './components/DuplicarPublicacion';
-import PublicacionDetail from  './components/DetallePublicacion';
+import CargarPublicacion from './components/Publicacion/CargarPublicacion';
+import EditarPublicacion from './components/Publicacion/EditarPublicacion';
+import DuplicarPublicacion from  './components/Publicacion/DuplicarPublicacion';
+import PublicacionDetail from  './components/Publicacion/DetallePublicacion';
 
-import CrearMaquinaria from './components/CrearMaquinaria';
-import EditarMaquinaria from './components/EditarMaquinaria';
-import DuplicarMaquinaria from './components/DuplicarMaquinaria';
-import MaquinariaDetail from './components/DetalleMaquinaria';
-import MaquinariaList from './components/MaquinariaList';
+import CrearMaquinaria from './components/Maquinaria/CrearMaquinaria';
+import EditarMaquinaria from './components/Maquinaria/EditarMaquinaria';
+import DuplicarMaquinaria from './components/Maquinaria/DuplicarMaquinaria';
+import MaquinariaDetail from './components/Maquinaria/DetalleMaquinaria';
+import MaquinariaList from './components/Maquinaria/MaquinariaList';
 
 
 import HomePageAdmin from './components/HomePageAdmin';

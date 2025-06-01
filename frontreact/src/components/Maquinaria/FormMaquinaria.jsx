@@ -1,9 +1,9 @@
 // components/MaquinariaForm.jsx
 import { useState, useEffect, } from "react";
-import TextInput from "./TextInput";
-import SelectInput from "./SelectInput";
-import TagSelector from "./TagSelector";
-import FormButtons from "./FormButtons";
+import TextInput from "../TextInput";
+import SelectInput from "../SelectInput";
+import TagSelector from "../TagSelector";
+import FormButtons from "../FormButtons";
 
 
 export default function MaquinariaForm({ initialData = {}, onSubmit={},onCancel={}, modo = "Crear" }) {

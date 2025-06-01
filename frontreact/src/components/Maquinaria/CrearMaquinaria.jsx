@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
-import TextInput from "./TextInput";
-import SelectInput from "./SelectInput";
-import TagSelector from "./TagSelector";
-import FormButtons from "./FormButtons";
-import Header from "./Header";
+import TextInput from "../TextInput";
+import SelectInput from "../SelectInput";
+import TagSelector from "../TagSelector";
+import FormButtons from "../FormButtons";
+import Header from "../Header";
 import { useNavigate } from "react-router-dom";
 import MaquinariaForm from "./FormMaquinaria";
-import "./FormStructure.css";
+import "../FormStructure.css";
 
 export default function CrearMaquinaria({ initialData = {}, modo = "Crear" }) {
   /*

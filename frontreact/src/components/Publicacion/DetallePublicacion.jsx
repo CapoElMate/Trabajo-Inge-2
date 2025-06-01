@@ -1,10 +1,10 @@
 // pages/MaquinariaDetail.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Header from "./Header";
-import StyledButton from "./CustomButton";
+import Header from "../Header";
+import StyledButton from "../CustomButton";
 import "./DetallePublicacion.css";
-import logo from '../assets/bobElAlquiladorLogoCompleto.svg'; 
+import logo from '../../assets/bobElAlquiladorLogoCompleto.svg'; 
 
 export default function PublicacionDetail() {
   const { id } = useParams();
