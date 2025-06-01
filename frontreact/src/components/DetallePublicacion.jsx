@@ -1,7 +1,10 @@
- // pages/MaquinariaDetail.jsx
+// pages/MaquinariaDetail.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Header from "./Header";
+import StyledButton from "./CustomButton";
+import "./DetallePublicacion.css";
+import logo from '../assets/bobElAlquiladorLogoCompleto.svg'; 
 
 export default function PublicacionDetail() {
   const { id } = useParams();
@@ -9,7 +12,7 @@ export default function PublicacionDetail() {
   const [publicacion, setPublicacion] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/publicaciones/${id}`)
+    fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`)
       .then((res) => res.json())
       .then((data) => setPublicacion(data));
   }, [id]);
@@ -20,94 +23,129 @@ export default function PublicacionDetail() {
     }).then(() => navigate("/"));
     // "publicacion eliminada satisfactoriamente.
   };
- 
 
   if (!publicacion) return <p>Cargando...</p>;
 
   return (
     <>
-    <Header/>
-    <div className="p-4 detalle-contenedor">
-      <h2 className="text-xl mb-2"> {publicacion.titulo}</h2>
-      <p>Descripcion: {publicacion.descripcion}</p>
-      <p>Ubicacion: {publicacion.ubicacion}</p>
-      <p>Politica: {publicacion.politica}</p>
-      <p>Precio: {publicacion.precio}</p>
-      <p>Tags: {publicacion.tags?.map(t => t.tag).join(", ")}</p>
-      <p>Maquinaria: {publicacion.maquinaria.id}</p> 
-      {/*"id": "maq103",
-      "marca": "Marca A",
-      "modelo": "",
-      "anioFabricacion": "",
-      "tipo": "Compactador",
-      "permisosEspeciales": [],
-      "tagsMaquina": []
-    }, */}
-       <p>Imagenes:</p>
-       {publicacion.imagenes.map((i)=>(
-        <img key={i.img.name} src={i.img.src} width="120px" height="120px" />
-       )
+      <Header />
+      <div className="p-4 detalle-contenedor">
+        <div className="header">
+          <h2>Titulo</h2>
+          <div className="button-container">
+            <StyledButton
+              text="Modificar"
+              onClick={() => navigate(`/EditarPublicacion/${publicacion.id}`)}
+            />
+            <StyledButton
+              text="Eliminar"
+              onClick={() => {
+                const confirmado = window.confirm(
+                  "¿Estás seguro de que querés eliminar esta publicacion?"
+                );
+                if (confirmado) handleEliminar();
+              }}
+            />
+            <StyledButton
+              text="Duplicar"
+              onClick={() => navigate(`/DuplicarPublicacion/${publicacion.id}`)}
+            />
+          </div>
+        </div>
 
-       )}
-        
-        
-      <div className="flex gap-2 mt-4">
-       
-        <button
-          style={{ 
-          color: "#111827",           
-          padding: "10px 16px",
-          border: "1px solid #d1d5db",
-          borderRadius: "8px",
-          cursor: "pointer",
-          fontSize: "16px",
-          fontWeight: "500",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-          transition: "background-color 0.2s ease"
-        }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#d1d5db")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#e5e7eb")} 
-        onClick={() => navigate(`/EditarPublicacion/${publicacion.id}`)} >Modificar</button>
-        <button 
-          style={{ 
-           backgroundColor: "#dd433d",
-          color: "#111827",          
-          padding: "10px 16px",
-          border: "1px solid #d1d5db",
-          borderRadius: "8px",
-          cursor: "pointer",
-          fontSize: "16px",
-          fontWeight: "500",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-          transition: "background-color 0.2s ease"
-        }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#C8797D")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#dd433d")}
-        onClick={() => {
-      const confirmado = window.confirm("¿Estás seguro de que querés eliminar esta publicacion?");
-      if (confirmado) {
-        handleEliminar();  
-       }
-        }} >Eliminar</button>
-        
-        <button 
-          style={{   
-          backgroundColor: "#2563eb",
-          color: "#111827",            
-          padding: "10px 16px",
-          border: "1px solid #d1d5db",
-          borderRadius: "8px",
-          cursor: "pointer",
-          fontSize: "16px",
-          fontWeight: "500",
-          boxShadow: "0 1px 3px rgba(0,0,0,0.05)",
-          transition: "background-color 0.2s ease"
-        }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#1e40af")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#2563eb")}
-        onClick={() => navigate(`/DuplicarPublicacion/${publicacion.id}`)}  >Duplicar</button>
+        {/* Nueva división superior */}
+        <div className="top-content">
+          {/* Izquierda: info publicación */}
+          <div className="container">
+            <h3>Descripción</h3>
+            <p id="descripcion">{publicacion.descripcion}</p>
+
+            <h3>Ubicación</h3>
+            <p>{publicacion.ubicacion.ubicacionName}</p>
+
+            <h3>Política de Cancelación</h3>
+            <p>{publicacion.politicaDeCancelacion.politica}</p>
+
+            <h3>Precio por Día</h3>
+            <p>{publicacion.precioPorDia}</p>
+
+            <h3>Tags</h3>
+            <p>{publicacion.tagsPublicacion.map((t) => t.tag).join(", ")}</p>
+          </div>
+
+          {/* Derecha: imágenes */}
+          <div className="image-preview">
+            {publicacion.imagenes && publicacion.imagenes.length > 0 ? (
+              publicacion.imagenes.map((i) => (
+                <img
+                  key={i.img.name}
+                  src={i.img.src}
+                  width="120px"
+                  height="120px"
+                  alt="preview"
+                />
+              ))
+            ) : (
+              <img src={logo} alt="Vista previa" className="preview-img" />
+            )}
+          </div>
+        </div>
+
+        {/* Abajo: maquinaria */}
+        <h3 className="maquinaria-title">Maquinaria</h3>
+        <div className="maquinaria-container">
+          {/* Fila 1 */}
+          <div className="maquinaria-row">
+            <div className="maquinaria-item">
+              <h4>ID</h4>
+              <p>{publicacion.maquina.idMaquina}</p>
+            </div>
+            <div className="maquinaria-item">
+              <h4>Estado</h4>
+              <p>{publicacion.maquina.status}</p>
+            </div>
+            <div className="maquinaria-item">
+              <h4>Año de Fabricación</h4>
+              <p>{publicacion.maquina.anioFabricacion}</p>
+            </div>
+          </div>
+
+          {/* Fila 2 */}
+          <div className="maquinaria-row">
+            <div className="maquinaria-item">
+              <h4>Modelo</h4>
+              <p>{publicacion.maquina.modelo.modelo}</p>
+            </div>
+            <div className="maquinaria-item">
+              <h4>Marca</h4>
+              <p>{publicacion.maquina.modelo.marca.marca}</p>
+            </div>
+            <div className="maquinaria-item">
+              <h4>Tipo</h4>
+              <p>{publicacion.maquina.tipoMaquina.tipo}</p>
+            </div>
+          </div>
+
+          {/* Fila 3 */}
+          <div className="maquinaria-row">
+            <div className="maquinaria-item">
+              <h4>Tags</h4>
+              <p>
+                {publicacion.maquina.tagsMaquina.map((t) => t.tag).join(", ")}
+              </p>
+            </div>
+            <div className="maquinaria-item">
+              <h4>Permisos Especiales</h4>
+              <p>
+                {publicacion.maquina.permisosEspeciales
+                  .map((p) => p.permiso)
+                  .join(", ")}
+              </p>
+            </div>
+            <div className="maquinaria-item"></div>
+          </div>
+        </div>
       </div>
-    </div>
     </>
   );
 }
