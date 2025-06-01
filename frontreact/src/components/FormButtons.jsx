@@ -2,7 +2,7 @@ import { TbBackground } from "react-icons/tb";
 
  export default function FormButtons({ modo="Enviar",onSubmit,onCancel }) {
   return (
-    <div className="flex justify-between mt-4">
+    <div className="flex justify-between mt-3">
       <button type="submit"  onClick={onSubmit} 
         style={{
           backgroundColor: "#2563eb", // azul

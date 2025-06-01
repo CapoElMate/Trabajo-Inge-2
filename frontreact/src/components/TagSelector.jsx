@@ -23,7 +23,7 @@ export default function TagSelector({ tags, setTags, opciones, modo="Tags" }) {
           onChange={(e) => setSelected(e.target.value)}
           className="border p-1 rounded"
         >
-          <option value="">Seleccionar tag</option>
+          <option value="">Seleccionar {modo.toLowerCase()}</option>
           {opciones.map((opt) => (
             <option key={opt} value={opt}>{opt}</option>
           ))}

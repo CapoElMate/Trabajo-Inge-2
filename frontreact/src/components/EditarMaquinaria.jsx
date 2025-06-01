@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import CargarMaquinaria from "../components/CargarMaquinaria"; // formulario reutilizable
+import CargarMaquinaria from "./CrearMaquinaria"; // formulario reutilizable
 import MaquinariaForm from "./FormMaquinaria";
 import Header from "./Header";
 
