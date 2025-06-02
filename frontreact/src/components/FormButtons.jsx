@@ -2,10 +2,10 @@ import { TbBackground } from "react-icons/tb";
 
  export default function FormButtons({ modo="Enviar",onSubmit,onCancel }) {
   return (
-    <div className="flex justify-between mt-4">
+    <div className="flex justify-between mt-3">
       <button type="submit"  onClick={onSubmit} 
         style={{
-          backgroundColor: "#2563eb", // azul
+          backgroundColor: "#dc3545", // azul
           color: "white",
           padding: "10px 16px",
           border: "none",
@@ -16,8 +16,8 @@ import { TbBackground } from "react-icons/tb";
           boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           transition: "background-color 0.2s ease"
         }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#1e40af")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#2563eb")}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#b02a37")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#dc3545")}
       >{modo}</button>
       <button type="button" onClick={onCancel}
       style={{

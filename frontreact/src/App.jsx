@@ -13,7 +13,7 @@ import EditarPublicacion from './components/EditarPublicacion';
 import DuplicarPublicacion from  './components/DuplicarPublicacion';
 import PublicacionDetail from  './components/DetallePublicacion';
 
-import CargarMaquinaria from './components/CargarMaquinaria';
+import CrearMaquinaria from './components/CrearMaquinaria';
 import EditarMaquinaria from './components/EditarMaquinaria';
 import DuplicarMaquinaria from './components/DuplicarMaquinaria';
 import MaquinariaDetail from './components/DetalleMaquinaria';
@@ -48,11 +48,11 @@ const App = () => {
         <Route path='/EditarPublicacion/:id' element={<EditarPublicacion/>} />
         <Route path="/DuplicarPublicacion/:id" element={<DuplicarPublicacion/>}/>
         <Route path="/DetallePublicacion/:id" element={<PublicacionDetail/>}/>
-        <Route path='/CargarMaquinaria' element={<CargarMaquinaria/>} />
+        <Route path='/CrearMaquinaria' element={<CrearMaquinaria/>} />
         <Route path="/modificar/:id" element={<EditarMaquinaria />} />
         <Route path="/duplicar/:id" element={<DuplicarMaquinaria />} />       
         <Route path="/maquinaria/:id" element={<MaquinariaDetail />} />
-        <Route path='/maquinarias' element={<MaquinariaList/>}/>
+        <Route path='/MaquinariaList' element={<MaquinariaList/>}/>
         <Route path='/HomePageAdmin' element={<HomePageAdmin/>} />
         <Route path='/Leases' element={<Leases/>}/>
         <Route path='/Rentals' element={<Rentals/>}/>      

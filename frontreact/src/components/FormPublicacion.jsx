@@ -6,6 +6,7 @@ import FormButtons from "../components/FormButtons";
 import ImageUploader from "./ImageUploader";
 import ImagePreviewList from "./ImagePreviwList"; 
 import Header from "./Header";
+import "./FormStructure.css";
 
  const fileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
@@ -130,8 +131,7 @@ export default function PublicacionForm ({ initialData = {}, onSubmit={},onCance
       
       <TagSelector tags={tags} setTags={setTags} opciones={opcionesDeTags} />
       
-      <ImageUploader onChange={handleImagenesChange} required/>
-      <ImagePreviewList imagenes={imagenes} handleEliminar= {handleEliminarImagenes} />
+      <ImageUploader onChange={(files) => console.log(files)} />
       <FormButtons  modo={modo}  onCancel={onCancel} />
      </form>
      </div>
