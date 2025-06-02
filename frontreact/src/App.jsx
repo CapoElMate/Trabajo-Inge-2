@@ -31,6 +31,7 @@ import Profile from './components/Profile';
 import ValidatePermit from './components/ValidatePermit';
 import EmployeeHome from './components/EmployeeHome';
 import ConfirmReservations from './components/ConfrmReservations';
+import PublicacionEjemplo from './components/PublicacionEjemplo';
 const App = () => {
   return (
     <AuthProvider>
@@ -61,6 +62,7 @@ const App = () => {
         <Route path='/ValidatePermit' element={<ValidatePermit/>}/>
         <Route path='/EmployeeHome' element={<EmployeeHome/>}/>
         <Route path='/ConfirmReservations' element={<ConfirmReservations/>}/>
+        <Route path='/PublicacionEjemplo' element={<PublicacionEjemplo/>}/>
       </Routes>
     </AuthProvider>
   );
