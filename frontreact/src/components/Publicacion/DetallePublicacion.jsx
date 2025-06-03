@@ -196,9 +196,11 @@ export default function PublicacionDetail() {
             <div className="maquinaria-item">
               <h4>Permisos Especiales</h4>
               <p>
-                {publicacion.maquina.permisosEspeciales.length === 0 ? "N/A" : publicacion.maquina.permisosEspeciales
-                  .map((p) => p.permiso)
-                  .join(", ")}
+                {publicacion.maquina.permisosEspeciales.length === 0
+                  ? "N/A"
+                  : publicacion.maquina.permisosEspeciales
+                      .map((p) => p.permiso)
+                      .join(", ")}
               </p>
             </div>
             <div className="maquinaria-item"></div>
@@ -215,6 +217,8 @@ export default function PublicacionDetail() {
         mensaje="¿Estás seguro de que querés eliminar esta publicacion?"
       />
       <ModalReserva
+        idPublicacion={publicacion.idPublicacion}
+        precioPorDia={publicacion.precioPorDia}
         isOpen={mostrarReservaModal}
         onClose={() => setMostrarReservaModal(false)}
         onReservar={handleReservar}

@@ -27,7 +27,7 @@ namespace Bussines_Logic_Layer.Mapping
                 //         destination               <-      source
                 .ForMember(dest => dest.idReserva, opt => opt.MapFrom(src => src.idReserva))
                 .ForMember(dest => dest.TipoEntrega, opt => opt.MapFrom<TipoEntregaToReservaDto>())
-                .ForMember(dest => dest.Pago, opt => opt.MapFrom<PagoToReservaDto>())
+                //.ForMember(dest => dest.Pago, opt => opt.MapFrom<PagoToReservaDto>())
                 //.ForMember(dest => dest.Alquiler, opt => opt.MapFrom<AlquilerToReservaDto>())
                 //.ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteToReservaDto>())
                 //.ForMember(dest => dest.Publicacion, opt => opt.MapFrom<PublicacionToReservaDto>())
@@ -38,7 +38,7 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso))
                 .ForMember(dest => dest.idReserva, opt => opt.MapFrom(src => src.idReserva))
                 .ForMember(dest => dest.IdAlquiler, opt => opt.MapFrom(src => src.idAlquiler))
                 .ForMember(dest => dest.DNICliente, opt => opt.MapFrom(src => src.DNI));
@@ -46,7 +46,7 @@ namespace Bussines_Logic_Layer.Mapping
             CreateMap<ReservaDto,Reserva>()
                 .ForMember(dest => dest.idReserva, opt => opt.MapFrom(src => src.idReserva))
                 .ForMember(dest => dest.TipoEntrega, opt => opt.MapFrom<TipoEntregaDtoToReserva>())
-                .ForMember(dest => dest.Pago, opt => opt.MapFrom<PagoDtoToReserva>())
+                //.ForMember(dest => dest.Pago, opt => opt.MapFrom<PagoDtoToReserva>())
                 .ForMember(dest => dest.Alquiler, opt => opt.MapFrom<AlquilerDtoToReserva>())
                 .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteDtoToReserva>())
                 .ForMember(dest => dest.Publicacion, opt => opt.MapFrom<PublicacionDtoToReserva>())
@@ -57,11 +57,11 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles));
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso));
 
             CreateMap<CreateReservaDto,Reserva>()
                 .ForMember(dest => dest.TipoEntrega, opt => opt.MapFrom<CreateTipoEntregaDtoToReserva>())
-                .ForMember(dest => dest.Pago, opt => opt.MapFrom<CreatePagoDtoToReserva>())
+                //.ForMember(dest => dest.Pago, opt => opt.MapFrom<CreatePagoDtoToReserva>())
                 .ForMember(dest => dest.Alquiler, opt => opt.MapFrom<CreateAlquilerDtoToReserva>())
                 .ForMember(dest => dest.Cliente, opt => opt.MapFrom<CreateClienteDtoToReserva>())
                 .ForMember(dest => dest.Publicacion, opt => opt.MapFrom<CreatePublicacionDtoToReserva>())
@@ -72,7 +72,7 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles));
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso));
         }
     }
 }

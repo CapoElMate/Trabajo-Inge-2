@@ -16,7 +16,6 @@ import PublicacionDetail from  './components/Publicacion/DetallePublicacion';
 import CrearMaquinaria from './components/Maquinaria/CrearMaquinaria';
 import EditarMaquinaria from './components/Maquinaria/EditarMaquinaria';
 //import DuplicarMaquinaria from './components/Maquinaria/DuplicarMaquinaria';
-import MaquinariaDetail from './components/Maquinaria/DetalleMaquinaria';
 import ListarMaquinaria from './components/Maquinaria/ListarMaquinaria';
 
 
@@ -27,7 +26,7 @@ import Leases from './components/Leases';
 import Rentals from './components/Rentals';
 import ResetPassword from './components/ResetPassword';
 import PermitFileUploader from './components/PermitFileUploader';
-import Profile from './components/Profile';
+import Perfil from './components/Perfil/Perfil';
 import ValidatePermit from './components/ValidatePermit';
 import EmployeeHome from './components/EmployeeHome';
 import ConfirmReservations from './components/ConfrmReservations';
@@ -56,7 +55,7 @@ const App = () => {
 
         <Route path="/Leases" element={<Leases />} />
         <Route path="/Rentals" element={<Rentals />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Perfil" element={<Perfil />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
         <Route path="/PermitFileUploader" element={<PermitFileUploader />} />
         <Route path="/ValidatePermit" element={<ValidatePermit />} />

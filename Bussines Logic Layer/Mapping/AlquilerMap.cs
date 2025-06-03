@@ -16,13 +16,16 @@ namespace Bussines_Logic_Layer.Mapping
         public AlquilerMap() {
             CreateMap<Alquiler, AlquilerDto>()
                 .ForMember(dest => dest.DNIEmpleadoEfectivizo, opt => opt.MapFrom(src => src.Empleado.DNI))
-                .ForMember(dest => dest.InfoAsentada, opt => opt.MapFrom<InfoAsentadaToAlquilerDto>());
+                .ForMember(dest => dest.InfoAsentada, opt => opt.MapFrom<InfoAsentadaToAlquilerDto>())
+                .ForMember(dest => dest.Reserva, opt => opt.MapFrom<ReservaToAlquilerDto>());
             CreateMap<AlquilerDto, Alquiler>()
                 .ForMember(dest => dest.DNIEmpleado, opt => opt.MapFrom(src => src.DNIEmpleadoEfectivizo))
-                .ForMember(dest => dest.InfoAsentada, opt => opt.MapFrom<InfoAsentadaDtoToAlquiler>());
+                .ForMember(dest => dest.InfoAsentada, opt => opt.MapFrom<InfoAsentadaDtoToAlquiler>())
+                .ForMember(dest => dest.Reserva, opt => opt.MapFrom<ReservaDtoToAlquiler>());
             CreateMap<CreateAlquilerDto, Alquiler>()
                 .ForMember(dest => dest.DNIEmpleado, opt => opt.MapFrom(src => src.DNIEmpleadoEfectivizo))
-                .ForMember(dest => dest.InfoAsentada, opt => opt.MapFrom<CreateInfoAsentadaDtoToAlquiler>());
+                .ForMember(dest => dest.InfoAsentada, opt => opt.MapFrom<CreateInfoAsentadaDtoToAlquiler>())
+                .ForMember(dest => dest.Reserva, opt => opt.MapFrom<CreateReservaDtoToAlquiler>());
         }
     }
 }

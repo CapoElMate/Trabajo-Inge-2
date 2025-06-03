@@ -3,6 +3,7 @@ using System;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603134109_updateEntreCallesToPiso")]
+    partial class updateEntreCallesToPiso
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -520,7 +523,7 @@ namespace Data_Access_Layer.Migrations
                     b.Property<DateTime>("fecInicio")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("idAlquiler")
+                    b.Property<int>("idAlquiler")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("idPublicacion")
@@ -529,7 +532,7 @@ namespace Data_Access_Layer.Migrations
                     b.Property<double>("montoTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("nroPago")
+                    b.Property<int>("nroPago")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("idReserva");
@@ -1212,7 +1215,8 @@ namespace Data_Access_Layer.Migrations
                     b.HasOne("Domain_Layer.Entidades.Alquiler", "Alquiler")
                         .WithOne("Reserva")
                         .HasForeignKey("Domain_Layer.Entidades.Reserva", "idAlquiler")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain_Layer.Entidades.Publicacion", "Publicacion")
                         .WithMany("Reservas")
@@ -1223,7 +1227,8 @@ namespace Data_Access_Layer.Migrations
                     b.HasOne("Domain_Layer.Entidades.Pago", "Pago")
                         .WithOne("Reserva")
                         .HasForeignKey("Domain_Layer.Entidades.Reserva", "nroPago")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Alquiler");
 

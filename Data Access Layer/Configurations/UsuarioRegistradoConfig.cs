@@ -42,7 +42,7 @@ namespace Domain_Layer.Configurations
                 .HasMaxLength(70);
             builder.Property(user => user.Dpto)
                 .HasMaxLength(70);
-            builder.Property(user => user.EntreCalles)
+            builder.Property(user => user.Piso)
                 .IsRequired()
                 .HasMaxLength(70);
 

@@ -1,7 +1,7 @@
 /* Profile.css */
 
 .profile-container {
-  max-width: 900px;
+  max-width: 70%;
   margin: 20px auto;
   padding: 30px;
   background-color: #f9f9f9;
@@ -14,6 +14,28 @@
   color: #333;
   margin-bottom: 30px;
   font-size: 2.2em;
+}
+
+.personalInformacion
+{
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.personalInformacion > p
+{
+  display: flex;
+  flex-direction: column;
+  margin: 0;
 }
 
 .user-info-card {
@@ -80,4 +102,43 @@
   color: #888;
   font-style: italic;
   margin-top: 20px;
+}
+.user-info-card {
+  margin-bottom: 2rem;
+}
+
+.reservas-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.reservas-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.reserva-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 1rem;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.reserva-card:hover {
+  background-color: #f9fafb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.reserva-label {
+  font-weight: 500;
+  color: #333;
+}
+
+.reserva-empty {
+  font-style: italic;
+  color: #666;
 }
