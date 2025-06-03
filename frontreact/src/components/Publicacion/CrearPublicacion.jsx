@@ -12,9 +12,42 @@ import PublicacionForm from "./FormPublicacion";
 export default function CrearPublicacion() {
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    console.log("Publicación creada.");  
-    navigate("/HomePage");
+  const handleSubmit = async (publicacionData, imagenes) => {
+    try {
+      // Paso 1: Enviar publicación
+      const res = await fetch("http://localhost:5000/api/Publicacion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(publicacionData),
+      });
+
+      if (!res.ok) throw new Error("Error al crear publicación");
+
+      const nuevaPublicacion = await res.json();
+      navigate(`/DetallePublicacion/${nuevaPublicacion.idPublicacion}`);
+      // // Paso 2: Subir imágenes
+      // for (let i = 0; i < imagenes.length; i++) {
+      //   const formData = new FormData();
+      //   formData.append("EntidadID", publicacionId);
+      //   formData.append("TipoEntidad", 0);
+      //   formData.append("Nombre", `Imagen ${i + 1}`);
+      //   formData.append("Descripcion", `Imagen ${i + 1} de la publicación`);
+      //   formData.append("Archivo", imagenes[i]);
+
+      //   const imgRes = await fetch("http://localhost:5000/api/Archivo", {
+      //     method: "POST",
+      //     body: formData,
+      //   });
+
+      //   if (!imgRes.ok) {
+      //     console.error(`Error al subir imagen ${i + 1}`);
+      //   }
+      // }
+    } catch (error) {
+      console.error("Error al crear publicación:", error);
+    }
   };
 
   const handleCancel = () => {

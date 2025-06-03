@@ -84,7 +84,7 @@ export default function PublicacionDetail() {
       <Header />
       <div className="p-4 detalle-contenedor">
         <div className="header">
-          <h2>Titulo</h2>
+          <h2>{publicacion.titulo}</h2>
           <div className="button-container">
             <StyledButton
               text="Modificar"
@@ -99,7 +99,16 @@ export default function PublicacionDetail() {
                 setMostrarModal(true);
               }}
             />
-            <StyledButton text="Reservar" onClick={() => setMostrarReservaModal(true)} />
+            <StyledButton
+              text="Duplicar"
+              onClick={() => {
+                handleDuplicar(publicacion.idPublicacion);
+              }}
+            />
+            <StyledButton
+              text="Reservar"
+              onClick={() => setMostrarReservaModal(true)}
+            />
           </div>
         </div>
 
@@ -187,7 +196,7 @@ export default function PublicacionDetail() {
             <div className="maquinaria-item">
               <h4>Permisos Especiales</h4>
               <p>
-                {publicacion.maquina.permisosEspeciales
+                {publicacion.maquina.permisosEspeciales.length === 0 ? "N/A" : publicacion.maquina.permisosEspeciales
                   .map((p) => p.permiso)
                   .join(", ")}
               </p>

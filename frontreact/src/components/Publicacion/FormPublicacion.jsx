@@ -68,8 +68,15 @@ export default function PublicacionForm({
   };
 
   const getPoliticas = async () => {
-    // Supuesto: se carga desde un array fijo o similar si no hay endpoint real
-    setOpcionesPoliticas(["Política por Tardanza", "Política por Daños"]);
+    try {
+      const res = await fetch(
+        "http://localhost:5000/api/PoliticaDeCancelacion/all"
+      );
+      const data = await res.json();
+      setOpcionesPoliticas(data);
+    } catch (error) {
+      console.error("Error al obtener ubicaciones:", error);
+    }
   };
 
   useEffect(() => {
@@ -110,59 +117,19 @@ export default function PublicacionForm({
       ...(modo === "Editar" && { idPublicacion: initialData?.idPublicacion }),
       status: "Activa",
       titulo,
-      precioPorDia: precio,
+      precioPorDia: parseFloat(precio),
       descripcion,
-      maquina: {
-        idMaquina: maquinaria.value,
-      },
+      maquina: maquinarias.find((m) => m.idMaquina === maquinaria.value),
       tagsPublicacion: tags.map((t) => ({ tag: t })),
-      politicaDeCancelacion: {
-        politica,
-      },
+      politicaDeCancelacion: opcionesPoliticas.find(
+        (p) => p.politica === politica
+      ),
       ubicacion: {
         ubicacionName: ubicacion,
       },
     };
 
-    try {
-      // Paso 1: Enviar publicación
-      const res = await fetch("http://localhost:5000/api/Publicaciones", {
-        method: modo === "Editar" ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(publicacionData),
-      });
-
-      if (!res.ok) throw new Error("Error al crear publicación");
-
-      const nuevaPublicacion = await res.json();
-      const publicacionId =
-        nuevaPublicacion.id || nuevaPublicacion.idPublicacion;
-
-      // Paso 2: Subir imágenes
-      for (let i = 0; i < imagenes.length; i++) {
-        const formData = new FormData();
-        formData.append("EntidadID", publicacionId);
-        formData.append("TipoEntidad", 0);
-        formData.append("Nombre", `Imagen ${i + 1}`);
-        formData.append("Descripcion", `Imagen ${i + 1} de la publicación`);
-        formData.append("Archivo", imagenes[i]);
-
-        const imgRes = await fetch("http://localhost:5000/api/Archivo", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (!imgRes.ok) {
-          console.error(`Error al subir imagen ${i + 1}`);
-        }
-      }
-
-      onSubmit();
-    } catch (error) {
-      console.error("Error al crear publicación con imágenes:", error);
-    }
+    onSubmit(publicacionData, imagenes);
   };
 
   return (
@@ -199,23 +166,19 @@ export default function PublicacionForm({
                 ? maquinaria
                   ? [maquinaria]
                   : []
-                : opcionesMaquinaria
+              : opcionesMaquinaria
             }
             defaultOptionLabel="Seleccionar..."
             value={maquinaria?.value || ""}
             onChange={(e) => {
-              if (modo !== "Editar") {
-                const selectedId = e.target.value;
-                const seleccionada = maquinarias.find(
-                  (m) => m.id === selectedId
-                );
-                if (seleccionada) {
-                  setMaquinaria({
-                    value: seleccionada.id,
-                    label: `${seleccionada.marca} ${seleccionada.modelo}`,
-                  });
-                  console.log("Maquinaria elegida", seleccionada);
-                }
+              const selectedId = e.target.value;
+              const seleccionada = maquinarias.find((m) => m.idMaquina === parseInt(selectedId));
+              if (seleccionada) {
+                setMaquinaria({
+                  value: seleccionada.idMaquina,
+                  label: `${seleccionada.marca} ${seleccionada.modelo}`,
+                });
+                console.log("Maquinaria elegida", seleccionada);
               }
             }}
             required
@@ -224,7 +187,7 @@ export default function PublicacionForm({
 
           <SelectInput
             label="Política de Cancelación"
-            options={opcionesPoliticas}
+            options={opcionesPoliticas.map((p) => p.politica)}
             onChange={(e) => setPolitica(e.target.value)}
             value={politica || ""}
             required

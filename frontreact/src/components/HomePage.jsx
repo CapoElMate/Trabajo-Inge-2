@@ -107,7 +107,8 @@ function HomePage() {
 
                             <div style={{ padding: '15px' }}>
                                 <h3 style={{ margin: '0 0 10px 0', fontSize: '1.2em' }}>
-                                    {pub.maquina?.modelo?.marca?.marca} {pub.maquina?.modelo?.modelo}
+                                    {/* {pub.maquina?.modelo?.marca?.marca} {pub.maquina?.modelo?.modelo} */}
+                                    {pub.titulo}
                                 </h3>
                                 <p style={{ margin: '5px 0', fontSize: '1.5em', fontWeight: 'bold', color: '#cc0000' }}>
                                     ${pub.precioPorDia} / Día

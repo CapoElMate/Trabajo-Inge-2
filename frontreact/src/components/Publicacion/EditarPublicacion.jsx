@@ -18,24 +18,40 @@ export default function EditarPublicacion() {
     console.log("Cancelado");
     navigate("/HomePage");
   };
-  const handleSubmit = async (data) => {
-    //como ya esta formateado en el form publicaciones no lo formateo aca para mandaral back
-    fetch(`http://localhost:5000/Publicacion/${id}`, {
+  const handleSubmit = async (data, imagenes) => {
+    fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     })
       .then((res) => {
         if (!res.ok) throw new Error("Error al guardar la maquinaria");
-        const resJson = res.json();
-        navigate(`/DetailsPublicacion/${resJson.idPublicacion}`);
+        navigate(`/DetallePublicacion/${data.idPublicacion}`);
       })
       .catch((error) => {
         console.error(error);
         alert("No se pudo guardar la maquinaria");
       });
-  };
 
+    // // Paso 2: Subir imágenes
+    // for (let i = 0; i < imagenes.length; i++) {
+    //   const formData = new FormData();
+    //   formData.append("EntidadID", data.idPublicacion);
+    //   formData.append("TipoEntidad", 0);
+    //   formData.append("Nombre", `Imagen ${i + 1}`);
+    //   formData.append("Descripcion", `Imagen ${i + 1} de la publicación`);
+    //   formData.append("Archivo", imagenes[i]);
+
+    //   const imgRes = await fetch("http://localhost:5000/api/Archivo", {
+    //     method: "POST",
+    //     body: formData,
+    //   });
+
+    //   if (!imgRes.ok) {
+    //     console.error(`Error al subir imagen ${i + 1}`);
+    //   }
+    // }
+  };
   if (!publicacion) return <p>Cargando...</p>;
 
   return (
