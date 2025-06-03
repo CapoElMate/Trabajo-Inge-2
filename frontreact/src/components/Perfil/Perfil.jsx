@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Perfil.css";
 import Header from "../Header";
+import { useNavigate } from "react-router-dom";
 
 export default function PerfilCliente() {
   const [cliente, setCliente] = useState(null);
@@ -10,6 +11,7 @@ export default function PerfilCliente() {
   const [loading, setLoading] = useState(true);
 
   const dniCliente = "2050022";
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDatos = async () => {
@@ -29,9 +31,36 @@ export default function PerfilCliente() {
         const dataAlquileres = await resAlquileres.json();
         const dataReembolsos = await resReembolsos.json();
 
+        const reservasMasPublicacion = await Promise.all(
+          dataReservas.map(async (reserva) => {
+            // Traer la publicacion correspondiente a esta reserva
+            const res = await fetch(
+              `http://localhost:5000/api/Publicacion/byId?id=${reserva.idPublicacion}`
+            );
+            const publicacion = await res.json();
+
+            // Combinar datos de reserva + publicacion (como "p" por ejemplo)
+            return { ...reserva, publicacion };
+          })
+        );
+
+        const alquiilerMasPublicacion = await Promise.all(
+          dataAlquileres.map(async (alquiler) => {
+            // Traer la publicacion correspondiente a esta reserva
+            const res = await fetch(
+              `http://localhost:5000/api/Publicacion/byId?id=${alquiler.reserva.idPublicacion}`
+            );
+            const publicacion = await res.json();
+
+            // Combinar datos de reserva + publicacion (como "p" por ejemplo)
+            return { ...alquiler, publicacion };
+          })
+        );
+
+
         setCliente(dataCliente.usuarioRegistrado);
-        setReservas(dataReservas);
-        setAlquileres(dataAlquileres);
+        setReservas(reservasMasPublicacion);
+        setAlquileres(alquiilerMasPublicacion);
         setReembolsos(dataReembolsos);
       } catch (error) {
         console.error("Error al cargar los datos del perfil:", error);
@@ -65,50 +94,74 @@ export default function PerfilCliente() {
           </div>
         )}
 
-<div className="user-info-card">
-  <h2 className="reservas-title">Reservas</h2>
-  {reservas.length > 0 ? (
-    <div className="reservas-list">
-      {reservas.map((reserva) => (
-        <div
-          key={reserva.idReserva}
-          className="reserva-card"
-          onClick={() => console.log("Click en reserva", reserva.idReserva)}
-        >
-          <p>
-            <span className="reserva-label">Desde:</span>{" "}
-            {reserva.fecInicio.split("T")[0]}
-          </p>
-          <p>
-            <span className="reserva-label">Hasta:</span>{" "}
-            {reserva.fecFin.split("T")[0]}
-          </p>
-          <p>
-            <span className="reserva-label">Estado:</span>{" "}
-            <em>{reserva.status}</em>
-          </p>
+        <div className="user-info-card">
+          <h2 className="reservas-title">Reservas</h2>
+          {reservas.filter((r) => r.status === "Lista para efectivizar")
+            .length > 0 ? (
+            <div className="reservas-list">
+              {reservas
+                .filter((r) => r.status === "Lista para efectivizar")
+                .map((reserva) => (
+                  <div
+                    key={reserva.idReserva}
+                    className="reserva-card"
+                    onClick={() =>
+                      navigate(`/DetalleReserva/${reserva.idReserva}`)
+                    }
+                  >
+                    <p>
+                      <span className="reserva-label">Titulo:</span>{" "}
+                      {reserva.publicacion.titulo}
+                    </p>
+                    <p>
+                      <span className="reserva-label">Maquina:</span>{" "}
+                      {reserva.publicacion.maquina.modelo.marca.marca}{" "}
+                      {reserva.publicacion.maquina.modelo.modelo}
+                    </p>
+                    <p>
+                      <span className="reserva-label">
+                        Click para más detalles
+                      </span>
+                    </p>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <p className="reserva-empty">No hay reservas registradas.</p>
+          )}
         </div>
-      ))}
-    </div>
-  ) : (
-    <p className="reserva-empty">No hay reservas registradas.</p>
-  )}
-</div>
 
         <div className="user-info-card">
-          <h2 className="text-xl font-semibold mb-2">Alquileres</h2>
+          <h2 className="reservas-title">Alquileres</h2>
           {alquileres.length > 0 ? (
-            <ul className="list-disc pl-5">
+            <div className="reservas-list">
               {alquileres.map((alquiler) => (
-                <li key={alquiler.idAlquiler}>
-                  Desde <strong>{alquiler.fecInicio}</strong> hasta{" "}
-                  <strong>{alquiler.fecFin}</strong> - Vehículo:{" "}
-                  {alquiler.patenteVehiculo}
-                </li>
+                <div
+                    key={alquiler.reserva.idReserva}
+                    className="reserva-card"
+                    onClick={() =>
+                      navigate(`/DetalleAlquiler/${alquiler.idAlquiler}`)
+                    }
+                  >
+                    <p>
+                      <span className="reserva-label">Titulo:</span>{" "}
+                      {alquiler.publicacion.titulo}
+                    </p>
+                    <p>
+                      <span className="reserva-label">Maquina:</span>{" "}
+                      {alquiler.publicacion.maquina.modelo.marca.marca}{" "}
+                      {alquiler.publicacion.maquina.modelo.modelo}
+                    </p>
+                    <p>
+                      <span className="reserva-label">
+                        Click para más detalles
+                      </span>
+                    </p>
+                  </div>
               ))}
-            </ul>
+            </div>
           ) : (
-            <p>No hay alquileres registrados.</p>
+            <p className="reserva-empty">No hay alquileres registrados.</p>
           )}
         </div>
 

@@ -26,8 +26,7 @@ namespace Bussines_Logic_Layer.Resolvers.Alquiler
         public ReservaDto Resolve(Domain_Layer.Entidades.Alquiler source, AlquilerDto destination
                                                        , ReservaDto destMember, ResolutionContext context)
         {
-
-            var reservsaExistente = _context.Reservas.FirstOrDefault(p => p.idReserva.Equals(source.Reserva.idReserva));
+            var reservsaExistente = _context.Reservas.FirstOrDefault(p => p.idReserva.Equals(source.idReserva));
 
             if (reservsaExistente == null)
             {

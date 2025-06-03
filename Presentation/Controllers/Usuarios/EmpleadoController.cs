@@ -70,7 +70,7 @@ namespace API_Layer.Controllers.Usuarios
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmpleadoDto>> PostEmpleado(EmpleadoDto dto)
+        public async Task<ActionResult<EmpleadoDto>> PostEmpleado(CreateEmpleadoDto dto)
         {
             var created = await _serviceEmpledo.CreateAsync(dto);
             return CreatedAtAction(nameof(GetEmpleadoByDNI), new { dni = created }, created);

@@ -18,6 +18,8 @@ import EditarMaquinaria from './components/Maquinaria/EditarMaquinaria';
 //import DuplicarMaquinaria from './components/Maquinaria/DuplicarMaquinaria';
 import ListarMaquinaria from './components/Maquinaria/ListarMaquinaria';
 
+import DetalleReserva from './components/Reserva/DetalleReserva';
+import DetalleAlquiler from './components/Alquiler/DetalleAlquiler';
 
 import HomePageAdmin from './components/HomePageAdmin';
 import './components/App.css';
@@ -52,6 +54,9 @@ const App = () => {
         {/* <Route path="/DetalleMaquinaria/:id" element={<MaquinariaDetail />} /> */}
         <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
         <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
+
+        <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
+        <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
 
         <Route path="/Leases" element={<Leases />} />
         <Route path="/Rentals" element={<Rentals />} />
