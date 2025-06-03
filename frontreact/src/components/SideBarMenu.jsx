@@ -22,17 +22,17 @@ function SideBarMenu() {
     setShow(false); // cerrar menú luego de navegación
   };
 
-  // Elementos del menú por rol
+  // Elementos del menú por roles
   const menuItems = [];
 
-  if (!user || user.rol === "cliente") {
+  if (!user || user.roles.includes("cliente")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePage", restricted: false },
       { label: "Mi perfil", path: "/Profile", restricted: true },
       { label: "Mis reservas", path: "/rentals", restricted: true },
       { label: "Mis alquileres", path: "/Leases", restricted: true }
     );
-  } else if (user.rol === "empleado") {
+  } else if (user.roles.includes("empleado")) {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
       { label: "Mi perfil", path: "/Profile", restricted: false },
@@ -40,7 +40,7 @@ function SideBarMenu() {
       { label: "Mis alquileres", path: "/Leases", restricted: false },
       { label: "Publicaciones", path: "/HomePage", restricted: false }
     );
-  } else if (user.rol === "dueño") {
+  } else if (user.roles.includes("Dueño")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePageAdmin", restricted: false },
       { label: "Mi perfil", path: "/Profile", restricted: false },
