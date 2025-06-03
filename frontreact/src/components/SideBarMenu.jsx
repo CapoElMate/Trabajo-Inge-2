@@ -5,7 +5,6 @@ import { TbMenu2 } from "react-icons/tb";
 import './SideBarMenu.css'; 
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
-
 function SideBarMenu() {
   const [show, setShow] = useState(false);
   const { user } = useAuth();
@@ -22,25 +21,26 @@ function SideBarMenu() {
     setShow(false); // cerrar menú luego de navegación
   };
 
-  // Elementos del menú por rol
+  // Elementos del menú por roles
   const menuItems = [];
 
-  if (!user || user.rol === "cliente") {
+  if (!user || user.roles.includes("cliente")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePage", restricted: false },
       { label: "Mi perfil", path: "/Profile", restricted: true },
       { label: "Mis reservas", path: "/rentals", restricted: true },
       { label: "Mis alquileres", path: "/Leases", restricted: true }
     );
-  } else if (user.rol === "empleado") {
+  } else if (user.roles.includes("empleado")) {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
       { label: "Mi perfil", path: "/Profile", restricted: false },
       { label: "Mis reservas", path: "/rentals", restricted: false },
       { label: "Mis alquileres", path: "/Leases", restricted: false },
-      { label: "Publicaciones", path: "/HomePage", restricted: false }
+      { label: "Publicaciones", path: "/HomePage", restricted: false },
+      {label: "Reservas pendientes", path: "/ReservasPendientes", restricted: false}
     );
-  } else if (user.rol === "dueño") {
+  } else if (user.roles.includes("Dueño")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePageAdmin", restricted: false },
       { label: "Mi perfil", path: "/Profile", restricted: false },
