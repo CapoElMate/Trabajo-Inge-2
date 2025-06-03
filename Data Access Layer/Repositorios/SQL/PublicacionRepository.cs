@@ -30,10 +30,11 @@ namespace Data_Access_Layer.Repositorios.SQL
                 .ToListAsync();
         }
         
-        public async Task AddAsync(Publicacion publicacion)
+        public async Task<Publicacion> AddAsync(Publicacion publicacion)
         {
             await _context.Publicaciones.AddAsync(publicacion);
             await _context.SaveChangesAsync();
+            return publicacion;
         }
         
         public async Task DeleteAsync(Publicacion publicacion)

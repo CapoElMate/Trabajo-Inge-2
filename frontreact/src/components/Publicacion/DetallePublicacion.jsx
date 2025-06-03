@@ -4,12 +4,17 @@ import { useEffect, useState } from "react";
 import Header from "../Header";
 import StyledButton from "../CustomButton";
 import "./DetallePublicacion.css";
-import logo from '../../assets/bobElAlquiladorLogoCompleto.svg'; 
+import logo from "../../assets/bobElAlquiladorLogoCompleto.svg";
+import ConfirmModal from "../Modal";
+import ModalReserva from "../Reserva/ModalReserva";
 
 export default function PublicacionDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [publicacion, setPublicacion] = useState(null);
+  const [publicacionEliminar, setPublicacionEliminar] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [mostrarReservaModal, setMostrarReservaModal] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`)
@@ -17,11 +22,59 @@ export default function PublicacionDetail() {
       .then((data) => setPublicacion(data));
   }, [id]);
 
-  const handleEliminar = () => {
-    fetch(`http://localhost:3001/publicaciones/${id}`, {
-      method: "DELETE",
-    }).then(() => navigate("/"));
-    // "publicacion eliminada satisfactoriamente.
+  const handleReservar = (state) => {
+    if(state === "success" || state === "error")
+      navigate("/HomePage");
+  };
+
+  // const handlePago = () =>
+  // {
+  //   setMostrarPagoModal(false);
+  // }
+
+  const handleEliminar = async (idPublicacion) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/Publicacion/byId?id=${idPublicacion}`,
+        { method: "DELETE" }
+      );
+      if (!res.ok) throw new Error("Error al eliminar la publicacion");
+      navigate("/HomePage");
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo eliminar la publicacion");
+    }
+  };
+
+  const handleDuplicar = async (idPublicacion) => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/Publicacion/byId?id=${idPublicacion}`
+      );
+      if (!res.ok)
+        throw new Error("Error al obtener la publicacion para duplicar");
+      const publicacionOriginal = await res.json();
+
+      const maquinaDuplicada = {
+        ...publicacionOriginal,
+        id: idPublicacion,
+        status: "Activa",
+      };
+
+      const createRes = await fetch("http://localhost:5000/api/Publicacion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(maquinaDuplicada),
+      });
+
+      let duplicarJson = await createRes.json();
+
+      navigate(`/ModificarPublicacion/${duplicarJson.idPublicacion}`);
+      if (!createRes.ok) throw new Error("Error al duplicar la publicacion");
+    } catch (error) {
+      console.error(error);
+      alert("No se pudo duplicar la publicacion");
+    }
   };
 
   if (!publicacion) return <p>Cargando...</p>;
@@ -35,21 +88,18 @@ export default function PublicacionDetail() {
           <div className="button-container">
             <StyledButton
               text="Modificar"
-              onClick={() => navigate(`/EditarPublicacion/${publicacion.id}`)}
+              onClick={() =>
+                navigate(`/EditarPublicacion/${publicacion.idPublicacion}`)
+              }
             />
             <StyledButton
               text="Eliminar"
               onClick={() => {
-                const confirmado = window.confirm(
-                  "¿Estás seguro de que querés eliminar esta publicacion?"
-                );
-                if (confirmado) handleEliminar();
+                setPublicacionEliminar(publicacion.idPublicacion);
+                setMostrarModal(true);
               }}
             />
-            <StyledButton
-              text="Duplicar"
-              onClick={() => navigate(`/DuplicarPublicacion/${publicacion.id}`)}
-            />
+            <StyledButton text="Reservar" onClick={() => setMostrarReservaModal(true)} />
           </div>
         </div>
 
@@ -146,6 +196,25 @@ export default function PublicacionDetail() {
           </div>
         </div>
       </div>
+      <ConfirmModal
+        isOpen={mostrarModal}
+        onClose={() => setMostrarModal(false)}
+        onConfirm={() => {
+          handleEliminar(publicacionEliminar);
+          setMostrarModal(false);
+        }}
+        mensaje="¿Estás seguro de que querés eliminar esta publicacion?"
+      />
+      <ModalReserva
+        isOpen={mostrarReservaModal}
+        onClose={() => setMostrarReservaModal(false)}
+        onReservar={handleReservar}
+      />
+      {/* <ModalPago
+        isOpen={mostrarPagoModal}
+        onClose={() => setMostrarPagoModal(false)}
+        onPago={handlePago}
+      /> */}
     </>
   );
 }

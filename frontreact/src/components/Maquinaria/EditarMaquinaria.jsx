@@ -1,48 +1,80 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import CargarMaquinaria from "./CrearMaquinaria"; // formulario reutilizable
-import MaquinariaForm from "./FormMaquinaria";
 import Header from "../Header";
-
+import MaquinariaForm from "./FormMaquinaria";
 
 export default function EditarMaquinaria() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [maquinaria, setMaquinaria] = useState(null);
 
+  // Cargar datos de la maquinaria a editar desde el backend
   useEffect(() => {
-    fetch(`http://localhost:3001/maquinas/${id}`)
-      .then((res) => res.json())
-      .then((data) => setMaquinaria(data));
-  }, [id]);
+    fetch(`http://localhost:5000/api/Maquinas/byId?id=${id}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al cargar la maquinaria");
+        return res.json();
+      })
+      .then((data) => setMaquinaria(data))
+      .catch((error) => {
+        console.error(error);
+        alert("No se pudo cargar la maquinaria");
+        navigate("/"); // redirigir si falla
+      });
+  }, [id, navigate]);
 
-   const handleCancel = () => {
-    console.log("Cancelado");
-    navigate('/HomePage');
+  // Cancelar edición y volver a la página principal o listado
+  const handleCancel = () => {
+    navigate("/ListarMaquinaria");
   };
+
+  // Enviar los datos modificados al backend
   const handleSubmit = (data) => {
-      const datos = {
-      "id":data.id,
-      "marca": data.marca, 
-      "modelo": data.modelo,
-      "anioFabricacion": data.anio,
-      "tipo": data.tipo,
-      "permisosEspeciales": data.permisos.map((p)=>({"permiso":p })),//mapear al formato
-      "tagsMaquina":data.tags.map((t)=>({"tag":t })),
-       };
-    fetch(`http://localhost:3001/maquinas/${id}`, {
+    const body = {
+      idMaquina: id,
+      status: "Disponible",
+      anioFabricacion: data.anioFabricacion,
+      modelo: {
+        modelo: data.modelo,
+        marca: {
+          marca: data.marca,
+        },
+      },
+      tagsMaquina: data.tagsMaquina || [],
+      tipoMaquina: {
+        tipo: data.tipo,
+      },
+      permisosEspeciales:
+        data.permisosEspeciales.map((p) => ({ permiso: p })) || [],
+    };
+
+    fetch(`http://localhost:5000/api/Maquinas/byId?id=${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(datos),
-    }).then(() => navigate("/"));
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al guardar la maquinaria");
+        navigate("/ListarMaquinaria"); // redirigir tras guardar
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("No se pudo guardar la maquinaria");
+      });
   };
 
+  // Mientras carga datos, muestra mensaje
   if (!maquinaria) return <p>Cargando...</p>;
 
   return (
     <>
-     <Header/>
-     <MaquinariaForm initialData={maquinaria} onSubmit={handleSubmit} onCancel={handleCancel}  modo="Editar" />
+      <Header />
+      <MaquinariaForm
+        initialData={maquinaria}
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        modo="Editar"
+      />
     </>
   );
 }

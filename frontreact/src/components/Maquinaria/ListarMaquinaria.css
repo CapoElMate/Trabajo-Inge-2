@@ -62,3 +62,10 @@ h1
 {
     background-color: #b02a37;
 }
+
+.button-container
+{
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}

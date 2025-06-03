@@ -84,19 +84,40 @@ export default function PublicacionForm({
     cargarDatos();
   }, []);
 
+  useEffect(() => {
+    if (
+      initialData &&
+      Object.keys(initialData).length > 0 &&
+      modo === "Editar"
+    ) {
+      setMaquinaria({
+        label: `${initialData.maquina.modelo.marca.marca} ${initialData.maquina.modelo.modelo}`,
+        value: initialData.maquina.idMaquina,
+      });
+      setPolitica(initialData.politicaDeCancelacion.politica);
+      setUbicacion(initialData.ubicacion.ubicacionName);
+      setDescripcion(initialData.descripcion);
+      setTitulo(initialData.titulo);
+      setPrecio(initialData.precioPorDia);
+      setTags(initialData.tagsPublicacion.map((t) => t.tag));
+    }
+  }, [initialData, modo]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const publicacionData = {
-      ...(modo === "Editar" && { id: initialData?.id }),
+      ...(modo === "Editar" && { idPublicacion: initialData?.idPublicacion }),
       status: "Activa",
+      titulo,
       precioPorDia: precio,
       descripcion,
-      idMaquina: maquinaria,
+      maquina: {
+        idMaquina: maquinaria.value,
+      },
       tagsPublicacion: tags.map((t) => ({ tag: t })),
       politicaDeCancelacion: {
-        politica: politica.politica,
-        descripcion: politica.descripcion,
+        politica,
       },
       ubicacion: {
         ubicacionName: ubicacion,
@@ -154,38 +175,6 @@ export default function PublicacionForm({
           <h2 className="text-xl font-semibold text-center">
             {modo} Publicación
           </h2>
-          {maquinaria && modo == "Editar" ? (
-            <>
-              <h2 className="text-xl mb-2">
-                {" "}
-                {maquinaria.marca} {maquinaria.modelo}
-              </h2>
-              <p>Año: {maquinaria.anioFabricacion}</p>
-              <p>Tipo: {maquinaria.tipo}</p>
-              <p>
-                Permisos:{" "}
-                {maquinaria.permisosEspeciales
-                  ?.map((p) => p.permiso.permiso)
-                  .join(", ")}
-              </p>
-            </>
-          ) : (
-            <SelectInput
-              optionCompleja={false}
-              label="Maquinaria "
-              options={opcionesMaquinaria}
-              value={maquinaria?.id}
-              onChange={(e) => {
-                const selectedId = e.target.value;
-                const seleccionada = maquinarias.find(
-                  (m) => m.id === selectedId
-                );
-                setMaquinaria(seleccionada);
-                console.log("Maquinaria elegida ", seleccionada);
-              }}
-              required
-            />
-          )}
 
           <TextInput
             label="Título"
@@ -193,6 +182,7 @@ export default function PublicacionForm({
             required
             value={titulo}
           />
+
           <TextInput
             type="text"
             label="Descripcion"
@@ -202,10 +192,41 @@ export default function PublicacionForm({
           />
 
           <SelectInput
-            label="Politica de Cancelacion "
+            optionCompleja={false}
+            label="Maquinaria"
+            options={
+              modo === "Editar"
+                ? maquinaria
+                  ? [maquinaria]
+                  : []
+                : opcionesMaquinaria
+            }
+            defaultOptionLabel="Seleccionar..."
+            value={maquinaria?.value || ""}
+            onChange={(e) => {
+              if (modo !== "Editar") {
+                const selectedId = e.target.value;
+                const seleccionada = maquinarias.find(
+                  (m) => m.id === selectedId
+                );
+                if (seleccionada) {
+                  setMaquinaria({
+                    value: seleccionada.id,
+                    label: `${seleccionada.marca} ${seleccionada.modelo}`,
+                  });
+                  console.log("Maquinaria elegida", seleccionada);
+                }
+              }
+            }}
+            required
+            disabled={modo === "Editar"}
+          />
+
+          <SelectInput
+            label="Política de Cancelación"
             options={opcionesPoliticas}
             onChange={(e) => setPolitica(e.target.value)}
-            value={politica}
+            value={politica || ""}
             required
           />
 
@@ -218,7 +239,7 @@ export default function PublicacionForm({
           />
           <TextInput
             label="Precio por dia "
-            type="number"
+            type="text"
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
             required

@@ -9,7 +9,7 @@ import Header from "../Header";
 import { useNavigate } from "react-router-dom";
 import PublicacionForm from "./FormPublicacion";
 
-export default function CargarPublicacion() {
+export default function CrearPublicacion() {
   const navigate = useNavigate();
 
   const handleSubmit = async () => {

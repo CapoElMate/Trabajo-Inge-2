@@ -7,87 +7,126 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  
-  // 🟡 Cargar sesión desde LocalStorage
+
+
   useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-  }, []);
+    const checkSession = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/Auth/me", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+
+        if (response.ok) {
+          const user = await response.json();
+          setUser(user);
+
+          if (user.roles.includes("Dueño")) {
+            navigate("/HomePageAdmin");
+          } else if (user.roles.includes("Cliente")) {
+            navigate("/HomePage");
+          } else if (user.roles.includes("Empelado")) {
+            navigate("/EmployeeHome");
+          }
+        } else {
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error al verificar sesión:", error);
+      }
+    };
+
+    checkSession();
+  }, [navigate]);
 
   const login = async (email, password) => {
     try {
       const response = await fetch(`http://localhost:5000/Auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          "email": email,
-          "password": password,
-          "rememberMe": true
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          rememberMe: true,
         }),
-        credentials: 'include'
+        credentials: "include",
       });
 
       if (!response.ok) {
-        throw new Error(`Error en la conexión o el servidor respondió con estado: ${response.status}`);
+        throw new Error(
+          `Error en la conexión o el servidor respondió con estado: ${response.status}`
+        );
       }
 
       console.log("Respuesta del servidor:", await response.json());
 
+
       const responseMe = await fetch(`http://localhost:5000/Auth/me`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include'
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
       });
 
-      let usersFound = await responseMe.json();
-
-
+      const usersFound = await responseMe.json();
 
       if (usersFound) {
         setUser(usersFound);
-        //localStorage.setItem("user", JSON.stringify(usuarioLogueado)); // 🟢 Guardar en LocalStorage
         setError(null);
 
         if (usersFound.roles.includes("Dueño")) {
           navigate("/HomePageAdmin");
         } else if (usersFound.roles.includes("Cliente")) {
           navigate("/HomePage");
-        }
-        if(usersFound.roles.includes("Empelado")){
+        } else if (usersFound.roles.includes("Empelado")) {
           navigate("/EmployeeHome");
         }
       } else {
-        setError("Email o contraseña incorrectos. Por favor, inténtalo de nuevo.");
+        setError(
+          "Email o contraseña incorrectos. Por favor, inténtalo de nuevo."
+        );
       }
     } catch (error) {
       console.error("Error durante el login:", error);
-      setError("Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.");
+      setError(
+        "Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde."
+      );
     }
   };
 
   const logout = async () => {
-    //localStorage.removeItem("user"); // 🔴 Limpiar sesión
-    const response = await fetch(`http://localhost:5000/Auth/logout`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include'
-    });
+    try {
+      const response = await fetch(`http://localhost:5000/Auth/logout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-    console.log("Respuesta del servidor al cerrar sesión:", await response.json());
-    if (!response.ok) {
-      throw new Error(`Error en la conexión o el servidor respondió con estado: ${response.status}`);
+      console.log(
+        "Respuesta del servidor al cerrar sesión:",
+        await response.json()
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Error en la conexión o el servidor respondió con estado: ${response.status}`
+        );
+      }
+
+      setUser(null);
+      setError(null);
+      navigate("/Login");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
     }
-    setUser(null);
-    setError(null);
-    navigate("/Login");
   };
 
   return (

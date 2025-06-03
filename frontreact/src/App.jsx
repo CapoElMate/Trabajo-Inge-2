@@ -8,16 +8,16 @@ import ValidateUser from './components/ValidateUser';
 import PostDetail from './components/PostDetail';
 import Header from './components/Header';
 
-import CargarPublicacion from './components/Publicacion/CargarPublicacion';
+import CrearPublicacion from './components/Publicacion/CrearPublicacion';
 import EditarPublicacion from './components/Publicacion/EditarPublicacion';
-import DuplicarPublicacion from  './components/Publicacion/DuplicarPublicacion';
+//import DuplicarPublicacion from  './components/Publicacion/DuplicarPublicacion';
 import PublicacionDetail from  './components/Publicacion/DetallePublicacion';
 
 import CrearMaquinaria from './components/Maquinaria/CrearMaquinaria';
 import EditarMaquinaria from './components/Maquinaria/EditarMaquinaria';
-import DuplicarMaquinaria from './components/Maquinaria/DuplicarMaquinaria';
+//import DuplicarMaquinaria from './components/Maquinaria/DuplicarMaquinaria';
 import MaquinariaDetail from './components/Maquinaria/DetalleMaquinaria';
-import MaquinariaList from './components/Maquinaria/MaquinariaList';
+import ListarMaquinaria from './components/Maquinaria/ListarMaquinaria';
 
 
 import HomePageAdmin from './components/HomePageAdmin';
@@ -40,27 +40,28 @@ const App = () => {
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
         <Route path="/SignUp" element={<SignUp />} />
-        <Route path='/ValidateUser' element={<ValidateUser />}/> 
-        <Route path='/PostDetail/:id' element={<PostDetail />}/> 
-        <Route path='/Header' element={<Header/>} />
-        <Route path='/CargarPublicacion' element={<CargarPublicacion/>} />
-        <Route path='/EditarPublicacion/:id' element={<EditarPublicacion/>} />
-        <Route path="/DuplicarPublicacion/:id" element={<DuplicarPublicacion/>}/>
-        <Route path="/DetallePublicacion/:id" element={<PublicacionDetail/>}/>
-        <Route path='/CrearMaquinaria' element={<CrearMaquinaria/>} />
-        <Route path="/modificar/:id" element={<EditarMaquinaria />} />
-        <Route path="/duplicar/:id" element={<DuplicarMaquinaria />} />       
-        <Route path="/maquinaria/:id" element={<MaquinariaDetail />} />
-        <Route path='/MaquinariaList' element={<MaquinariaList/>}/>
-        <Route path='/HomePageAdmin' element={<HomePageAdmin/>} />
-        <Route path='/Leases' element={<Leases/>}/>
-        <Route path='/Rentals' element={<Rentals/>}/>      
-        <Route path='/Profile' element={<Profile/>}/>
-        <Route path='/ResetPassword' element={<ResetPassword/>}/>
-        <Route path='/PermitFileUploader' element={<PermitFileUploader/>}/>
-        <Route path='/ValidatePermit' element={<ValidatePermit/>}/>
-        <Route path='/EmployeeHome' element={<EmployeeHome/>}/>
-        <Route path='/ConfirmReservations' element={<ConfirmReservations/>}/>
+        <Route path="/ValidateUser" element={<ValidateUser />} />
+        {/* <Route path="/PostDetail/:id" element={<PostDetail />} /> */}
+        <Route path="/Header" element={<Header />} />
+       
+        <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
+        <Route path="/EditarPublicacion/:id" element={<EditarPublicacion />} />
+        <Route path="/DetallePublicacion/:id" element={<PublicacionDetail />} />
+       
+        <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />
+        <Route path="/ModificarMaquinaria/:id" element={<EditarMaquinaria />} />
+        {/* <Route path="/DetalleMaquinaria/:id" element={<MaquinariaDetail />} /> */}
+        <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
+        <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
+
+        <Route path="/Leases" element={<Leases />} />
+        <Route path="/Rentals" element={<Rentals />} />
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/ResetPassword" element={<ResetPassword />} />
+        <Route path="/PermitFileUploader" element={<PermitFileUploader />} />
+        <Route path="/ValidatePermit" element={<ValidatePermit />} />
+        <Route path="/EmployeeHome" element={<EmployeeHome />} />
+        <Route path="/ConfirmReservations" element={<ConfirmReservations />} />
       </Routes>
     </AuthProvider>
   );
