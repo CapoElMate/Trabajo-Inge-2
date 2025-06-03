@@ -1,70 +1,56 @@
-import { Routes, Route } from 'react-router-dom';
-import Login from './components/Login';
-import HomePage from './components/HomePage';
-import { AuthProvider } from './AuthContext';
-import SignUp from './components/SignUp';
-import ForgotPassword from './components/ForgotPassword';
-import ValidateUser from './components/ValidateUser';
-import PostDetail from './components/PostDetail';
-import Header from './components/Header';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
+import { AuthProvider } from "./AuthContext";
 
-import CrearPublicacion from './components/Publicacion/CrearPublicacion';
-import EditarPublicacion from './components/Publicacion/EditarPublicacion';
-//import DuplicarPublicacion from  './components/Publicacion/DuplicarPublicacion';
-import PublicacionDetail from  './components/Publicacion/DetallePublicacion';
-
-import CrearMaquinaria from './components/Maquinaria/CrearMaquinaria';
-import EditarMaquinaria from './components/Maquinaria/EditarMaquinaria';
-//import DuplicarMaquinaria from './components/Maquinaria/DuplicarMaquinaria';
-import MaquinariaDetail from './components/Maquinaria/DetalleMaquinaria';
-import ListarMaquinaria from './components/Maquinaria/ListarMaquinaria';
-
-
-import HomePageAdmin from './components/HomePageAdmin';
+// Páginas
+import Login from "./components/Login";
+import HomePage from "./components/HomePage";
+import HomePageAdmin from "./components/HomePageAdmin";
+import EmployeeHome from "./components/EmployeeHome";
+import NoAutorizado from "./pages/NoAutorizado";
+import DetallePublicacion from './components/publicacion/DetallePublicacion'
 import './components/App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Leases from './components/Leases';
+import SignUp from './components/SignUp';
+import ForgotPassword from './components/ForgotPassword';
 import Rentals from './components/Rentals';
-import ResetPassword from './components/ResetPassword';
-import PermitFileUploader from './components/PermitFileUploader';
-import Profile from './components/Profile';
-import ValidatePermit from './components/ValidatePermit';
-import EmployeeHome from './components/EmployeeHome';
-import ConfirmReservations from './components/ConfrmReservations';
-const App = () => {
+function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/Login" element={<Login />} />
-        <Route path="/HomePage" element={<HomePage />} />
-        <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/SignUp" element={<SignUp />} />
-        <Route path="/ValidateUser" element={<ValidateUser />} />
-        {/* <Route path="/PostDetail/:id" element={<PostDetail />} /> */}
-        <Route path="/Header" element={<Header />} />
-       
-        <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
-        <Route path="/EditarPublicacion/:id" element={<EditarPublicacion />} />
-        <Route path="/DetallePublicacion/:id" element={<PublicacionDetail />} />
-       
-        <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />
-        <Route path="/ModificarMaquinaria/:id" element={<EditarMaquinaria />} />
-        {/* <Route path="/DetalleMaquinaria/:id" element={<MaquinariaDetail />} /> */}
-        <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
-        <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
+        <Routes>
+          
+          <Route path="/login" element={<Login />} />
+          <Route path="/noautorizado" element={<NoAutorizado />} />
+          <Route path="/HomePage" element={<HomePage />} />
+          <Route path="/DetallePublicacion/:id" element={<DetallePublicacion/>}/>
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/ForgotPassword" element={<ForgotPassword />} />
+          <Route path="/Rentals" element={<Rentals/>}/>
+          {/* Cliente */}
+          <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
+            
+          </Route>
 
-        <Route path="/Leases" element={<Leases />} />
-        <Route path="/Rentals" element={<Rentals />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/ResetPassword" element={<ResetPassword />} />
-        <Route path="/PermitFileUploader" element={<PermitFileUploader />} />
-        <Route path="/ValidatePermit" element={<ValidatePermit />} />
-        <Route path="/EmployeeHome" element={<EmployeeHome />} />
-        <Route path="/ConfirmReservations" element={<ConfirmReservations />} />
-      </Routes>
+          {/* Dueño */}
+          <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>
+            <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
+
+            <Route path="/HomePage" element={<HomePage />} />
+          </Route>
+
+          {/* Emleado */}
+          <Route element={<PrivateRoute rolesPermitidos={["Empleado"]} />}>
+            <Route path="/EmployeeHome" element={<EmployeeHome />} />
+          </Route>
+          {/*
+          Una forma de tener una vista para distintos roles
+          <Route element={<PrivateRoute rolesPermitidos={["Dueño", "Empleado"]} />}>
+                <Route path="/panel" element={<PanelComun />} />
+              </Route>
+            */}
+        </Routes>
     </AuthProvider>
   );
-};
+}
 
 export default App;
