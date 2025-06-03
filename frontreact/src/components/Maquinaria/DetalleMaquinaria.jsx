@@ -1,7 +1,7 @@
 // pages/MaquinariaDetail.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import Header from "./Header";
+import Header from "../Header";
 
 export default function MaquinariaDetail() {
   const { id } = useParams();

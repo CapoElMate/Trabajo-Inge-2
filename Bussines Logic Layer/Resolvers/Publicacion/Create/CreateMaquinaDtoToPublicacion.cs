@@ -28,7 +28,7 @@ namespace Bussines_Logic_Layer.Resolvers.Publicacion.Create
 
         public Domain_Layer.Entidades.Maquina Resolve(CreatePublicacionDto source, Domain_Layer.Entidades.Publicacion destination, Domain_Layer.Entidades.Maquina destMember, ResolutionContext context)
         {
-            var publicacionExistente = _context.Maquinas.FirstOrDefault(m => m.idMaquina.Equals(source.IdMaquina));
+            var publicacionExistente = _context.Maquinas.FirstOrDefault(m => m.idMaquina.Equals(source.Maquina.IdMaquina));
 
             if (publicacionExistente == null)
             {

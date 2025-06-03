@@ -39,10 +39,10 @@ builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
-    options.ListenAnyIP(5001, listenOptions =>
-    {
-        listenOptions.UseHttps("cert.pfx", "contraseña"); // Cambia el nombre y la contraseña según tu certificado
-    });
+    //options.ListenAnyIP(5001, listenOptions =>
+    //{
+    //    listenOptions.UseHttps("cert.pfx", "contraseña"); // Cambia el nombre y la contraseña según tu certificado
+    //});
 });
 
 builder.Services.AddEndpointsApiExplorer();

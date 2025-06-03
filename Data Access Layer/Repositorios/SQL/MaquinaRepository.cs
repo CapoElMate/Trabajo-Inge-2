@@ -36,17 +36,17 @@ namespace Data_Access_Layer.Repositorios.SQL
                 .FirstOrDefaultAsync(m => m.idMaquina == id);
         }
 
-        public async Task<bool> AddAsync(Maquina maquina)
+        public async Task<Maquina?> AddAsync(Maquina maquina)
         {
             try
             {
                 await _context.Maquinas.AddAsync(maquina);
                 await _context.SaveChangesAsync();
-                return true;
+                return maquina;
             }
             catch
             {
-                return false;
+                return null;
             }
         }
 

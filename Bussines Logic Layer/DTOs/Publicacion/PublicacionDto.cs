@@ -13,7 +13,7 @@ namespace Bussines_Logic_Layer.DTOs.Publicacion
     public class PublicacionDto
     {
         public int idPublicacion { get; set; }
-        //TODO: public string tituloPublicacion { get; set; } = null!;
+        public string Titulo { get; set; } = null!;
         public string Status { get; set; } = null!;
         public double PrecioPorDia { get; set; }
         public string Descripcion { get; set; } = null!;        

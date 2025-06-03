@@ -1,0 +1,32 @@
+.entrega-container > div:nth-child(1)
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.entrega-container > div:nth-child(1) > select
+{
+    margin-bottom: 1rem;
+}
+
+label
+{
+    padding-bottom: 0.5rem;
+}
+
+.direccion-container
+{
+    padding-bottom: 1rem;
+}
+
+.direccion-container > div
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.direccion-container > input
+{
+    padding-bottom: 5rem;
+}
+

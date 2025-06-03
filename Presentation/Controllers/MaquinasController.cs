@@ -43,11 +43,11 @@ namespace API_Layer.Controllers
             }
             else
             {
-                return CreatedAtAction(nameof(GetMaquina), new { id = created }, created);
+                return CreatedAtAction(nameof(GetMaquina), new { id = created.IdMaquina }, created);
             }
         }
 
-        [HttpPut]
+        [HttpPut("byId")]
         public async Task<IActionResult> PutMaquina(int id, MaquinaDto dto)
         {
             var maquina = await _service.GetByIdAsync(id);

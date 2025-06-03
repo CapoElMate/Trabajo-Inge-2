@@ -38,7 +38,7 @@ namespace Bussines_Logic_Layer.Services
         {
             var maquina = _mapper.Map<Maquina>(dto);
             var res = await _repo.AddAsync(maquina);
-            return res ? _mapper.Map<MaquinaDto>(maquina) : null;
+            return res != null ? _mapper.Map<MaquinaDto>(res) : null;
         }
 
         public async Task<bool> UpdateAsync(int id, MaquinaDto dto)

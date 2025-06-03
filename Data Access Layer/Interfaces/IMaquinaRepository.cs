@@ -11,7 +11,7 @@ namespace Data_Access_Layer.Interfaces
     {
         Task<IEnumerable<Maquina>> GetAllAsync();
         Task<Maquina?> GetByIdAsync(int id);
-        Task<bool> AddAsync(Maquina maquina);
+        Task<Maquina?> AddAsync(Maquina maquina);
         Task UpdateAsync(Maquina maquina);
         Task DeleteAsync(Maquina maquina);
         Task<bool> ExistsAsync(int id);

@@ -14,8 +14,8 @@ namespace Bussines_Logic_Layer.DTOs.Publicacion
         public string Status { get; set; } = null!;
         public double PrecioPorDia { get; set; }
         public string Descripcion { get; set; } = null!;
-        //public MaquinaDto Maquina { get; set; } = null!; remplazado por idMaquina
-        public int IdMaquina { get; set; }
+        public string Titulo { get; set; }
+        public MaquinaDto Maquina { get; set; } = null!;
         public ICollection<TagPublicacionDto> TagsPublicacion { get; set; } = new List<TagPublicacionDto>();
         //public ICollection<ComentarioDto> Comentarios { get; set; } = new List<ComentarioDto>();        
         public PoliticaDeCancelacionDto PoliticaDeCancelacion { get; set; } = null!;
