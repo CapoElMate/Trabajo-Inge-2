@@ -13,7 +13,7 @@ namespace Data_Access_Layer.Configurations
     {
         public void Configure(EntityTypeBuilder<Reembolso> builder)
         {
-            builder.HasKey(r => new { r.idReembolso, r.DNICliente });
+            builder.HasKey(r => r.idReembolso);
 
             builder.Property(r => r.Motivo)
                 .IsRequired()

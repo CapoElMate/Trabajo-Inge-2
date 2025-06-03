@@ -14,5 +14,6 @@ namespace Bussines_Logic_Layer.DTOs.Reembolso
         public string Motivo { get; set; } = null!;
         public string DNICliente { get; set; }
         public int idAlquiler { get; set; }
+        public DateTime fecCancelacion { get; set; }
     }
 }

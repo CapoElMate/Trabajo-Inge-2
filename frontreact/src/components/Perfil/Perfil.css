@@ -127,3 +127,12 @@
 {
   margin: 0;
 }
+
+/* Para que los reembolsos no tengan cursor pointer ni hover */
+.reembolso-card {
+  cursor: default; /* quitar el cursor pointer */
+}
+
+.reembolso-card:hover {
+  background-color: inherit; /* o el color normal sin cambios */
+}
