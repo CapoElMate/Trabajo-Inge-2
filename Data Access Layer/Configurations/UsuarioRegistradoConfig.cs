@@ -31,7 +31,7 @@ namespace Domain_Layer.Configurations
                 .IsRequired();
             builder.Property(user => user.Apellido)
                 .IsRequired();
-            builder.Property(user => user.Edad)
+            builder.Property(user => user.fecNacimiento)
                 .IsRequired();
 
             builder.Property(user => user.Calle)

@@ -4,13 +4,14 @@ import StyledButton from "../CustomButton";
 import "./DetalleAlquiler.css";
 import ConfirmModal from "../Modal";
 import Header from "../Header";
+import ModalReembolso from "../Reembolso/ModalReembolso";
 
 export default function DetalleAlquiler() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [alquiler, setAlquiler] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [cancelModal, setCancelModal] = useState(false);
+  const [modalReembolsoAbierto, setModalReembolsoAbierto] = useState(false);
   const [empleado, setEmpleado] = useState();
   const [cliente, setCliente] = useState();
 
@@ -58,7 +59,42 @@ export default function DetalleAlquiler() {
     fetchData();
   }, [id]);
 
-  const handleCancelar = async () => {};
+  const handleReembolso = (reembolso) => {
+    fetch("http://localhost:5000/api/Reembolso", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reembolso),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Error al generar el reembolso");
+        return res.json();
+      })
+      .then((data) => {
+        // Después de generar el reembolso exitosamente
+        const alquilerCancelado = {
+          ...alquiler,
+          status: "Cancelado",
+        };
+
+        return fetch(
+          `http://localhost:5000/api/Alquiler/byId?id=${alquiler.idAlquiler}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(alquilerCancelado),
+          }
+        );
+      })
+      .then((res) => {
+        if (!res.ok)
+          throw new Error("Error al actualizar el estado del alquiler");
+        navigate("/HomePage");
+      });
+  };
 
   if (loading) return <p className="detalle-loading">Cargando...</p>;
   if (!alquiler)
@@ -69,10 +105,12 @@ export default function DetalleAlquiler() {
       <Header />
       <div className="detalle-alquiler-container">
         <h1>Detalle del Alquiler</h1>
-        <StyledButton
-          text="Cancelar Alquiler"
-          onClick={() => setCancelModal(true)}
-        />
+        {alquiler.status !== "Cancelado" && (
+          <StyledButton
+            text="Cancelar"
+            onClick={() => setModalReembolsoAbierto(true)}
+          />
+        )}
         <div
           className={`alquiler-info ${
             alquiler.calle && alquiler.calle.trim() !== ""
@@ -171,13 +209,12 @@ export default function DetalleAlquiler() {
           </div>
         </div>
 
-        <ConfirmModal
-          isOpen={cancelModal}
-          onClose={() => setCancelModal(false)}
-          onConfirm={() => {
-            handleCancelar();
-          }}
-          mensaje="¿Estás seguro de desea cancelar este alquiler?"
+        <ModalReembolso
+          isOpen={modalReembolsoAbierto}
+          onClose={() => setModalReembolsoAbierto(false)}
+          onConfirmar={handleReembolso}
+          dataAlquiler={alquiler}
+          dataCliente={cliente}
         />
       </div>
     </>

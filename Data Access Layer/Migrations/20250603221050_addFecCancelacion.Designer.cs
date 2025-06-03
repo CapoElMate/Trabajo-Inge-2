@@ -3,6 +3,7 @@ using System;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603221050_addFecCancelacion")]
+    partial class addFecCancelacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -444,11 +447,9 @@ namespace Data_Access_Layer.Migrations
             modelBuilder.Entity("Domain_Layer.Entidades.Reembolso", b =>
                 {
                     b.Property<int>("idReembolso")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("DNICliente")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Monto")
@@ -471,7 +472,7 @@ namespace Data_Access_Layer.Migrations
                     b.Property<int>("idAlquiler")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("idReembolso");
+                    b.HasKey("idReembolso", "DNICliente");
 
                     b.HasIndex("DNICliente");
 
@@ -664,6 +665,9 @@ namespace Data_Access_Layer.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("Edad")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -686,9 +690,6 @@ namespace Data_Access_Layer.Migrations
 
                     b.Property<bool>("dniVerificado")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("fecNacimiento")
-                        .HasColumnType("TEXT");
 
                     b.Property<bool>("isDeleted")
                         .HasColumnType("INTEGER");

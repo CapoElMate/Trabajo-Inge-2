@@ -57,11 +57,33 @@ export default function PerfilCliente() {
           })
         );
 
+        const ReembolsoMasPublicacion = await Promise.all(
+          dataReembolsos.map(async (reembolso) => {
+            // Buscar el alquiler que corresponde a este reembolso (suponiendo que hay un idAlquiler)
+            const alquilerRelacionado = dataAlquileres.find(
+              (alquiler) => alquiler.idAlquiler === reembolso.idAlquiler
+            );
+
+            // Si existe el alquiler, obtenemos el idPublicacion desde alquiler.reserva.idPublicacion
+            const idPublicacion = alquilerRelacionado?.reserva?.idPublicacion;
+
+            let publicacion = null;
+            if (idPublicacion) {
+              const res = await fetch(
+                `http://localhost:5000/api/Publicacion/byId?id=${idPublicacion}`
+              );
+              publicacion = await res.json();
+            }
+
+            // Devuelvo reembolso + la publicación + el alquiler relacionado si quieres
+            return { ...reembolso, publicacion};
+          })
+        );
 
         setCliente(dataCliente.usuarioRegistrado);
         setReservas(reservasMasPublicacion);
         setAlquileres(alquiilerMasPublicacion);
-        setReembolsos(dataReembolsos);
+        setReembolsos(ReembolsoMasPublicacion);
       } catch (error) {
         console.error("Error al cargar los datos del perfil:", error);
       } finally {
@@ -95,7 +117,7 @@ export default function PerfilCliente() {
         )}
 
         <div className="user-info-card">
-          <h2 className="reservas-title">Reservas</h2>
+          <h2 className="reservas-title">Reservas pendientes de efectivizar</h2>
           {reservas.filter((r) => r.status === "Lista para efectivizar")
             .length > 0 ? (
             <div className="reservas-list">
@@ -127,16 +149,20 @@ export default function PerfilCliente() {
                 ))}
             </div>
           ) : (
-            <p className="reserva-empty">No hay reservas registradas.</p>
+            <p className="reserva-empty">
+              No hay reservas pendientes de efectivizar.
+            </p>
           )}
         </div>
 
         <div className="user-info-card">
-          <h2 className="reservas-title">Alquileres</h2>
-          {alquileres.length > 0 ? (
+          <h2 className="reservas-title">Alquileres activos</h2>
+          {alquileres.filter((a) => a.status === "Efectivizado").length > 0 ? (
             <div className="reservas-list">
-              {alquileres.map((alquiler) => (
-                <div
+              {alquileres
+                .filter((a) => a.status === "Efectivizado")
+                .map((alquiler) => (
+                  <div
                     key={alquiler.reserva.idReserva}
                     className="reserva-card"
                     onClick={() =>
@@ -158,25 +184,44 @@ export default function PerfilCliente() {
                       </span>
                     </p>
                   </div>
-              ))}
+                ))}
             </div>
           ) : (
-            <p className="reserva-empty">No hay alquileres registrados.</p>
+            <p className="reserva-empty">No hay alquileres activos.</p>
           )}
         </div>
 
         <div className="user-info-card">
-          <h2 className="text-xl font-semibold mb-2">Reembolsos</h2>
+          <h2 className="reservas-title">Reembolsos pendientes</h2>
           {reembolsos.length > 0 ? (
-            <ul className="list-disc pl-5">
+            <div className="reservas-list">
               {reembolsos.map((reembolso) => (
-                <li key={reembolso.idReembolso}>
-                  Monto: ${reembolso.monto} - Motivo: {reembolso.motivo}
-                </li>
+                <div
+                  key={reembolso.idReembolso}
+                  className="reserva-card reembolso-card"
+                >
+                  <p>
+                    <span className="reserva-label">Maquina:</span>{" "}
+                    {reembolso.publicacion.maquina.modelo.marca.marca}{" "}
+                    {reembolso.publicacion.maquina.modelo.modelo}
+                  </p>
+                  <p>
+                    <span className="reserva-label">Motivo:</span>{" "}
+                    {reembolso.motivo}
+                  </p>
+                  <p>
+                    <span className="reserva-label">Monto:</span> $
+                    {reembolso.monto}
+                  </p>
+                  <p>
+                    <span className="reserva-label">Estado: </span>
+                    {reembolso.status}
+                  </p>
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
-            <p>No hay reembolsos registrados.</p>
+            <p className="reserva-empty">No hay reembolsos registrados.</p>
           )}
         </div>
       </div>
