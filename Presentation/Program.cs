@@ -38,7 +38,11 @@ builder.Services.AddSingleton<IMailjetClient>(serviceProvider =>
 builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenLocalhost(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
+    options.ListenAnyIP(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
+    //options.ListenAnyIP(5001, listenOptions =>
+    //{
+    //    listenOptions.UseHttps("cert.pfx", "contraseña"); // Cambia el nombre y la contraseña según tu certificado
+    //});
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -124,7 +128,8 @@ builder.Services.AddScoped<IReembolsoRepository, ReembolsoRepository>();
 builder.Services.AddScoped<IUbicacionRepository, UbicacionRepository>();
 builder.Services.AddScoped<IArchivoRepository, ArchivoRepository>();
 builder.Services.AddScoped<IReservaRepository, ReservaRespository>();
-
+builder.Services.AddScoped<IPoliticaDeCancelacionRepository, PoliticaDeCancelacionRepository>();
+builder.Services.AddScoped<ITipoEntregaRepository, TipoEntregaRepository>();
 
 //Servicios
 builder.Services.AddScoped<IMaquinaService, MaquinaService>();
@@ -144,6 +149,8 @@ builder.Services.AddScoped<IUbicacionService, UbicacionService>();
 builder.Services.AddScoped<IArchivoService, ArchivoService>();
 builder.Services.AddScoped<IReservaService, ReservaService>();
 builder.Services.AddScoped<IEmails, MailjetEmailSender>();
+builder.Services.AddScoped<IPoliticaDeCancelacionService, PoliticaDeCancelacionService>();
+builder.Services.AddScoped<ITipoEntregaService, TipoEntregaService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -160,6 +167,7 @@ if (app.Environment.IsDevelopment())
     {
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<ApplicationDbContext>();
+        /*
         //// --- Creación de roles iniciales ---
         //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         //var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
@@ -264,11 +272,11 @@ if (app.Environment.IsDevelopment())
         //        }
         //    }
         //}
-        //ACA SE INTERACTUA CON EL CONTEXT DE LA DB.
+        //ACA SE INTERACTUA CON EL CONTEXT DE LA DB.*/
     }
 }
 //comentarios
-
+/*
 // ---
 // INICIO DEL CÓDIGO DE PRUEBA DE EMAIL
 // ---
@@ -314,6 +322,7 @@ if (app.Environment.IsDevelopment())
 // ---
 // FIN DEL CÓDIGO DE PRUEBA DE EMAIL
 // ---
+*/
 
 app.UseCors(MyAllowSpecificOrigins); // importante que vaya antes
 

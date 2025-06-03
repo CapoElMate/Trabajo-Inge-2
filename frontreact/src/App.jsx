@@ -8,49 +8,74 @@ import HomePage from "./components/HomePage";
 import HomePageAdmin from "./components/HomePageAdmin";
 import EmployeeHome from "./components/EmployeeHome";
 import NoAutorizado from "./pages/NoAutorizado";
-import DetallePublicacion from './components/DetallePublicacion'
-import './components/App.css';
-import 'bootstrap/dist/css/bootstrap.min.css'
-import SignUp from './components/SignUp';
-import ForgotPassword from './components/ForgotPassword';
-import Rentals from './components/Rentals';
-import ReservasPendientes from "./components/ReservasPendientes";
+import DetallePublicacion from "./components/publicacion/DetallePublicacion";
+import "./components/App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import SignUp from "./components/SignUp";
+import ForgotPassword from "./components/ForgotPassword";
+import Rentals from "./components/Rentals";
+
+import CrearPublicacion from "./components/Publicacion/CrearPublicacion";
+import EditarPublicacion from "./components/Publicacion/EditarPublicacion";
+
+import CrearMaquinaria from "./components/Maquinaria/CrearMaquinaria";
+import EditarMaquinaria from "./components/Maquinaria/EditarMaquinaria";
+import ListarMaquinaria from "./components/Maquinaria/ListarMaquinaria";
+
+import DetalleReserva from "./components/Reserva/DetalleReserva";
+import DetalleAlquiler from "./components/Alquiler/DetalleAlquiler";
+
+import Perfil from "./components/Perfil/Perfil";
+
 function App() {
   return (
     <AuthProvider>
-        <Routes>
-          
-          <Route path="/login" element={<Login />} />
-          <Route path="/noautorizado" element={<NoAutorizado />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/noautorizado" element={<NoAutorizado />} />
+        <Route path="/HomePage" element={<HomePage />} />
+        <Route
+          path="/DetallePublicacion/:id"
+          element={<DetallePublicacion />}
+        />
+        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/ForgotPassword" element={<ForgotPassword />} />
+        <Route path="/Rentals" element={<Rentals />} />
+        <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
+        <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
+        <Route path="/Perfil" element={<Perfil />} />
+
+        {/* Cliente */}
+        <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}></Route>
+
+        {/* Dueño */}
+        <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>
+          <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
+          <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
+          <Route
+            path="/EditarPublicacion/:id"
+            element={<EditarPublicacion />}
+          />
           <Route path="/HomePage" element={<HomePage />} />
-          <Route path="/DetallePublicacion/:id" element={<DetallePublicacion/>}/>
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/ForgotPassword" element={<ForgotPassword />} />
-          <Route path="/Rentals" element={<Rentals/>}/>
-          <Route path="/ReservasPendientes" element={<ReservasPendientes/>}/>
-          {/* Cliente */}
-          <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
-            
-          </Route>
+          <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />
+          <Route
+            path="/ModificarMaquinaria/:id"
+            element={<EditarMaquinaria />}
+          />
+          <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
+        </Route>
 
-          {/* Dueño */}
-          <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>
-            <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
-
-            <Route path="/HomePage" element={<HomePage />} />
-          </Route>
-
-          {/* Emleado */}
-          <Route element={<PrivateRoute rolesPermitidos={["Empleado"]} />}>
-            <Route path="/EmployeeHome" element={<EmployeeHome />} />
-          </Route>
-          {/*
+        {/* Emleado */}
+        <Route element={<PrivateRoute rolesPermitidos={["Empleado"]} />}>
+          <Route path="/EmployeeHome" element={<EmployeeHome />} />
+        </Route>
+        {/*
           Una forma de tener una vista para distintos roles
           <Route element={<PrivateRoute rolesPermitidos={["Dueño", "Empleado"]} />}>
                 <Route path="/panel" element={<PanelComun />} />
               </Route>
             */}
-        </Routes>
+      </Routes>
     </AuthProvider>
   );
 }

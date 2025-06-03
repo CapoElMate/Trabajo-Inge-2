@@ -42,6 +42,10 @@ namespace Data_Access_Layer.Migrations
                         .HasColumnType("INTEGER")
                         .HasDefaultValue(false);
 
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.HasKey("idAlquiler");
 
                     b.HasIndex("DNICliente");
@@ -384,6 +388,10 @@ namespace Data_Access_Layer.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UbicacionName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -492,13 +500,13 @@ namespace Data_Access_Layer.Migrations
                         .HasMaxLength(70)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EntreCalles")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Entrega")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Piso")
+                        .IsRequired()
+                        .HasMaxLength(70)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Status")
@@ -512,7 +520,7 @@ namespace Data_Access_Layer.Migrations
                     b.Property<DateTime>("fecInicio")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("idAlquiler")
+                    b.Property<int?>("idAlquiler")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("idPublicacion")
@@ -521,7 +529,7 @@ namespace Data_Access_Layer.Migrations
                     b.Property<double>("montoTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("nroPago")
+                    b.Property<int?>("nroPago")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("idReserva");
@@ -659,14 +667,14 @@ namespace Data_Access_Layer.Migrations
                         .HasMaxLength(254)
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("EntreCalles")
-                        .IsRequired()
-                        .HasMaxLength(70)
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(50)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Piso")
+                        .IsRequired()
+                        .HasMaxLength(70)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Telefono")
@@ -1204,8 +1212,7 @@ namespace Data_Access_Layer.Migrations
                     b.HasOne("Domain_Layer.Entidades.Alquiler", "Alquiler")
                         .WithOne("Reserva")
                         .HasForeignKey("Domain_Layer.Entidades.Reserva", "idAlquiler")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain_Layer.Entidades.Publicacion", "Publicacion")
                         .WithMany("Reservas")
@@ -1216,8 +1223,7 @@ namespace Data_Access_Layer.Migrations
                     b.HasOne("Domain_Layer.Entidades.Pago", "Pago")
                         .WithOne("Reserva")
                         .HasForeignKey("Domain_Layer.Entidades.Reserva", "nroPago")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Alquiler");
 

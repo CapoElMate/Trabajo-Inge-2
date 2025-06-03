@@ -27,7 +27,7 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso))
                 .ForMember(dest => dest.roleName, opt => opt.MapFrom(src => src.roleName))
                 .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesToUsuarioRegistradoDtoResolver>())
                 .ForMember(dest => dest.dniVerificado, opt => opt.MapFrom(src => src.dniVerificado));
@@ -42,7 +42,7 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso))
                 .ForMember(dest => dest.roleName, opt => opt.MapFrom(src => src.roleName))
                 .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesDtoToUsuarioRegistradoResolver>())
                 .ForMember(dest => dest.dniVerificado, opt => opt.Ignore());

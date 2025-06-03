@@ -11,6 +11,7 @@ namespace Domain_Layer.Entidades
     {
         [Key]
         public int idAlquiler { get; set; }
+        public string status { get; set; }
         public bool isDeleted { get; set; }
         public DateTime fecEfectivizacion { get; set; }
         public string DNICliente { get; set; }

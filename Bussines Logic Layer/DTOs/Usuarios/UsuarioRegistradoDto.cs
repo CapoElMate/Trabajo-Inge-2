@@ -19,7 +19,7 @@ namespace Bussines_Logic_Layer.DTOs.Usuarios
         public string Calle { get; set; } = null!;
         public string Altura { get; set; } = null!;
         public string? Dpto { get; set; }
-        public string EntreCalles { get; set; } = null!;
+        public string Piso { get; set; } = null!;
         public ICollection<PermisoEspecialUsuarioDto> PermisosEspeciales { get; set; } = new List<PermisoEspecialUsuarioDto>();
         public string roleName { get; set; } = null!;
         public bool dniVerificado { get; set; }
