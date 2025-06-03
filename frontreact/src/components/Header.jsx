@@ -3,6 +3,7 @@ import logo from '../assets/bobElAlquiladorLogoCompleto.svg';
 import { useNavigate } from "react-router-dom";
 import SideBarMenu from "./SideBarMenu";
 import { Link } from 'react-router-dom';
+import './Header.css';
 
 function Header(){
     const navigate = useNavigate();
