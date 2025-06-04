@@ -16,7 +16,8 @@ namespace Bussines_Logic_Layer.Mapping
         {
             CreateMap<Ubicacion, UbicacionDto>()
                 .ForMember(dest => dest.UbicacionName, opt => opt.MapFrom(src => src.UbicacionName));
-
+            CreateMap<UbicacionDto, Ubicacion>()
+                .ForMember(dest => dest.UbicacionName, opt => opt.MapFrom(src => src.UbicacionName));
         }
     }
 }

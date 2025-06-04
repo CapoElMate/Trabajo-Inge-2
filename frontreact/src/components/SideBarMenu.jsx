@@ -5,7 +5,6 @@ import { TbMenu2 } from "react-icons/tb";
 import './SideBarMenu.css'; 
 import { useAuth } from '../AuthContext';
 import { useNavigate } from 'react-router-dom';
-
 function SideBarMenu() {
   const [show, setShow] = useState(false);
   const { user } = useAuth();
@@ -38,7 +37,8 @@ function SideBarMenu() {
       { label: "Mi perfil", path: "/Profile", restricted: false },
       { label: "Mis reservas", path: "/rentals", restricted: false },
       { label: "Mis alquileres", path: "/Leases", restricted: false },
-      { label: "Publicaciones", path: "/HomePage", restricted: false }
+      { label: "Publicaciones", path: "/HomePage", restricted: false },
+      {label: "Reservas pendientes", path: "/ReservasPendientes", restricted: false}
     );
   } else if (user.roles.includes("Dueño")) {
     menuItems.push(

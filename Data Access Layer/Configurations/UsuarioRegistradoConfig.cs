@@ -31,7 +31,7 @@ namespace Domain_Layer.Configurations
                 .IsRequired();
             builder.Property(user => user.Apellido)
                 .IsRequired();
-            builder.Property(user => user.Edad)
+            builder.Property(user => user.fecNacimiento)
                 .IsRequired();
 
             builder.Property(user => user.Calle)
@@ -42,7 +42,7 @@ namespace Domain_Layer.Configurations
                 .HasMaxLength(70);
             builder.Property(user => user.Dpto)
                 .HasMaxLength(70);
-            builder.Property(user => user.EntreCalles)
+            builder.Property(user => user.Piso)
                 .IsRequired()
                 .HasMaxLength(70);
 

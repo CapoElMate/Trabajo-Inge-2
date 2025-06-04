@@ -33,7 +33,7 @@ namespace Data_Access_Layer.Configurations
                 .HasMaxLength(70);
             builder.Property(reserva => reserva.Dpto)
                 .HasMaxLength(70);
-            builder.Property(reserva => reserva.EntreCalles)
+            builder.Property(reserva => reserva.Piso)
                 .HasMaxLength(70);
 
             // Relación con TipoEntrega (muchas Reservas a uno)

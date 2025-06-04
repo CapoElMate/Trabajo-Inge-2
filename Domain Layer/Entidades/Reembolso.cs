@@ -16,5 +16,6 @@ namespace Domain_Layer.Entidades
         public Cliente Cliente { get; set; }
         public int idAlquiler { get; set; }
         public Alquiler Alquiler { get; set; }
+        public DateTime fecCancelacion { get; set; }
     }
 }

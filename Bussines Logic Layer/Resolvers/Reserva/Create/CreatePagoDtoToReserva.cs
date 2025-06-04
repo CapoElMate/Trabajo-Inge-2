@@ -26,14 +26,15 @@ namespace Bussines_Logic_Layer.Resolvers.Reserva
                                            , Pago destMember, ResolutionContext context)
         {
 
-            var tipoExistente = _context.Pagos.FirstOrDefault(p => p.nroPago.Equals(source.Pago.nroPago));
+            //var tipoExistente = _context.Pagos.FirstOrDefault(p => p.nroPago.Equals(source.Pago.nroPago));
 
-            if (tipoExistente == null)
-            {
-                throw new Exception("No existe un pago para los valores proporcionados");
-            }
+            //if (tipoExistente == null)
+            //{
+            //    throw new Exception("No existe un pago para los valores proporcionados");
+            //}
 
-            return _mapper.Map<Pago>(tipoExistente);
+            //return _mapper.Map<Pago>(tipoExistente);
+            return null;
         }
     }
 }

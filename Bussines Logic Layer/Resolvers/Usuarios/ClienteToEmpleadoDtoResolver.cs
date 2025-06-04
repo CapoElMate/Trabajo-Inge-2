@@ -25,7 +25,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
 
         public DTOs.Usuarios.ClienteDto Resolve(Empleado source, EmpleadoDto destination, DTOs.Usuarios.ClienteDto destMember, ResolutionContext context)
         {
-            var clienteExistente = _context.Clientes.FirstOrDefault(u => u.DNI == source.Cliente.DNI);
+            var clienteExistente = _context.Clientes.FirstOrDefault(u => u.DNI == source.DNI);
 
             if (clienteExistente == null)
             {
@@ -33,32 +33,33 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
             }
 
 
+            return _mapper.Map<ClienteDto>(clienteExistente);
 
-            return new DTOs.Usuarios.ClienteDto
-            {
-                //UsuarioRegistrado = new UsuarioRegistradoDTO {
-                //    Email = clienteExistente.UsuarioRegistrado.Email,
-                //    DNI = clienteExistente.UsuarioRegistrado.DNI,
-                //    Nombre = clienteExistente.UsuarioRegistrado.Nombre,
-                //    Apellido = clienteExistente.UsuarioRegistrado.Apellido,
-                //    Edad = clienteExistente.UsuarioRegistrado.Edad,
-                //    Telefono = clienteExistente.UsuarioRegistrado.Telefono,
-                //    Calle = clienteExistente.UsuarioRegistrado.Calle,
-                //    Altura = clienteExistente.UsuarioRegistrado.Altura,
-                //    Dpto = clienteExistente.UsuarioRegistrado.Dpto,
-                //    EntreCalles = clienteExistente.UsuarioRegistrado.EntreCalles,
-                //    roleName = clienteExistente.UsuarioRegistrado.roleName,
-                //    PermisosEspeciales = clienteExistente.UsuarioRegistrado.PermisosEspeciales
-                //    .Select(pe => new PermisoEspecialUsuarioDto { 
-                //        Permiso = pe.Permiso, 
-                //        status = pe.status,
-                //        fecEmision = pe.fecEmision,
-                //        fecVencimiento = pe.fecVencimiento
-                //    })
-                //    .ToList()
-                //},
-                UsuarioRegistrado = _mapper.Map<UsuarioRegistradoDTO>(clienteExistente.UsuarioRegistrado),
-            };
+            //return new DTOs.Usuarios.ClienteDto
+            //{
+            //    //UsuarioRegistrado = new UsuarioRegistradoDTO {
+            //    //    Email = clienteExistente.UsuarioRegistrado.Email,
+            //    //    DNI = clienteExistente.UsuarioRegistrado.DNI,
+            //    //    Nombre = clienteExistente.UsuarioRegistrado.Nombre,
+            //    //    Apellido = clienteExistente.UsuarioRegistrado.Apellido,
+            //    //    Edad = clienteExistente.UsuarioRegistrado.Edad,
+            //    //    Telefono = clienteExistente.UsuarioRegistrado.Telefono,
+            //    //    Calle = clienteExistente.UsuarioRegistrado.Calle,
+            //    //    Altura = clienteExistente.UsuarioRegistrado.Altura,
+            //    //    Dpto = clienteExistente.UsuarioRegistrado.Dpto,
+            //    //    EntreCalles = clienteExistente.UsuarioRegistrado.EntreCalles,
+            //    //    roleName = clienteExistente.UsuarioRegistrado.roleName,
+            //    //    PermisosEspeciales = clienteExistente.UsuarioRegistrado.PermisosEspeciales
+            //    //    .Select(pe => new PermisoEspecialUsuarioDto { 
+            //    //        Permiso = pe.Permiso, 
+            //    //        status = pe.status,
+            //    //        fecEmision = pe.fecEmision,
+            //    //        fecVencimiento = pe.fecVencimiento
+            //    //    })
+            //    //    .ToList()
+            //    //},
+            //    UsuarioRegistrado = _mapper.Map<UsuarioRegistradoDTO>(clienteExistente.UsuarioRegistrado),
+            //};
         }
     }
 }

@@ -3,9 +3,14 @@ import TextInput from "../TextInput";
 import SelectInput from "../SelectInput";
 import TagSelector from "../TagSelector";
 import FormButtons from "../FormButtons";
+import "./FormMaquinaria.css";
 
-export default function MaquinariaForm({ initialData = {}, onSubmit, onCancel, modo = "Crear" }) {
-  // Estados para el formulario
+export default function MaquinariaForm({
+  initialData = {},
+  onSubmit,
+  onCancel,
+  modo = "Crear",
+}) {
   const [marca, setMarca] = useState("");
   const [modelo, setModelo] = useState("");
   const [anio, setAnio] = useState("");
@@ -16,32 +21,73 @@ export default function MaquinariaForm({ initialData = {}, onSubmit, onCancel, m
   const [tagsDisponibles, setTagsDisponibles] = useState([]);
   const [permisosDisponibles, setPermisosDisponibles] = useState([]);
   const [tiposMaquinaDisponibles, setTiposMaquinaDisponibles] = useState([]);
+  const [modelos, setModelos] = useState([]);
+  const [marcas, setMarcas] = useState([]);
+  const [mensajeExito, setMensajeExito] = useState("");
+  // Cargar datos en modo edición
+  useEffect(() => {
+    if (
+      initialData &&
+      Object.keys(initialData).length > 0 &&
+      modo === "Editar"
+    ) {
+      setMarca(initialData.modelo?.marca?.marca || "");
+      setModelo(initialData.modelo?.modelo || "");
+      setAnio(initialData.anioFabricacion?.toString() || "");
+      setTipo(initialData.tipoMaquina?.tipo || "");
+      setPermisos(initialData.permisosEspeciales?.map((p) => p.permiso) || []);
+      setTags(initialData.tagsMaquina?.map((t) => t.tag) || []);
+    }
+  }, [initialData, modo]);
 
-  // Cuando cambie initialData, cargar valores en los estados (editar)
-useEffect(() => {
-  if (initialData && Object.keys(initialData).length > 0 && modo === "Editar") {
-    setMarca(initialData.modelo?.marca?.marca || "");
-    setModelo(initialData.modelo?.modelo || "");
-    setAnio(initialData.anioFabricacion ? initialData.anioFabricacion.toString() : "");
-    setTipo(initialData.tipoMaquina?.tipo || "");
-    setPermisos(initialData.permisosEspeciales?.map(p => p.permiso) || []);
-    setTags(initialData.tagsMaquina?.map(t => t.tag) || []);
+  // Cargar datos iniciales
+  useEffect(() => {
+    getMarcas().then(setMarcas);
+    getTags().then(setTagsDisponibles);
+    getPermisosEspeciales().then(setPermisosDisponibles);
+    getTiposMaquina().then(setTiposMaquinaDisponibles);
+  }, []);
 
-  }
-}, [initialData, modo]);
+  // Actualizar modelos cuando cambia la marca
+  useEffect(() => {
+    if (marca) {
+      getModelos(marca).then(setModelos);
+    } else {
+      setModelos([]);
+    }
+  }, [marca]);
 
-useEffect(() => {
-  getTags().then(setTagsDisponibles);
-  getPermisosEspeciales().then(setPermisosDisponibles);
-  getTiposMaquina().then(setTiposMaquinaDisponibles);
-}, [])
+  const getModelos = async (marca = "") => {
+    if (!marca) return [];
+    try {
+      const response = await fetch("http://localhost:5000/api/Modelos/all");
+      if (!response.ok) throw new Error("Error al obtener los modelos");
+      const data = await response.json();
+      return data.filter((m) => m.marca.marca === marca);
+    } catch (error) {
+      console.error("Error fetching modelos:", error);
+      return [];
+    }
+  };
+
+  const getMarcas = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/Marcas/all");
+      if (!response.ok) throw new Error("Error al obtener las marcas");
+      const data = await response.json();
+      return data.map((m) => m.marca);
+    } catch (error) {
+      console.error("Error fetching marcas:", error);
+      return [];
+    }
+  };
 
   const getTags = async () => {
     try {
       const response = await fetch("http://localhost:5000/api/TagsMaquina/all");
       if (!response.ok) throw new Error("Error al obtener los tags");
       const data = await response.json();
-      return data.map((tag) => tag.tag);
+      return data.map((t) => t.tag);
     } catch (error) {
       console.error("Error fetching tags:", error);
       return [];
@@ -50,8 +96,11 @@ useEffect(() => {
 
   const getPermisosEspeciales = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/PermisosEspeciales/all");
-      if (!response.ok) throw new Error("Error al obtener los permisos especiales");
+      const response = await fetch(
+        "http://localhost:5000/api/PermisosEspeciales/all"
+      );
+      if (!response.ok)
+        throw new Error("Error al obtener los permisos especiales");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -62,8 +111,11 @@ useEffect(() => {
 
   const getTiposMaquina = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/TiposMaquina/all");
-      if (!response.ok) throw new Error("Error al obtener los tipos de maquinaria");
+      const response = await fetch(
+        "http://localhost:5000/api/TiposMaquina/all"
+      );
+      if (!response.ok)
+        throw new Error("Error al obtener los tipos de maquinaria");
       const data = await response.json();
       return data;
     } catch (error) {
@@ -75,6 +127,17 @@ useEffect(() => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    const newErrors = {};
+    if (marca === "") newErrors.marca = "Seleccione una marca.";
+    if (modelo === "") newErrors.modelo = "Seleccione un modelo.";
+    if (anio === "") newErrors.anio = "Seleccione un año de fabricacion.";
+    if (tipo === "") newErrors.tipo = "Seleccione el tipo de maquinaria.";
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const data = {
       anioFabricacion: parseInt(anio),
       marca,
@@ -84,42 +147,51 @@ useEffect(() => {
       tagsMaquina: tags.map((t) => ({ tag: t })),
     };
 
+    setMensajeExito(
+    modo === "Crear"
+      ? "La maquinaria fue creada correctamente."
+      : "La máquina se ha modificado satisfactoriamente."
+  );
     onSubmit(data, setErrors);
   };
 
-  const anios = Array.from({ length: 2025 - 1900 + 1 }, (_, i) => (1900 + i).toString());
+  const anios = Array.from({ length: 2025 - 1900 + 1 }, (_, i) =>
+    (1900 + i).toString()
+  );
 
   return (
     <div className="detalle-contenedor">
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 border rounded space-y-4">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-md mx-auto p-4 border rounded space-y-4"
+      >
         <h2 className="text-xl font-semibold text-center">{modo} Maquinaria</h2>
 
-        <TextInput
+        <SelectInput
+          label="Marca"
+          options={marcas}
+          value={marca}
+          onChange={(e) => {
+            setMarca(e.target.value);
+            setModelo(""); // Limpiar modelo al cambiar marca
+            setErrors({ ...errors, marca: "", maquinaria: "" });
+          }}
+          className={errors.marca ? "input-error" : ""}
+        />
+        {errors.marca && <p className="error-message">{errors.marca}</p>}
+
+        <SelectInput
           label="Modelo"
-          class="w-full border p-1 rounded"
-          type="text"
-          name="modelo"
-          placeholder="Ingrese el modelo"
+          options={modelos.map((m) => m.modelo)}
+          value={modelo}
           onChange={(e) => {
             setModelo(e.target.value);
             setErrors({ ...errors, modelo: "", maquinaria: "" });
           }}
-          value={modelo}
+          disabled={!marca}
+          className={errors.modelo ? "input-error" : ""}
         />
         {errors.modelo && <p className="error-message">{errors.modelo}</p>}
-
-        <TextInput
-          label="Marca"
-          class="w-full border p-1 rounded"
-          type="text"
-          name="marca"
-          placeholder="Ingrese la marca"
-          onChange={(e) => {
-            setMarca(e.target.value);
-            setErrors({ ...errors, marca: "", maquinaria: "" });
-          }}
-          value={marca}
-        />
 
         <SelectInput
           label="Año de Fabricación"
@@ -129,8 +201,9 @@ useEffect(() => {
             setAnio(e.target.value);
             setErrors({ ...errors, anio: "", maquinaria: "" });
           }}
-          required
+          className={errors.anio ? "input-error" : ""}
         />
+        {errors.anio && <p className="error-message">{errors.anio}</p>}
 
         <SelectInput
           label="Tipo Maquinaria"
@@ -140,8 +213,9 @@ useEffect(() => {
             setTipo(e.target.value);
             setErrors({ ...errors, tipo: "", maquinaria: "" });
           }}
-          required
+          className={errors.tipo ? "input-error" : ""}
         />
+        {errors.tipo && <p className="error-message">{errors.tipo}</p>}
 
         <div className="dropdowns">
           <TagSelector
@@ -149,14 +223,25 @@ useEffect(() => {
             tags={permisos}
             setTags={setPermisos}
             opciones={permisosDisponibles.map((t) => t.permiso)}
-            required
           />
-          <TagSelector tags={tags} setTags={setTags} opciones={tagsDisponibles} />
+          <TagSelector
+            tags={tags}
+            setTags={setTags}
+            opciones={tagsDisponibles}
+          />
         </div>
 
-        <FormButtons modo={modo} onCancel={onCancel} />
+        {!mensajeExito ? (
+          <FormButtons modo={"Confirmar modificacion"} onCancel={onCancel} />
+        ) : (
+          <div className="success-message">
+            {mensajeExito}
+          </div>
+        )}
 
-        {errors.maquinaria && <p className="error-message">{errors.maquinaria}</p>}
+        {errors.maquinaria && (
+          <p className="error-message">{errors.maquinaria}</p>
+        )}
       </form>
     </div>
   );

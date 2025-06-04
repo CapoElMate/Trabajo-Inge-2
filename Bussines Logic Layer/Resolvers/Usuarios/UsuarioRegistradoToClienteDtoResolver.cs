@@ -24,7 +24,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
 
         public UsuarioRegistradoDTO Resolve(Cliente source, DTOs.Usuarios.ClienteDto destination, UsuarioRegistradoDTO destMember, ResolutionContext context)
         {
-            var usuarioExistente = _context.UsuariosRegistrados.FirstOrDefault(u => u.DNI == source.UsuarioRegistrado.DNI);
+            var usuarioExistente = _context.UsuariosRegistrados.FirstOrDefault(u => u.DNI == source.DNI);
 
             if (usuarioExistente == null)
             {

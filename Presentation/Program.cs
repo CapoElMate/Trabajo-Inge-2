@@ -129,7 +129,7 @@ builder.Services.AddScoped<IUbicacionRepository, UbicacionRepository>();
 builder.Services.AddScoped<IArchivoRepository, ArchivoRepository>();
 builder.Services.AddScoped<IReservaRepository, ReservaRespository>();
 builder.Services.AddScoped<IPoliticaDeCancelacionRepository, PoliticaDeCancelacionRepository>();
-
+builder.Services.AddScoped<ITipoEntregaRepository, TipoEntregaRepository>();
 
 //Servicios
 builder.Services.AddScoped<IMaquinaService, MaquinaService>();
@@ -150,7 +150,7 @@ builder.Services.AddScoped<IArchivoService, ArchivoService>();
 builder.Services.AddScoped<IReservaService, ReservaService>();
 builder.Services.AddScoped<IEmails, MailjetEmailSender>();
 builder.Services.AddScoped<IPoliticaDeCancelacionService, PoliticaDeCancelacionService>();
-
+builder.Services.AddScoped<ITipoEntregaService, TipoEntregaService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
