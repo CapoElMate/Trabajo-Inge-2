@@ -7,6 +7,7 @@ import ImageUploader from "../ImageUploader";
 import ImagePreviewList from "../ImagePreviwList";
 import Header from "../Header";
 import "../FormStructure.css";
+import "./FormPublicacion.css";
 
 export default function PublicacionForm({
   initialData = {},
@@ -30,6 +31,7 @@ export default function PublicacionForm({
   const [opcionesDeTags, setOpcionesDeTags] = useState([]);
   const [ubicaciones, setUbicaciones] = useState([]);
   const [opcionesPoliticas, setOpcionesPoliticas] = useState([]);
+  const [errores, setErrores] = useState({});
 
   const getMaquinas = async () => {
     try {
@@ -112,6 +114,57 @@ export default function PublicacionForm({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const nuevosErrores = {};
+
+    // Validaciones de campos de texto
+    if (!titulo.trim()) {
+      nuevosErrores.titulo = "El título es obligatorio.";
+    } else if (titulo.trim().length < 5) {
+      nuevosErrores.titulo = "El título debe tener al menos 5 caracteres.";
+    }
+
+    if (!descripcion.trim()) {
+      nuevosErrores.descripcion = "La descripción es obligatoria.";
+    } else if (descripcion.trim().length < 10) {
+      nuevosErrores.descripcion =
+        "La descripción debe tener al menos 10 caracteres.";
+    }
+
+    // Selects
+    if (!maquinaria)
+      nuevosErrores.maquinaria = "Debes seleccionar una maquinaria.";
+    if (!politica) nuevosErrores.politica = "Debes seleccionar una política.";
+    if (!ubicacion) nuevosErrores.ubicacion = "La ubicación es obligatoria.";
+
+    // Precio
+    if (!precio || isNaN(parseFloat(precio))) {
+      nuevosErrores.precio = "El precio debe ser un número válido.";
+    } else if (parseFloat(precio) <= 0) {
+      nuevosErrores.precio = "El precio debe ser mayor a 0.";
+    }
+
+    // Validación de imágenes
+    if (!imagenes || imagenes.length === 0) {
+      nuevosErrores.imagenes = "Debes subir al menos una imagen.";
+    } else {
+      const extensionesValidas = [".png", ".jpg", ".jpeg"];
+      const imagenesInvalidas = imagenes.filter((img) => {
+        const ext = img.name?.toLowerCase().split(".").pop();
+        return !extensionesValidas.includes(`.${ext}`);
+      });
+
+      if (imagenesInvalidas.length > 0) {
+        nuevosErrores.imagenes =
+          "Solo se permiten imágenes .png, .jpg o .jpeg.";
+      }
+    }
+
+    if (Object.keys(nuevosErrores).length > 0) {
+      setErrores(nuevosErrores);
+      return;
+    }
+
+    setErrores({}); // limpiar errores
 
     const publicacionData = {
       ...(modo === "Editar" && { idPublicacion: initialData?.idPublicacion }),
@@ -146,17 +199,25 @@ export default function PublicacionForm({
           <TextInput
             label="Título"
             onChange={(e) => setTitulo(e.target.value)}
-            required
             value={titulo}
           />
+          {errores.titulo && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.titulo}
+            </p>
+          )}
 
           <TextInput
             type="text"
             label="Descripcion"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
-            required
           />
+          {errores.descripcion && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.descripcion}
+            </p>
+          )}
 
           <SelectInput
             optionCompleja={false}
@@ -166,13 +227,15 @@ export default function PublicacionForm({
                 ? maquinaria
                   ? [maquinaria]
                   : []
-              : opcionesMaquinaria
+                : opcionesMaquinaria
             }
             defaultOptionLabel="Seleccionar..."
             value={maquinaria?.value || ""}
             onChange={(e) => {
               const selectedId = e.target.value;
-              const seleccionada = maquinarias.find((m) => m.idMaquina === parseInt(selectedId));
+              const seleccionada = maquinarias.find(
+                (m) => m.idMaquina === parseInt(selectedId)
+              );
               if (seleccionada) {
                 setMaquinaria({
                   value: seleccionada.idMaquina,
@@ -181,32 +244,49 @@ export default function PublicacionForm({
                 console.log("Maquinaria elegida", seleccionada);
               }
             }}
-            required
             disabled={modo === "Editar"}
           />
+          {errores.maquinaria && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.maquinaria}
+            </p>
+          )}
 
           <SelectInput
             label="Política de Cancelación"
             options={opcionesPoliticas.map((p) => p.politica)}
             onChange={(e) => setPolitica(e.target.value)}
             value={politica || ""}
-            required
           />
+          {errores.politica && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.politica}
+            </p>
+          )}
 
           <SelectInput
             label="Ubicacion "
             options={ubicaciones}
             onChange={(e) => setUbicacion(e.target.value)}
             value={ubicacion}
-            required
           />
+          {errores.ubicacion && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.ubicacion}
+            </p>
+          )}
+
           <TextInput
             label="Precio por dia "
             type="text"
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
-            required
           />
+          {errores.precio && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.precio}
+            </p>
+          )}
 
           <TagSelector
             tags={tags}
@@ -215,6 +295,11 @@ export default function PublicacionForm({
           />
 
           <ImageUploader onChange={(files) => setImagenes(files)} />
+          {errores.imagenes && (
+            <p className="text-red-500 text-sm error-message">
+              {errores.imagenes}
+            </p>
+          )}
           <FormButtons modo={modo} onCancel={onCancel} />
         </form>
       </div>
