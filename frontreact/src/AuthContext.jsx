@@ -40,6 +40,17 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
+      const response = await fetch(`http://localhost:5000/api/Usuario/byEmail?email=${encodeURIComponent(email)}`);
+      if (!response.ok) {
+        throw new Error(
+          `Error en la conexión o el servidor respondió con estado: ${response.status}`
+        );
+      }const data=await response.json();
+      console.log(data);
+      if(data.dniVerificado == false){
+        alert("No esta verificado");
+      }else{
+        try {
       const response = await fetch(`http://localhost:5000/Auth/login`, {
         method: "POST",
         headers: {
@@ -70,7 +81,7 @@ export const AuthProvider = ({ children }) => {
       if (usersFound) {
         setUser(usersFound);
         setError(null);
-
+        console.log(usersFound);
         if (usersFound.roles.includes("Dueño")) {
           navigate("/HomePageAdmin");
         } else if (usersFound.roles.includes("Cliente")) {
@@ -85,6 +96,13 @@ export const AuthProvider = ({ children }) => {
       console.error("Error durante el login:", error);
       setError("Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.");
     }
+
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      return null;
+    }
+  
   };
 
   const logout = async () => {
