@@ -36,8 +36,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
         <Route path="/HomePage" element={<HomePage />} />
-        <Route
-          path="/DetallePublicacion/:id"
+        <Route path="/" element={<HomePage />} />
+        <Route path="/DetallePublicacion/:id"
           element={<DetallePublicacion />}
         />
         <Route path="/SignUp" element={<SignUp />} />

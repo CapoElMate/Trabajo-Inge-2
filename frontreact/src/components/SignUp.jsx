@@ -1,93 +1,170 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const SignUp = () => {
-    const [statusMessage, setStatusMessage] = useState('Enviando datos...');
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        dni: '',
+        nombre: '',
+        apellido: '',
+        fecNacimiento: '',
+        telefono: '',
+        calle: '',
+        altura: '',
+        dpto: '',
+        piso: '',
+    });
+
+    const [dniImageBase64, setDniImageBase64] = useState('');
+    const [statusMessage, setStatusMessage] = useState('');
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const registerUser = async () => {
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
-            const authData = {
-                email: "user1Testuwu@gmail.com",
-                password: "Password@1",
-                confirmPassword: "Password@1",
-                role: "Cliente"
-            };
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-            // api/Usuario
-            const userData = {
-                email: "user1Testuwu@gmail.com",
-                dni: "11111111",
-                nombre: "mate",
-                apellido: "etma",
-                fecNacimiento: new Date().toISOString(),
-                telefono: "22156732",
-                calle: "1",
-                altura: "1",
-                dpto: "1",
-                piso: "1",
-                permisosEspeciales: [],
-                roleName: "Cliente",
-                dniVerificado: true
-            };
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!validTypes.includes(file.type)) {
+            setError('Formato de imagen inválido. Solo se permiten JPG, JPEG y PNG.');
+            return;
+        }
 
-            try {
-                setStatusMessage('Registrando usuario en Auth...');
-                const authResponse = await fetch('http://localhost:5000/Auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(authData)
-                });
-
-                if (!authResponse.ok) {
-                    const errorText = await authResponse.text();
-                    throw new Error(`Error en el registro de Auth: ${authResponse.status} - ${errorText}`);
-                }
-
-                const authResult = await authResponse.json();
-                console.log('Auth registration successful:', authResult);
-                setStatusMessage('Usuario registrado en Auth. Ahora registrando datos de usuario...');
-
-
-                const userResponse = await fetch('http://localhost:5000/api/Usuario', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(userData)
-                });
-
-                if (!userResponse.ok) {
-                    const errorText = await userResponse.text();
-                    throw new Error(`Error en el registro de Usuario: ${userResponse.status} - ${errorText}`);
-                }
-
-                const userResult = await userResponse.json();
-                console.log('User data registration successful:', userResult);
-                setStatusMessage('Usuario y datos registrados exitosamente!');
-
-            } catch (err) {
-                console.error('Error during registration process:', err);
-                setError(err.message);
-                setStatusMessage(`Error: ${err.message}`);
-            }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1]; 
+            setDniImageBase64(base64String);
+            console.log(base64String);
         };
 
-        registerUser();
-    }, []);
+        reader.readAsDataURL(file);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setStatusMessage('Registrando usuario...');
+
+        const authData = {
+            email: formData.email,
+            password: formData.password,
+            confirmPassword: formData.confirmPassword,
+            role: 'Cliente',
+        };
+
+        const userData = {
+            email: formData.email,
+            dni: formData.dni,
+            nombre: formData.nombre,
+            apellido: formData.apellido,
+            fecNacimiento: new Date(formData.fecNacimiento).toISOString(),
+            telefono: formData.telefono,
+            calle: formData.calle,
+            altura: formData.altura,
+            dpto: formData.dpto,
+            piso: formData.piso,
+            permisosEspeciales: [],
+            roleName: 'Cliente',
+            dniVerificado: false,
+        };
+
+        try {
+            const authResponse = await fetch('http://localhost:5000/Auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(authData),
+            });
+
+            if (!authResponse.ok) throw new Error(`Error en Auth: ${await authResponse.text()}`);
+
+            const userResponse = await fetch('http://localhost:5000/api/Usuario', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+
+            if (!userResponse.ok) throw new Error(`Error en Usuario: ${await userResponse.text()}`);
+            
+            const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({usuarioRegistrado:userData}),
+            });
+
+            if (!clienteResponse.ok) throw new Error(`Error en clienteResponse: ${await clienteResponse.text()}`);
+
+            if (dniImageBase64) {
+    // Convertir base64 a Blob
+    const byteCharacters = atob(dniImageBase64);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+        const slice = byteCharacters.slice(offset, offset + 512);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: 'image/jpeg' }); // o 'image/png' si corresponde
+
+    const formDataArchivo = new FormData();
+    formDataArchivo.append('EntidadID', parseInt(formData.dni));
+    formDataArchivo.append('TipoEntidad', 3);
+    formDataArchivo.append('Nombre', 'Archivo DNI');
+    formDataArchivo.append('Descripcion', `Archivo DNI de ${formData.nombre} ${formData.apellido}`);
+    formDataArchivo.append('Archivo', blob, 'dni.jpg');
+
+        const dniResponse = await fetch('http://localhost:5000/api/Archivo', {
+            method: 'POST',
+            body: formDataArchivo,
+        });
+
+        if (!dniResponse.ok) {
+            throw new Error(`Error al enviar archivo DNI: ${await dniResponse.text()}`);
+        }
+    }setStatusMessage('Registro exitoso.');
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+            setStatusMessage('Ocurrió un error durante el registro.');
+        }
+    };
 
     return (
-        <div style={{ padding: '20px', textAlign: 'center' }}>
-            <h1>Proceso de Registro Automático</h1>
-            <p>{statusMessage}</p>
-            {error && <p style={{ color: 'red' }}>Detalle del Error: {error}</p>}
-            <p>
-                Este componente envía datos de registro fijos al backend
-                sin interacción del usuario. Por favor, revisa la consola del navegador
-                para ver los resultados detallados.
-            </p>
+        <div style={{ maxWidth: '600px', margin: 'auto', padding: '20px' }}>
+            <h2>Formulario de Registro</h2>
+            <form onSubmit={handleSubmit}>
+                <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+                <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleChange} required />
+                <input type="password" name="confirmPassword" placeholder="Confirmar Contraseña" value={formData.confirmPassword} onChange={handleChange} required />
+                <input name="dni" placeholder="DNI" value={formData.dni} onChange={handleChange} required />
+                <input name="nombre" placeholder="Nombre" value={formData.nombre} onChange={handleChange} required />
+                <input name="apellido" placeholder="Apellido" value={formData.apellido} onChange={handleChange} required />
+                <input type="date" name="fecNacimiento" placeholder="Fecha de Nacimiento" value={formData.fecNacimiento} onChange={handleChange} required />
+                <input name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleChange} required />
+                <input name="calle" placeholder="Calle" value={formData.calle} onChange={handleChange} required />
+                <input name="altura" placeholder="Altura" value={formData.altura} onChange={handleChange} required />
+                <input name="dpto" placeholder="Dpto" value={formData.dpto} onChange={handleChange} />
+                <input name="piso" placeholder="Piso" value={formData.piso} onChange={handleChange} />
+
+                <div style={{ marginTop: '10px' }}>
+                    <label>Subir imagen del DNI (.jpg, .jpeg, .png):</label>
+                    <input type="file" accept="image/jpeg,image/jpg,image/png" onChange={handleFileChange} />
+                </div>
+
+                <button type="submit" style={{ marginTop: '15px' }}>Registrarse</button>
+            </form>
+
+            {statusMessage && <p>{statusMessage}</p>}
+            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
         </div>
     );
 };
