@@ -45,7 +45,7 @@ function ForgotPassword() {
       } else {
         setMessage('Ocurrió un error al procesar tu solicitud. Por favor, inténtalo de nuevo.');
         setIsError(true);
-        console.error('Error al registrar solicitud en JSON Server:', response.status);
+        console.error('Error al registrar solicitud', response.status);
       }
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
