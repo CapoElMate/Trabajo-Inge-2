@@ -55,7 +55,9 @@ export default function EditarMaquinaria() {
     })
       .then((res) => {
         if (!res.ok) throw new Error("Error al guardar la maquinaria");
-        navigate("/ListarMaquinaria"); // redirigir tras guardar
+        setTimeout(() => {
+        navigate("/ListarMaquinaria");
+      }, 2000);
       })
       .catch((error) => {
         console.error(error);
