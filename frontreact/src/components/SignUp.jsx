@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
+import './SignUp.css';
 const SignUp = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -39,7 +41,6 @@ const SignUp = () => {
         reader.onloadend = () => {
             const base64String = reader.result.split(',')[1]; 
             setDniImageBase64(base64String);
-            console.log(base64String);
         };
 
         reader.readAsDataURL(file);
@@ -93,44 +94,45 @@ const SignUp = () => {
             const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({usuarioRegistrado:userData}),
+                body: JSON.stringify({ usuarioRegistrado: userData }),
             });
 
-            if (!clienteResponse.ok) throw new Error(`Error en clienteResponse: ${await clienteResponse.text()}`);
+            if (!clienteResponse.ok) throw new Error(`Error en Cliente: ${await clienteResponse.text()}`);
 
             if (dniImageBase64) {
-    // Convertir base64 a Blob
-    const byteCharacters = atob(dniImageBase64);
-    const byteArrays = [];
+                const byteCharacters = atob(dniImageBase64);
+                const byteArrays = [];
 
-    for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-        const slice = byteCharacters.slice(offset, offset + 512);
-        const byteNumbers = new Array(slice.length);
-        for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        byteArrays.push(byteArray);
-    }
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
 
-    const blob = new Blob(byteArrays, { type: 'image/jpeg' }); // o 'image/png' si corresponde
+                const blob = new Blob(byteArrays, { type: 'image/jpeg' });
 
-    const formDataArchivo = new FormData();
-    formDataArchivo.append('EntidadID', parseInt(formData.dni));
-    formDataArchivo.append('TipoEntidad', 3);
-    formDataArchivo.append('Nombre', 'Archivo DNI');
-    formDataArchivo.append('Descripcion', `Archivo DNI de ${formData.nombre} ${formData.apellido}`);
-    formDataArchivo.append('Archivo', blob, 'dni.jpg');
+                const formDataArchivo = new FormData();
+                formDataArchivo.append('EntidadID', parseInt(formData.dni));
+                formDataArchivo.append('TipoEntidad', 3);
+                formDataArchivo.append('Nombre', 'Archivo DNI');
+                formDataArchivo.append('Descripcion', `Archivo DNI de ${formData.nombre} ${formData.apellido}`);
+                formDataArchivo.append('Archivo', blob, 'dni.jpg');
 
-        const dniResponse = await fetch('http://localhost:5000/api/Archivo', {
-            method: 'POST',
-            body: formDataArchivo,
-        });
+                const dniResponse = await fetch('http://localhost:5000/api/Archivo', {
+                    method: 'POST',
+                    body: formDataArchivo,
+                });
 
-        if (!dniResponse.ok) {
-            throw new Error(`Error al enviar archivo DNI: ${await dniResponse.text()}`);
-        }
-    }setStatusMessage('Registro exitoso.');
+                if (!dniResponse.ok) {
+                    throw new Error(`Error al enviar archivo DNI: ${await dniResponse.text()}`);
+                }
+            }
+
+            navigate("/Login");
         } catch (err) {
             console.error(err);
             setError(err.message);
@@ -139,7 +141,7 @@ const SignUp = () => {
     };
 
     return (
-        <div style={{ maxWidth: '600px', margin: 'auto', padding: '20px' }}>
+        <div className="signup-container">
             <h2>Formulario de Registro</h2>
             <form onSubmit={handleSubmit}>
                 <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
@@ -148,23 +150,21 @@ const SignUp = () => {
                 <input name="dni" placeholder="DNI" value={formData.dni} onChange={handleChange} required />
                 <input name="nombre" placeholder="Nombre" value={formData.nombre} onChange={handleChange} required />
                 <input name="apellido" placeholder="Apellido" value={formData.apellido} onChange={handleChange} required />
-                <input type="date" name="fecNacimiento" placeholder="Fecha de Nacimiento" value={formData.fecNacimiento} onChange={handleChange} required />
+                <input type="date" name="fecNacimiento" value={formData.fecNacimiento} onChange={handleChange} required />
                 <input name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleChange} required />
                 <input name="calle" placeholder="Calle" value={formData.calle} onChange={handleChange} required />
                 <input name="altura" placeholder="Altura" value={formData.altura} onChange={handleChange} required />
                 <input name="dpto" placeholder="Dpto" value={formData.dpto} onChange={handleChange} />
                 <input name="piso" placeholder="Piso" value={formData.piso} onChange={handleChange} />
 
-                <div style={{ marginTop: '10px' }}>
-                    <label>Subir imagen del DNI (.jpg, .jpeg, .png):</label>
-                    <input type="file" accept="image/jpeg,image/jpg,image/png" onChange={handleFileChange} />
-                </div>
+                <label>Subir imagen del DNI (.jpg, .jpeg, .png):</label>
+                <input type="file" accept="image/jpeg,image/jpg,image/png" onChange={handleFileChange} />
 
-                <button type="submit" style={{ marginTop: '15px' }}>Registrarse</button>
+                <button type="submit">Registrarse</button>
             </form>
 
             {statusMessage && <p>{statusMessage}</p>}
-            {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+            {error && <p className="error-message">Error: {error}</p>}
         </div>
     );
 };
