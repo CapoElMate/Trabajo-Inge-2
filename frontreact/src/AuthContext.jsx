@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
       }const data=await response.json();
       console.log(data);
       if(data.dniVerificado == false){
-        alert("No esta verificado");
+        alert("No esta verificado");// cambiar esto por un pop up
       }else{
         try {
       const response = await fetch(`http://localhost:5000/Auth/login`, {
