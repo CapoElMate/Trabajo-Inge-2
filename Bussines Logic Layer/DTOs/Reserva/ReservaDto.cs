@@ -27,7 +27,7 @@ namespace Bussines_Logic_Layer.DTOs.Reserva
         //public PagoDto Pago { get; set; } = null!;
         public int? IdAlquiler { get; set; }
         public string DNICliente { get; set; }
-        public int IdPublicacion { get; set; }
+        public int IdPublicacion { get; set; } 
         //public AlquilerDto? Alquiler { get; set; }        
         //public ClienteDto Cliente { get; set; } = null!;
         //public PublicacionDto Publicacion { get; set; } = null!;

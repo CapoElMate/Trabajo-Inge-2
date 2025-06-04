@@ -13,7 +13,7 @@ namespace Bussines_Logic_Layer.DTOs.Usuarios
         public string Nombre { get; set; } = null!;
         [StringLength(50, MinimumLength = 2)]
         public string Apellido { get; set; } = null!;
-        [Range(18, 120)]
+        //[Range(18, 120)]
         //public int Edad { get; set; }
         public DateTime fecNacimiento { get; set; }
         public string Telefono { get; set; } = null!;
