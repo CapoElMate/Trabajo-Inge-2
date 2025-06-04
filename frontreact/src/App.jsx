@@ -26,11 +26,13 @@ import DetalleReserva from "./components/Reserva/DetalleReserva";
 import DetalleAlquiler from "./components/Alquiler/DetalleAlquiler";
 
 import Perfil from "./components/Perfil/Perfil";
+import ResetPassword from "./components/ResetPassword";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
+        <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
         <Route path="/HomePage" element={<HomePage />} />
