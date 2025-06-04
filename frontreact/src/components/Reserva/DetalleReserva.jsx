@@ -44,11 +44,12 @@ export default function DetalleReserva() {
     if (!alquilerResponse.ok) throw new Error("Error al crear el alquiler");
     
     reservaData.status = "Efectivizada";
-    reservaData.idAlquiler = alquilerResponse.json().idAlquiler;
+    const resAlquiler = await alquilerResponse.json();
+    reservaData.idAlquiler = resAlquiler.idAlquiler;
 
     //Actualiza reserva
         const updateReservaResponse = await fetch(
-      `http://localhost:5000/api/Reserva/byId?id=${id}`,
+      `http://localhost:5000/api/Reserva?id=${id}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -178,7 +179,11 @@ export default function DetalleReserva() {
             <div className="maquinaria-item">
               <h4>Tags</h4>
               <p>
-                {publicacion.maquina.tagsMaquina.map((t) => t.tag).join(", ")}
+                {publicacion.maquina.tagsMaquina.length === 0
+                  ? "N/A"
+                  : publicacion.maquina.tagsMaquina
+                      .map((t) => t.tag)
+                      .join(", ")}
               </p>
             </div>
             <div className="maquinaria-item">

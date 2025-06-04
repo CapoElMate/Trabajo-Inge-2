@@ -1,6 +1,6 @@
 .home-header {
   display: flex; /* Use flexbox for alignment */
-  justify-content: space-between; /* Distribute items with space between them */
+  justify-content: space-around; /* Distribute items with space between them */
   align-items: center; /* Align items vertically in the center */
   margin-bottom: 30px;
   padding-bottom: 15px;

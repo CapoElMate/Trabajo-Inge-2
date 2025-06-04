@@ -67,7 +67,7 @@ namespace Bussines_Logic_Layer.Services
             if (publicacion == null)
                 return false;
 
-            publicacion.isDeleted = true;
+            publicacion.Status = "Eliminada";
 
             await _repo.UpdateAsync(publicacion);
             return true;

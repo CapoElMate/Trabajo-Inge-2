@@ -232,7 +232,7 @@ export default function MaquinariaForm({
         </div>
 
         {!mensajeExito ? (
-          <FormButtons modo={"Confirmar modificacion"} onCancel={onCancel} />
+          <FormButtons modo={modo === "Editar" ? "Confirmar modificacion" : modo} onCancel={onCancel} />
         ) : (
           <div className="success-message">
             {mensajeExito}

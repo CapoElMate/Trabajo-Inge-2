@@ -52,6 +52,29 @@ namespace API_Layer.Controllers
             }
         }
 
+        [HttpPut("update")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateArchivo([FromForm] ArchivoDtoUpdate dto)
+        {
+            try
+            {
+                var updatedArchivo = await _service.UpdateArchivoAsync(dto);
+
+                if (updatedArchivo == null)
+                    return NotFound($"Archivo con ID {dto.IdArchivo} no encontrado.");
+
+                return Ok(updatedArchivo);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error interno al actualizar archivo: {ex.Message}");
+            }
+        }
+
         // GET: Descarga un archivo específico por su IdArchivo.
         // Ejemplo de uso: GET /api/Archivos/download/5
         [HttpGet("download")]
