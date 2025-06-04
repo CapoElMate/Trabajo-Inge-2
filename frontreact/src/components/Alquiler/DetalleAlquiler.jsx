@@ -5,6 +5,7 @@ import "./DetalleAlquiler.css";
 import ConfirmModal from "../Modal";
 import Header from "../Header";
 import ModalReembolso from "../Reembolso/ModalReembolso";
+import { useAuth } from "../../AuthContext";
 
 export default function DetalleAlquiler() {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function DetalleAlquiler() {
   const [empleado, setEmpleado] = useState();
   const [cliente, setCliente] = useState();
   const [publicacion, setPublicacion] = useState();
-
+  const { user } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -148,12 +149,13 @@ export default function DetalleAlquiler() {
       <Header />
       <div className="detalle-alquiler-container">
         <h1>Detalle del Alquiler</h1>
-        {alquiler.status !== "Cancelado" && (
-          <StyledButton
-            text="Cancelar"
-            onClick={() => setModalReembolsoAbierto(true)}
-          />
-        )}
+        {alquiler.status !== "Cancelado" &&
+          user?.roles?.includes("Empleado") && (
+            <StyledButton
+              text="Cancelar"
+              onClick={() => setModalReembolsoAbierto(true)}
+            />
+          )}
         <div
           className={`alquiler-info ${
             alquiler.calle && alquiler.calle.trim() !== ""

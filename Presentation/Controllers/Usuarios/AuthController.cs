@@ -255,6 +255,17 @@ namespace API_Layer.Controllers.Usuarios
             }
         }
 
+        [HttpPost("cambiarContraseñaDebug")]
+        [AllowAnonymous]
+        public async Task<IActionResult> cambiarContraseñaDebug([FromBody] ForgotPasswordModel model)
+        {
+            var user = await _userManager.FindByNameAsync(model.Email);
+
+            await _userManager.RemovePasswordAsync(user); // Elimina la actual (si existe)
+            var result = await _userManager.AddPasswordAsync(user, "NuevaClave123!");
+            return Ok("Contraseña cambiada");
+        }
+
         [HttpPost("forgot-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)

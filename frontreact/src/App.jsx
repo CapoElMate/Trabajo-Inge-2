@@ -32,7 +32,6 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-         <Route path="/" element={<Navigate to="/HomePage" />} />
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
@@ -49,7 +48,8 @@ function App() {
         <Route path="/Perfil" element={<Perfil />} />
 
         {/* Cliente */}
-        <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}></Route>
+        <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
+        </Route>
 
         {/* Dueño */}
         <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>

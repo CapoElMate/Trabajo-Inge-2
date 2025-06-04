@@ -5,6 +5,7 @@ import Header from "../Header";
 import StyledButton from "../CustomButton";
 import ConfirmModal from "../Modal";
 import "./DetalleReserva.css";
+import { useAuth } from "../../AuthContext";
 
 export default function DetalleReserva() {
   const { id } = useParams();
@@ -12,6 +13,7 @@ export default function DetalleReserva() {
   const [reserva, setReserva] = useState(null);
   const [publicacion, setPublicacion] = useState();
   const [confirmModal, setConfirmModal] = useState(false);
+  const { user } = useAuth();
 
   const handleEfectivizar = async () => {
     // 1 - Tomar reserva y pasarla a efectivizada
@@ -42,13 +44,13 @@ export default function DetalleReserva() {
     });
 
     if (!alquilerResponse.ok) throw new Error("Error al crear el alquiler");
-    
+
     reservaData.status = "Efectivizada";
     const resAlquiler = await alquilerResponse.json();
     reservaData.idAlquiler = resAlquiler.idAlquiler;
 
     //Actualiza reserva
-        const updateReservaResponse = await fetch(
+    const updateReservaResponse = await fetch(
       `http://localhost:5000/api/Reserva?id=${id}`,
       {
         method: "PUT",
@@ -100,10 +102,12 @@ export default function DetalleReserva() {
         <div className="header">
           <h2>Detalle de la reserva</h2>
           <div className="button-container">
-            <StyledButton
-              text="Efectivizar"
-              onClick={() => setConfirmModal(true)}
-            />
+            {user?.roles?.includes("Empleado") && (
+              <StyledButton
+                text="Efectivizar"
+                onClick={() => setConfirmModal(true)}
+              />
+            )}
           </div>
         </div>
 

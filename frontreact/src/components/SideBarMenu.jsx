@@ -27,23 +27,23 @@ function SideBarMenu() {
   if (!user || user.roles.includes("Cliente")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePage", restricted: false },
-      { label: "Mi perfil", path: "/Profile", restricted: true },
-      { label: "Mis reservas", path: "/rentals", restricted: true },
-      { label: "Mis alquileres", path: "/Leases", restricted: true }
+      { label: "Mi perfil", path: "/Perfil", restricted: true },
+      // { label: "Mis reservas", path: "/rentals", restricted: true },
+      // { label: "Mis alquileres", path: "/Leases", restricted: true }
     );
   } else if (user.roles.includes("Empleado")) {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
-      { label: "Mi perfil", path: "/Profile", restricted: false },
-      { label: "Mis reservas", path: "/rentals", restricted: false },
-      { label: "Mis alquileres", path: "/Leases", restricted: false },
+      { label: "Mi perfil", path: "/Perfil", restricted: false },
+      // { label: "Mis reservas", path: "/rentals", restricted: false },
+      // { label: "Mis alquileres", path: "/Leases", restricted: false },
       { label: "Publicaciones", path: "/HomePage", restricted: false },
-      {label: "Reservas pendientes", path: "/ReservasPendientes", restricted: false}
+      // {label: "Reservas pendientes", path: "/ReservasPendientes", restricted: false}
     );
   } else if (user.roles.includes("Dueño")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePageAdmin", restricted: false },
-      { label: "Mi perfil", path: "/Profile", restricted: false },
+      // { label: "Mi perfil", path: "/Profile", restricted: false },
       { label: "Publicaciones", path: "/HomePage", restricted: false }
     );
   }

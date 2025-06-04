@@ -7,6 +7,7 @@ import "./DetallePublicacion.css";
 import logo from "../../assets/bobElAlquiladorLogoCompleto.svg";
 import ConfirmModal from "../Modal";
 import ModalReserva from "../Reserva/ModalReserva";
+import { useAuth } from "../../AuthContext";
 
 export default function PublicacionDetail() {
   const { id } = useParams();
@@ -20,6 +21,8 @@ export default function PublicacionDetail() {
   const [exito, setExito] = useState(false);
   const [imagenes, setImagenes] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { user } = useAuth();
+
   useEffect(() => {
     fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`)
       .then((res) => res.json())
@@ -226,29 +229,37 @@ export default function PublicacionDetail() {
             <div className="header">
               <h2>{publicacion.titulo}</h2>
               <div className="button-container">
-                <StyledButton
-                  text="Modificar"
-                  onClick={() =>
-                    navigate(`/ModificarPublicacion/${publicacion.idPublicacion}`)
-                  }
-                />
-                <StyledButton
-                  text="Eliminar"
-                  onClick={() => {
-                    setPublicacionEliminar(publicacion.idPublicacion);
-                    setMostrarModal(true);
-                  }}
-                />
-                <StyledButton
-                  text="Duplicar"
-                  onClick={() => {
-                    handleDuplicar(publicacion.idPublicacion);
-                  }}
-                />
-                <StyledButton
-                  text="Reservar"
-                  onClick={() => setMostrarReservaModal(true)}
-                />
+                {user?.roles?.includes("Dueño") && (
+                  <>
+                    <StyledButton
+                      text="Modificar"
+                      onClick={() =>
+                        navigate(
+                          `/ModificarPublicacion/${publicacion.idPublicacion}`
+                        )
+                      }
+                    />
+                    <StyledButton
+                      text="Eliminar"
+                      onClick={() => {
+                        setPublicacionEliminar(publicacion.idPublicacion);
+                        setMostrarModal(true);
+                      }}
+                    />
+                    <StyledButton
+                      text="Duplicar"
+                      onClick={() => {
+                        handleDuplicar(publicacion.idPublicacion);
+                      }}
+                    />
+                  </>
+                )}
+                {user?.roles?.includes("Cliente") && (
+                  <StyledButton
+                    text="Reservar"
+                    onClick={() => setMostrarReservaModal(true)}
+                  />
+                )}
               </div>
             </div>
 
@@ -288,8 +299,7 @@ export default function PublicacionDetail() {
                       <div className="carousel-controls">
                         <button onClick={handlePrev}>⟨</button>
                         <span>
-                          {currentImageIndex + 1} /{" "}
-                          {imagenes.length}
+                          {currentImageIndex + 1} / {imagenes.length}
                         </span>
                         <button onClick={handleNext}>⟩</button>
                       </div>
@@ -343,10 +353,9 @@ export default function PublicacionDetail() {
                   <p>
                     {publicacion.maquina.tagsMaquina.length === 0
                       ? "N/A"
-                      :
-                    publicacion.maquina.tagsMaquina
-                      .map((t) => t.tag)
-                      .join(", ")}
+                      : publicacion.maquina.tagsMaquina
+                          .map((t) => t.tag)
+                          .join(", ")}
                   </p>
                 </div>
                 <div className="maquinaria-item">
