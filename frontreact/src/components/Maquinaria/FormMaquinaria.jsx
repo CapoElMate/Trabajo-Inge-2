@@ -24,7 +24,7 @@ export default function MaquinariaForm({
   const [modelos, setModelos] = useState([]);
   const [marcas, setMarcas] = useState([]);
   const [mensajeExito, setMensajeExito] = useState("");
-  // Cargar datos en modo edición
+
   useEffect(() => {
     if (
       initialData &&
@@ -40,7 +40,6 @@ export default function MaquinariaForm({
     }
   }, [initialData, modo]);
 
-  // Cargar datos iniciales
   useEffect(() => {
     getMarcas().then(setMarcas);
     getTags().then(setTagsDisponibles);
@@ -48,7 +47,6 @@ export default function MaquinariaForm({
     getTiposMaquina().then(setTiposMaquinaDisponibles);
   }, []);
 
-  // Actualizar modelos cuando cambia la marca
   useEffect(() => {
     if (marca) {
       getModelos(marca).then(setModelos);
@@ -173,10 +171,11 @@ export default function MaquinariaForm({
           value={marca}
           onChange={(e) => {
             setMarca(e.target.value);
-            setModelo(""); // Limpiar modelo al cambiar marca
+            setModelo("");
             setErrors({ ...errors, marca: "", maquinaria: "" });
           }}
           className={errors.marca ? "input-error" : ""}
+          isRequired={true}
         />
         {errors.marca && <p className="error-message">{errors.marca}</p>}
 
@@ -190,6 +189,7 @@ export default function MaquinariaForm({
           }}
           disabled={!marca}
           className={errors.modelo ? "input-error" : ""}
+          isRequired={true}
         />
         {errors.modelo && <p className="error-message">{errors.modelo}</p>}
 
@@ -202,6 +202,7 @@ export default function MaquinariaForm({
             setErrors({ ...errors, tipo: "", maquinaria: "" });
           }}
           className={errors.tipo ? "input-error" : ""}
+          isRequired={true}
         />
         {errors.tipo && <p className="error-message">{errors.tipo}</p>}
 
@@ -214,6 +215,7 @@ export default function MaquinariaForm({
             setErrors({ ...errors, anio: "", maquinaria: "" });
           }}
           className={errors.anio ? "input-error" : ""}
+          isRequired={true}
         />
         {errors.anio && <p className="error-message">{errors.anio}</p>}
 
