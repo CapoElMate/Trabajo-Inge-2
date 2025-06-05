@@ -38,8 +38,8 @@ function SideBarMenu() {
       { label: "Publicaciones", path: "/HomePage", restricted: false },
       { label: "Filtrar Reservas", path: "/FiltrarReservas", restricted: false },
       { label: "Filtrar Alquileres", path: "/FiltrarAlquileres", restricted: false },
-      { title: "Efectivizar reservas", path: "/ConfirmReservations" },
-      { title: "Validar Usuarios", path: "/ValidateUser" },
+      { title: "Validar Usuarios", path: "/solicitudesDeRegistro" },
+      { title: "Solicitudes de permisos", path: "/PermisosDeUsuarios" },
     );
   } else if (user.roles.includes("Dueño")) {
     menuItems.push(

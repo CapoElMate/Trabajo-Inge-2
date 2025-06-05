@@ -34,7 +34,7 @@ import SolicitudesDeRegistro from "./components/SolicitudesDeRegistro";
 import DetalleUsuario from "./components/DetalleUsuario";
 import PermitFileUploeader from "./components/PermitFileUploader";
 import PermisosDeUsuarios from "./components/PermisosDeUsuarios";
-import SignUpEmpleado from './components/SignUpEmpledo';
+
 function App() {
   return (
     <AuthProvider>

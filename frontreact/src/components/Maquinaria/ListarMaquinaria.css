@@ -99,3 +99,8 @@ h1 {
   gap: 0.5rem;
   padding-top: 1rem;
 }
+
+.container
+{
+  flex-direction: row !important;
+}

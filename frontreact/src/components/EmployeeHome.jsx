@@ -35,10 +35,10 @@ function EmployeeHome() {
   };
 
   const cards = [
-    { title: "Efectivizar reservas", path: "/ConfirmReservations" },
-    { title: "Validar Usuarios", path: "/ValidateUser" },
     { title: "Filtrar Reservas", path: "/FiltrarReservas" },
     { title: "Filtrar Alquileres", path: "/FiltrarAlquileres" },
+    { title: "Validar Usuarios", path: "/solicitudesDeRegistro" },
+    { title: "Solicitudes de permisos", path: "/PermisosDeUsuarios" },
   ];
 
   return (
