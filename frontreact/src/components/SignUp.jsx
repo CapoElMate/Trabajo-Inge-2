@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
+
 const SignUp = () => {
     const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -39,7 +41,7 @@ const SignUp = () => {
 
         const reader = new FileReader();
         reader.onloadend = () => {
-            const base64String = reader.result.split(',')[1]; 
+            const base64String = reader.result.split(',')[1];
             setDniImageBase64(base64String);
         };
 
@@ -55,10 +57,10 @@ const SignUp = () => {
             email: formData.email,
             password: formData.password,
             confirmPassword: formData.confirmPassword,
-            role: 'Cliente',
+            role: 'Empleado',
         };
 
-        const userData = {
+        const usuarioRegistrado = {
             email: formData.email,
             dni: formData.dni,
             nombre: formData.nombre,
@@ -70,8 +72,8 @@ const SignUp = () => {
             dpto: formData.dpto,
             piso: formData.piso,
             permisosEspeciales: [],
-            roleName: 'Cliente',
-            dniVerificado: false,
+            roleName: 'Empleado',
+            dniVerificado: true
         };
 
         try {
@@ -86,18 +88,26 @@ const SignUp = () => {
             const userResponse = await fetch('http://localhost:5000/api/Usuario', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData),
+                body: JSON.stringify(usuarioRegistrado),
             });
 
             if (!userResponse.ok) throw new Error(`Error en Usuario: ${await userResponse.text()}`);
-            
+
             const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ usuarioRegistrado: userData }),
+                body: JSON.stringify({ usuarioRegistrado }),
             });
 
             if (!clienteResponse.ok) throw new Error(`Error en Cliente: ${await clienteResponse.text()}`);
+
+            const empleadoResponse = await fetch('http://localhost:5000/api/Empleado', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cliente: { usuarioRegistrado } }),
+            });
+
+            if (!empleadoResponse.ok) throw new Error(`Error en Empleado: ${await empleadoResponse.text()}`);
 
             if (dniImageBase64) {
                 const byteCharacters = atob(dniImageBase64);
@@ -132,6 +142,7 @@ const SignUp = () => {
                 }
             }
 
+            setStatusMessage('Usuario registrado correctamente');
             navigate("/Login");
         } catch (err) {
             console.error(err);
