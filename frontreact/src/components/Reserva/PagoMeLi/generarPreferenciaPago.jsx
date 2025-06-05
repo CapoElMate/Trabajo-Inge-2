@@ -4,10 +4,10 @@ export async function generarPreferenciaPago(nombreProducto,precio,idPublicacion
             titulo: nombreProducto,
             cantidad: 1,
             precio: precio,
-            backUrlSuccess: `https://localhost:5173/DetallePublicacion/${idPublicacion}/success`,
-            backUrlFailure: `https://localhost:5173/DetallePublicacion/${idPublicacion}/failure`,
-            backUrlPending: `https://localhost:5173/DetallePublicacion/${idPublicacion}/pending`,
-            idProducto: idPublicacion
+            backUrlSuccess: `https://localhost:5001/mapeo?idPublicacion=${idPublicacion}&state=success`,
+            backUrlFailure: `https://localhost:5001/mapeo?idPublicacion=${idPublicacion}&state=failure`,
+            backUrlPending: `https://localhost:5001/mapeo?idPublicacion=${idPublicacion}&state=pending`,
+            idProducto: idPublicacion.toString()
         }
 
         const response = await fetch("http://localhost:5000/api/PagoMeLi/generarPreferenciaDePago", {

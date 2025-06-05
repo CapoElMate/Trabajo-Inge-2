@@ -106,8 +106,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173")
-                                .WithOrigins("http://192.168.1.0")// Permite el origen de tu frontend
+                          policy.WithOrigins(   "http://localhost:5173",
+                                                "http://192.168.1.0",
+                                                "https://localhost:5173"
+                                                )
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -337,4 +339,24 @@ app.UseAuthorization();
 //app.MapIdentityApi<IdentityUser>();
 
 app.MapControllers();
+
+
+
+//redireccion (parche para que ande la reputamadre que lo pario galperin -» Mercado Libre)
+
+app.MapGet("/mapeo", (HttpContext context) =>
+{
+    var idPublicacion = context.Request.Query["idPublicacion"].ToString(); //id de la publicacion
+    var state = context.Request.Query["state"].ToString(); //state = success, failure, pending
+    if (string.IsNullOrEmpty(idPublicacion))
+    {
+        return Results.BadRequest("Falta el parámetro idPublicacion");
+    }
+                      //http://localhost:5173/detallePublicacion/14/
+    var redirectUrl = $"http://localhost:5173/detallePublicacion/{idPublicacion}/{state}";
+    return Results.Redirect(redirectUrl, permanent: false);
+});
+
+
+
 app.Run();
