@@ -352,8 +352,11 @@ app.MapGet("/mapeo", (HttpContext context) =>
     {
         return Results.BadRequest("Falta el parámetro idPublicacion");
     }
+
+
+
                       //http://localhost:5173/detallePublicacion/14/
-    var redirectUrl = $"http://localhost:5173/detallePublicacion/{idPublicacion}/{state}";
+    var redirectUrl = $"http://localhost:5173/detallePublicacion/{idPublicacion}{context.Request.QueryString.Value}";
     return Results.Redirect(redirectUrl, permanent: false);
 });
 

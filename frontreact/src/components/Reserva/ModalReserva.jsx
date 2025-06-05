@@ -134,6 +134,8 @@ export default function ModalReserva({
     let fecInicioObj = new Date(fechaInicio);
     let fecFinObj = new Date(fechaFin);
 
+
+
     // Calcular la diferencia en milisegundos
     let diffMs = fecFinObj - fecInicioObj;
 
@@ -145,9 +147,9 @@ export default function ModalReserva({
 
     // if(todoOk)
     // {
-    const reserva = {
-      fecInicio: fecInicioObj.toISOString(),
-      fecFin: fecFinObj.toISOString(),
+      const reserva = {
+      fecInicio: fecInicioObj.toISOString().split('T')[0],
+      fecFin: fecFinObj.toISOString().split('T')[0],
       status: "Lista para efectivizar",
       calle,
       altura,
