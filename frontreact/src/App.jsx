@@ -27,11 +27,15 @@ import DetalleAlquiler from "./components/Alquiler/DetalleAlquiler";
 
 import Perfil from "./components/Perfil/Perfil";
 import ResetPassword from "./components/ResetPassword";
+import SolicitudesDeRegistro from "./components/SolicitudesDeRegistro";
+import DetalleUsuario from "./components/DetalleUsuario";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
+        <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
+        <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
