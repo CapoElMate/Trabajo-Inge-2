@@ -31,28 +31,31 @@ export default function PublicacionDetail() {
 
     useEffect(() => {
 
-        if (location.pathname.endsWith('/success'))
-        {
-            setRtdo("Reserva realizada con éxito");
-            setColorRtdo("#28a745"); // Verde para éxito"
-        }
-        else if (location.pathname.endsWith('/pending'))
-        {
-            setRtdo("Espere que se efectivice el pago");
-            setColorRtdo("#b5a604"); // Amarillo para pendiente
-        }
-        else if (location.pathname.endsWith('/failure'))
-        {
-            setRtdo("Reserva fallida, pago invalido");
-            setColorRtdo("#e60243"); // Rojo para error
-        }
+        if (!location.pathname.endsWith('/')) {
 
-        setMostrarRtdoModal(true);
+            if (location.pathname.endsWith('/success'))
+            {
+                setRtdo("Reserva realizada con éxito");
+                setColorRtdo("#28a745"); // Verde para éxito"
+            }
+            else if (location.pathname.endsWith('/pending'))
+            {
+                setRtdo("Espere que se efectivice el pago");
+                setColorRtdo("#b5a604"); // Amarillo para pendiente
+            }
+            else if (location.pathname.endsWith('/failure'))
+            {
+                setRtdo("Reserva fallida, pago invalido");
+                setColorRtdo("#e60243"); // Rojo para error
+            }
+
+            setMostrarRtdoModal(true);
 
 
-        setTimeout(() => {
-            setMostrarRtdoModal(false);
-        }, 3000);  
+            setTimeout(() => {
+                setMostrarRtdoModal(false);
+            }, 3000);  
+        }
 
     }, [location])
 
