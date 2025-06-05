@@ -131,9 +131,16 @@ export default function PublicacionForm({
     if (!ubicacion) nuevosErrores.ubicacion = "La ubicación es obligatoria.";
 
     // Precio
-    if (!precio || isNaN(parseFloat(precio))) {
+    const regexPrecio = /^-?\d+(?:[.,]\d+)?$/;
+
+    const precioFormateado = precio.replace(",", ".");
+    const precioNumerico = parseFloat(precioFormateado);
+
+    if (!precio || isNaN(precioNumerico)) {
       nuevosErrores.precio = "El precio debe ser un número válido.";
-    } else if (parseFloat(precio) <= 0) {
+    } else if (!regexPrecio.test(precio)) {
+      nuevosErrores.precio = "Solo se permiten números y decimales.";
+    } else if (precioNumerico <= 0) {
       nuevosErrores.precio = "El precio debe ser mayor a 0.";
     }
 

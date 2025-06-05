@@ -17,47 +17,47 @@ function HomePageAdmin() {
           onMouseEnter={() => setIsHovered(true)} // Set hovered to true on mouse enter
           onMouseLeave={() => setIsHovered(false)} // Set hovered to false on mouse leave
         >
-          {isHovered ? (
+          {/* {isHovered ? (
             <span className="card-text">Ir a Registrar un Empleado</span>
-          ) : (
+          ) : ( */}
             <span className="card-text">Registrar un Empleado</span>
-          )}
+          {/* )} */}
         </div>
           <div
           className="admin-action-card"
           onClick={() => navigate("/CrearMaquinaria")}
-          onMouseEnter={() => setIsHoveredAnother(true)}
-          onMouseLeave={() => setIsHoveredAnother(false)}
+          // onMouseEnter={() => setIsHoveredAnother(true)}
+          // onMouseLeave={() => setIsHoveredAnother(false)}
         >
-          {isHovered ? (
-            <span className="card-text">Ir a Crear una Maquinaria</span>
-          ) : (
+          {/* {isHovered ? ( */}
+            {/* <span className="card-text">Ir a Crear una Maquinaria</span>
+          ) : ( */}
             <span className="card-text">Crear Maquinaria</span>
-          )}
+          {/* )} */}
         </div>
         <div
           className="admin-action-card"
           onClick={() => navigate("/CrearPublicacion")}
-          onMouseEnter={() => setIsHoveredAnother(true)}
-          onMouseLeave={() => setIsHoveredAnother(false)}
+          // onMouseEnter={() => setIsHoveredAnother(true)}
+          // onMouseLeave={() => setIsHoveredAnother(false)}
         >
-          {isHovered ? (
-            <span className="card-text">Ir a Crear Publicacion</span>
-          ) : (
+          {/* {isHovered ? (
+            <span className="card-text">Ir a Crear Publicacion</span> */}
+          {/* ) : ( */}
             <span className="card-text">Crear Publicacion</span>
-          )}
+          {/* )} */}
         </div>
         <div
           className="admin-action-card"
           onClick={() => navigate("/HomePage")}
-          onMouseEnter={() => setIsHoveredAnother(true)}
-          onMouseLeave={() => setIsHoveredAnother(false)}
+          // onMouseEnter={() => setIsHoveredAnother(true)}
+          // onMouseLeave={() => setIsHoveredAnother(false)}
         >
-          {isHovered ? (
+          {/* {isHovered ? (
             <span className="card-text">Ir a Publicaciones</span>
-          ) : (
+          ) : ( */}
             <span className="card-text">Publicaciones</span>
-          )}
+          {/* )} */}
         </div>
         {/* You can add more action cards here if needed */}
         {/*

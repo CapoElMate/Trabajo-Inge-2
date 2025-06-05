@@ -11,7 +11,10 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: box-shadow 0.2s ease;;
+  transition: box-shadow 0.2s ease;
+  display: flex; /* Hace que el contenido interno se distribuya verticalmente */
+  flex-direction: column;
+  height: 100%; /* Se ajusta al alto de la fila (grid) */
 }
 
 .card:hover {
@@ -68,4 +71,16 @@ h1
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.tags-container
+{
+  display: flex;
+  flex-direction: column;
+}
+
+.permisos-container
+{
+  display: flex;
+  flex-direction: column;
 }

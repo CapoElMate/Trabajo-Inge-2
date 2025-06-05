@@ -170,6 +170,27 @@ export default function PublicacionDetail() {
       );
       if (!res.ok) throw new Error("Error al eliminar la publicacion");
 
+      for (const imgEliminada of imagenes) {
+        try {
+          const delRes = await fetch(
+            `http://localhost:5000/api/Archivo/byId?idArchivo=${imgEliminada.idArchivo}`,
+            {
+              method: "DELETE",
+            }
+          );
+          if (!delRes.ok) {
+            console.error(
+              `Error eliminando imagen id ${imgEliminada.idArchivo}: ${delRes.statusText}`
+            );
+          }
+        } catch (error) {
+          console.error(
+            `Error eliminando imagen id ${imgEliminada.idArchivo}:`,
+            error
+          );
+        }
+      }
+
       setExito(true);
       setTimeout(() => {
         setExito(false);
