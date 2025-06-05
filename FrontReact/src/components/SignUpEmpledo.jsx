@@ -141,6 +141,14 @@ const SignUp = () => {
                     throw new Error(`Error al enviar archivo DNI: ${await dniResponse.text()}`);
                 }
             }
+            const confirmDniResponse = await fetch(`http://localhost:5000/api/Cliente/ConfirmDNI?dni=${formData.dni}`, {
+                    method: 'PUT',
+                });
+
+                if (!confirmDniResponse.ok) {
+                    throw new Error(`Error al confirmar DNI: ${await confirmDniResponse.text()}`);
+                }
+
 
             setStatusMessage('Usuario registrado correctamente');
             navigate("/Login");
@@ -153,7 +161,7 @@ const SignUp = () => {
 
     return (
         <div className="signup-container">
-            <h2>Formulario de Registro</h2>
+            <h2>Formulario de Registro para nuevos empleados</h2>
             <form onSubmit={handleSubmit}>
                 <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
                 <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleChange} required />

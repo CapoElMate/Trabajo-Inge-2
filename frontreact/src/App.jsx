@@ -33,14 +33,19 @@ import ResetPassword from "./components/ResetPassword";
 import SolicitudesDeRegistro from "./components/SolicitudesDeRegistro";
 import DetalleUsuario from "./components/DetalleUsuario";
 import PermitFileUploeader from "./components/PermitFileUploader";
-
+import PermisosDeUsuarios from "./components/PermisosDeUsuarios";
+import SignUpEmpleado from './components/SignUpEmpledo';
 function App() {
   return (
     <AuthProvider>
       <Routes>
+        
+        {/*Crear un empleado, la dejo aqui para no tener que loguearse*/}
+        <Route path="/SignUpEmpleado" element={<SignUpEmpleado />} />
         {/*Vistas publicas-------------------------------------------------------------*/}
+        
         <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
-        <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
+        
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
@@ -82,6 +87,8 @@ function App() {
           <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
           <Route path="/FiltrarAlquileres" element={<FiltrarAlquiler />} />
           <Route path="/FiltrarReservas" element={<ReservaFilter />} />
+          <Route path="/PermisosDeUsuarios" element={<PermisosDeUsuarios />} />
+          <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
         </Route>
         {/*
           Una forma de tener una vista para distintos roles
