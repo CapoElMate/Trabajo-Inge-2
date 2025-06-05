@@ -30,12 +30,14 @@ import Perfil from "./components/Perfil/Perfil";
 import ResetPassword from "./components/ResetPassword";
 import SolicitudesDeRegistro from "./components/SolicitudesDeRegistro";
 import DetalleUsuario from "./components/DetalleUsuario";
+import PermitFileUploeader from "./components/PermitFileUploader";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
         {/*Vistas publicas-------------------------------------------------------------*/}
+        <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
         <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
@@ -51,6 +53,8 @@ function App() {
             <Route path="DetallePublicacion/:id/success" element={<DetallePublicacion />} />
             <Route path="DetallePublicacion/:id/failure" element={<DetallePublicacion />} />
             <Route path="DetallePublicacion/:id/pending" element={<DetallePublicacion />} />
+          <Route path="/Perfil" element={<Perfil />} />
+          <Route path="/PermitFileUploeader" element={<PermitFileUploeader/>}/>
         </Route>
 
         {/* Vistas Dueño -------------------------------------------------------------*/}
