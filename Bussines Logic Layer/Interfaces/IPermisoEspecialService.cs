@@ -11,6 +11,7 @@ namespace Bussines_Logic_Layer.Interfaces
     public interface IPermisoEspecialService
     {
         Task<IEnumerable<PermisoEspecialDto>> GetAllAsync();
+        Task<IEnumerable<PermisoEspecialUsuarioDto>> GetAllUsuariosAsync();
         Task<PermisoEspecialDto?> GetByNameAsync(string Permiso);
         Task<PermisoEspecialDto> CreateAsync(PermisoEspecialDto dto);
         Task<bool> UpdateAsync(PermisoEspecialDto dto);
