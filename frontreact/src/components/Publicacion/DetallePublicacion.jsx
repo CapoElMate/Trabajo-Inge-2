@@ -69,7 +69,8 @@ export default function PublicacionDetail() {
           setMostrarRtdoModal(true);
           setTimeout(() => {
             setMostrarRtdoModal(false);
-          }, 1500);
+            navigate("/HomePage")
+          }, 2000);
 
           console.log("Reserva creada con éxito:", data);
           setRtdo("La reserva se creo satisfactoriamente.");
@@ -82,7 +83,8 @@ export default function PublicacionDetail() {
       setMostrarRtdoModal(true);
       setTimeout(() => {
         setMostrarRtdoModal(false);
-      }, 1500);
+        navigate("/HomePage")
+      }, 2000);
 
       setRtdo("Espere que se efectivice el pago");
       setColorRtdo("#b5a604"); // Amarillo para pendiente
@@ -90,7 +92,8 @@ export default function PublicacionDetail() {
       setMostrarRtdoModal(true);
       setTimeout(() => {
         setMostrarRtdoModal(false);
-      }, 1500);
+        navigate("/HomePage")
+      }, 2000);
 
       setRtdo("Algo salio mal!");
       setColorRtdo("#e60243"); // Rojo para error

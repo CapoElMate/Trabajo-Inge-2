@@ -84,7 +84,7 @@ const ReservaFilter = () => {
             onChange={handleChange}
           />
         </label>
-        <button onClick={handleFilter}>Buscar</button>
+        <button onClick={handleFilter}>Filtrar</button>
       </aside>
 
       <section style={{ flex: 1 }}>

@@ -176,9 +176,9 @@ function SidebarFilters({ onFiltrar }) {
         <button type="submit" style={{ backgroundColor: '#cc0000', color: 'white', padding: '10px', border: 'none' }}>
           Filtrar
         </button>
-        <button type="button" onClick={handleReset} style={{ padding: '10px', border: '1px solid #ccc' }}>
+        {/* <button type="button" onClick={handleReset} style={{ padding: '10px', border: '1px solid #ccc' }}>
           Limpiar filtros
-        </button>
+        </button> */}
       </form>
     </aside>
   );
