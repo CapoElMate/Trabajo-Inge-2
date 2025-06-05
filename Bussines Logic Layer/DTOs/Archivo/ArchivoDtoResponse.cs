@@ -15,5 +15,6 @@ namespace Bussines_Logic_Layer.DTOs.Archivo
         public TipoEntidadArchivo TipoEntidad { get; set; }
         public string Nombre { get; set; } = null!;
         public string Descripcion { get; set; } = null!;
+        public string ArchivoBase64 { get; set; } = null!;
     }
 }

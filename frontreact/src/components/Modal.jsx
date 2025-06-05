@@ -1,7 +1,14 @@
 import React from "react";
 import "./Modal.css"; // Asegurate de que este archivo tenga el CSS anterior
 
-export default function ConfirmModal({ isOpen, onClose, onConfirm, mensaje }) {
+export default function ConfirmModal({
+  isOpen,
+  onClose,
+  onConfirm,
+  mensaje,
+  mensajeError = "",
+  mensajeExito = "",
+}) {
   if (!isOpen) return null;
 
   const buttonStyle = {
@@ -29,25 +36,39 @@ export default function ConfirmModal({ isOpen, onClose, onConfirm, mensaje }) {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <p>{mensaje}</p>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: 20 }}>
-          <button
-            style={buttonStyle}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-            onClick={onConfirm}
-          >
-            Aceptar
-          </button>
-          <button
-            style={buttonStyle}
-            onMouseOver={handleMouseOver}
-            onMouseOut={handleMouseOut}
-            onClick={onClose}
-          >
-            Cancelar
-          </button>
-        </div>
+        {mensajeExito ? (
+          <p className="success-message">{mensajeExito}</p>
+        ) : mensajeError ? (
+          <p className="error-message">{mensajeError}</p>
+        ) : (
+          <>
+            <p>{mensaje}</p>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 20,
+              }}
+            >
+              <button
+                style={buttonStyle}
+                onMouseOver={handleMouseOver}
+                onMouseOut={handleMouseOut}
+                onClick={onConfirm}
+              >
+                Aceptar
+              </button>
+              <button
+                style={buttonStyle}
+                onMouseOver={handleMouseOver}
+                onMouseOut={handleMouseOut}
+                onClick={onClose}
+              >
+                Cancelar
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

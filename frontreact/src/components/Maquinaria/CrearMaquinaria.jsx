@@ -71,12 +71,13 @@ export default function CrearMaquinaria({ initialData = {}, modo = "Crear" }) {
           marca: data.marca,
         },
       },
-      tagsMaquina: data.tagsMaquina.map((t) => ({ tag: t })) || [],
+      tagsMaquina: data.tagsMaquina || [],
       tipoMaquina: {
         tipo: data.tipo,
       },
       permisosEspeciales:
-        data.permisosEspeciales.map((p) => ({ permiso: p })) || [],
+        // data.permisosEspeciales.map((p) => ({ permiso: p })) || [],
+        data.permisosEspeciales || [],
     };
 
     console.log("Datos en cargar maquinarias: ", body);
@@ -94,14 +95,14 @@ export default function CrearMaquinaria({ initialData = {}, modo = "Crear" }) {
     try {
       // 3 - Crear la maquinaria
       const responseMaquina = await createMaquina(data);
-      if (responseMaquina.status !== 201) {
-        console.error("Error al crear la maquinaria");
-        setErrors((prev) => ({
-          ...prev,
-          maquinaria: "La maquinaria ya existe.",
-        }));
-        return;
-      }
+      // if (responseMaquina.status !== 201) {
+      //   console.error("Error al crear la maquinaria");
+      //   setErrors((prev) => ({
+      //     ...prev,
+      //     maquinaria: "La maquinaria ya existe.",
+      //   }));
+      //   return;
+      // }
 
       setTimeout(() => {
         navigate("/ListarMaquinaria");

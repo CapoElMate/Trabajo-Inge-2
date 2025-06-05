@@ -24,7 +24,6 @@ namespace Bussines_Logic_Layer.Services
         {
             "image/png",
             "image/jpeg",
-            "application/pdf",
         };
 
         private static readonly string[] _allowedExtensions = new string[]
@@ -32,7 +31,6 @@ namespace Bussines_Logic_Layer.Services
             ".png",
             ".jpg",
             ".jpeg",
-            ".pdf",
         };
 
         // Tamaño máximo de archivo (ej. 10 MB)
@@ -126,7 +124,95 @@ namespace Bussines_Logic_Layer.Services
         public async Task<IEnumerable<ArchivoDtoReponse>> GetFilesByEntidadAsync(int entidadId, TipoEntidadArchivo tipoEntidad)
         {
             var archivos = await _repo.GetByEntidadAsync(entidadId, tipoEntidad);
-            return _mapper.Map<IEnumerable<ArchivoDtoReponse>>(archivos);
+            var dtos = _mapper.Map<List<ArchivoDtoReponse>>(archivos);
+
+            foreach (var dto in dtos)
+            {
+                var archivo = archivos.FirstOrDefault(a => a.idArchivo == dto.idArchivo);
+                if (archivo != null && File.Exists(archivo.Ruta))
+                {
+                    try
+                    {
+                        var fileBytes = await File.ReadAllBytesAsync(archivo.Ruta);
+                        dto.ArchivoBase64 = Convert.ToBase64String(fileBytes);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error leyendo archivo {archivo.Ruta}: {ex.Message}");
+                        dto.ArchivoBase64 = string.Empty; // o null
+                    }
+                }
+                else
+                {
+                    dto.ArchivoBase64 = string.Empty; // o null
+                }
+            }
+
+            return dtos;
+        }
+
+        public async Task<ArchivoDtoReponse?> UpdateArchivoAsync(ArchivoDtoUpdate dto)
+        {
+            var archivoDb = await _repo.GetByIdAsync(dto.IdArchivo);
+            if (archivoDb == null) return null;
+
+            // Si se proporciona un nuevo archivo, reemplazar el existente
+            if (dto.Archivo != null && dto.Archivo.Length > 0)
+            {
+                // Validaciones
+                var extension = Path.GetExtension(dto.Archivo.FileName).ToLower();
+                if (!_allowedExtensions.Contains(extension) ||
+                    !_allowedContentTypes.Contains(dto.Archivo.ContentType.ToLower()))
+                {
+                    throw new ArgumentException("Tipo o extensión de archivo no permitido.");
+                }
+
+                if (dto.Archivo.Length > MaxFileSize)
+                    throw new ArgumentException($"Archivo demasiado grande. Máx: {MaxFileSize / (1024 * 1024)} MB.");
+
+                // Eliminar el archivo físico anterior
+                if (File.Exists(archivoDb.Ruta))
+                {
+                    File.Delete(archivoDb.Ruta);
+                }
+
+                // Guardar el nuevo archivo
+                var basePath = AppContext.BaseDirectory;
+                var uploadsFolder = Path.Combine(
+                    new DirectoryInfo(basePath).FullName.Split("bin")[0],
+                    "Archivos",
+                    archivoDb.TipoEntidad.ToString(),
+                    $"{archivoDb.TipoEntidad} - {archivoDb.EntidadID}");
+
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                var nuevoNombre = Guid.NewGuid().ToString() + extension;
+                var nuevaRuta = Path.Combine(uploadsFolder, nuevoNombre);
+                using (var stream = new FileStream(nuevaRuta, FileMode.Create))
+                {
+                    await dto.Archivo.CopyToAsync(stream);
+                }
+
+                archivoDb.Ruta = nuevaRuta;
+                archivoDb.TipoContenido = dto.Archivo.ContentType;
+            }
+
+            // Actualizar metadatos si vienen
+            if (!string.IsNullOrWhiteSpace(dto.Nombre))
+                archivoDb.Nombre = dto.Nombre;
+
+            if (!string.IsNullOrWhiteSpace(dto.Descripcion))
+                archivoDb.Descripcion = dto.Descripcion;
+
+            await _repo.UpdateAsync(archivoDb);
+
+            // Retornar con base64 incluido
+            var fileBytes = await File.ReadAllBytesAsync(archivoDb.Ruta);
+            var response = _mapper.Map<ArchivoDtoReponse>(archivoDb);
+            response.ArchivoBase64 = Convert.ToBase64String(fileBytes);
+
+            return response;
         }
 
         public async Task<bool> DeleteArchivoAsync(int idArchivo)

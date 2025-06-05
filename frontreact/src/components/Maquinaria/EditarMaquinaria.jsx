@@ -45,7 +45,8 @@ export default function EditarMaquinaria() {
         tipo: data.tipo,
       },
       permisosEspeciales:
-        data.permisosEspeciales.map((p) => ({ permiso: p })) || [],
+        // data.permisosEspeciales.map((p) => ({ permiso: p })) || [],
+        data.permisosEspeciales || [],
     };
 
     fetch(`http://localhost:5000/api/Maquinas/byId?id=${id}`, {

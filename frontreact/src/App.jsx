@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import { AuthProvider } from "./AuthContext";
 
@@ -16,7 +16,7 @@ import ForgotPassword from "./components/ForgotPassword";
 import Rentals from "./components/Rentals";
 
 import CrearPublicacion from "./components/Publicacion/CrearPublicacion";
-import EditarPublicacion from "./components/Publicacion/EditarPublicacion";
+import ModificarPublicacion from "./components/Publicacion/ModificarPublicacion";
 
 import CrearMaquinaria from "./components/Maquinaria/CrearMaquinaria";
 import EditarMaquinaria from "./components/Maquinaria/EditarMaquinaria";
@@ -48,15 +48,16 @@ function App() {
         <Route path="/Perfil" element={<Perfil />} />
 
         {/* Cliente */}
-        <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}></Route>
+        <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
+        </Route>
 
         {/* Dueño */}
         <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>
           <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
           <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
           <Route
-            path="/EditarPublicacion/:id"
-            element={<EditarPublicacion />}
+            path="/ModificarPublicacion/:id"
+            element={<ModificarPublicacion />}
           />
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />

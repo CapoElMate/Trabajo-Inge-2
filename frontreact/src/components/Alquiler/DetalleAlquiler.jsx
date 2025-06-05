@@ -5,6 +5,7 @@ import "./DetalleAlquiler.css";
 import ConfirmModal from "../Modal";
 import Header from "../Header";
 import ModalReembolso from "../Reembolso/ModalReembolso";
+import { useAuth } from "../../AuthContext";
 
 export default function DetalleAlquiler() {
   const { id } = useParams();
@@ -14,7 +15,8 @@ export default function DetalleAlquiler() {
   const [modalReembolsoAbierto, setModalReembolsoAbierto] = useState(false);
   const [empleado, setEmpleado] = useState();
   const [cliente, setCliente] = useState();
-
+  const [publicacion, setPublicacion] = useState();
+  const { user } = useAuth();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -60,40 +62,82 @@ export default function DetalleAlquiler() {
   }, [id]);
 
   const handleReembolso = (reembolso) => {
-    fetch("http://localhost:5000/api/Reembolso", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reembolso),
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Error al generar el reembolso");
-        return res.json();
-      })
-      .then((data) => {
-        // Después de generar el reembolso exitosamente
+    const cancelarYReembolsar = async () => {
+      try {
+        // 1. Crear reembolso
+        const resReembolso = await fetch(
+          "http://localhost:5000/api/Reembolso",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(reembolso),
+          }
+        );
+        if (!resReembolso.ok) throw new Error("Error al generar el reembolso");
+
+        // 2. Cancelar alquiler
         const alquilerCancelado = {
           ...alquiler,
           status: "Cancelado",
         };
 
-        return fetch(
+        const resAlquiler = await fetch(
           `http://localhost:5000/api/Alquiler/byId?id=${alquiler.idAlquiler}`,
           {
             method: "PUT",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(alquilerCancelado),
           }
         );
-      })
-      .then((res) => {
-        if (!res.ok)
+        if (!resAlquiler.ok)
           throw new Error("Error al actualizar el estado del alquiler");
+
+        // 3. Actualizar publicación
+        const publicacionActualizada = {
+          ...alquiler.publicacion,
+          status: "Disponible",
+        };
+
+        const resPublicacion = await fetch(
+          `http://localhost:5000/api/Publicacion/byId?id=${publicacionActualizada.idPublicacion}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(publicacionActualizada),
+          }
+        );
+        if (!resPublicacion.ok)
+          throw new Error("Error al actualizar la publicación");
+
+        // 4. Actualizar maquinaria
+        const maquinariaActualizada = {
+          ...alquiler.publicacion.maquina,
+          status: "Disponible",
+        };
+
+        const resMaquina = await fetch(
+          `http://localhost:5000/api/Maquinas/byId?id=${maquinariaActualizada.idMaquina}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(maquinariaActualizada),
+          }
+        );
+        if (!resMaquina.ok)
+          throw new Error("Error al actualizar la maquinaria");
+
+        // 5. Actualizar el estado si lo necesitás
+        setPublicacion(publicacionActualizada);
+
+        // 6. Navegar
         navigate("/HomePage");
-      });
+      } catch (error) {
+        console.error("Error en proceso de cancelación:", error);
+        // mostrar alerta o toast si querés
+      }
+    };
+
+    cancelarYReembolsar();
   };
 
   if (loading) return <p className="detalle-loading">Cargando...</p>;
@@ -105,12 +149,13 @@ export default function DetalleAlquiler() {
       <Header />
       <div className="detalle-alquiler-container">
         <h1>Detalle del Alquiler</h1>
-        {alquiler.status !== "Cancelado" && (
-          <StyledButton
-            text="Cancelar"
-            onClick={() => setModalReembolsoAbierto(true)}
-          />
-        )}
+        {alquiler.status !== "Cancelado" &&
+          user?.roles?.includes("Empleado") && (
+            <StyledButton
+              text="Cancelar"
+              onClick={() => setModalReembolsoAbierto(true)}
+            />
+          )}
         <div
           className={`alquiler-info ${
             alquiler.calle && alquiler.calle.trim() !== ""

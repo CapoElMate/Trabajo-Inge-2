@@ -22,5 +22,6 @@ namespace Bussines_Logic_Layer.Interfaces
 
         // Método para eliminar un archivo (lógica o física)
         Task<bool> DeleteArchivoAsync(int idArchivo);
+        Task<ArchivoDtoReponse?> UpdateArchivoAsync(ArchivoDtoUpdate dto);
     }
 }

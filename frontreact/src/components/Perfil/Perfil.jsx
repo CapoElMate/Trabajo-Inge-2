@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./Perfil.css";
 import Header from "../Header";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 export default function PerfilCliente() {
   const [cliente, setCliente] = useState(null);
@@ -9,20 +10,24 @@ export default function PerfilCliente() {
   const [alquileres, setAlquileres] = useState([]);
   const [reembolsos, setReembolsos] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const dniCliente = "2050022";
+  const { user, loadAuth} = useAuth();
+  // const dniCliente = "2050022";
   const navigate = useNavigate();
 
   useEffect(() => {
+    
     const fetchDatos = async () => {
       try {
+        const getDNI = await fetch(
+          `http://localhost:5000/api/Usuario/byEmail?email=${user?.userName}`).then((res) => res.json()).then((data) => data.dni);
+
         const [resCliente, resReservas, resAlquileres, resReembolsos] =
           await Promise.all([
-            fetch(`http://localhost:5000/api/Cliente/byDNI?DNI=${dniCliente}`),
-            fetch(`http://localhost:5000/api/Reserva/byDNI?DNI=${dniCliente}`),
-            fetch(`http://localhost:5000/api/Alquiler/byDNI?dni=${dniCliente}`),
+            fetch(`http://localhost:5000/api/Cliente/byDNI?DNI=${getDNI}`),
+            fetch(`http://localhost:5000/api/Reserva/byDNI?DNI=${getDNI}`),
+            fetch(`http://localhost:5000/api/Alquiler/byDNI?dni=${getDNI}`),
             fetch(
-              `http://localhost:5000/api/Reembolso/byDNI?dni=${dniCliente}`
+              `http://localhost:5000/api/Reembolso/byDNI?dni=${getDNI}`
             ),
           ]);
 
@@ -92,9 +97,9 @@ export default function PerfilCliente() {
     };
 
     fetchDatos();
-  }, []);
+  }, [loadAuth, user]);
 
-  if (loading) return <p className="text-center">Cargando perfil...</p>;
+  if (loading && loadAuth) return <p className="text-center">Cargando perfil...</p>;
 
   return (
     <div>

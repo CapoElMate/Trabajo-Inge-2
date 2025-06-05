@@ -1,8 +1,8 @@
 import "./ImageUploader.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "./Publicacion/FormPublicacion.css";
 
-export default function ImageUploader({ onChange }) {
+export default function ImageUploader({ onChange, initialImages = [] }) {
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
   const dropRef = useRef(null);
@@ -11,18 +11,17 @@ export default function ImageUploader({ onChange }) {
   const allowedExtensions = ["jpg", "jpeg", "png"];
 
   const isValidFile = (file) => {
+    if (!file.name) return true; // para base64 u objetos existentes
     const extension = file.name.split(".").pop().toLowerCase();
     return allowedExtensions.includes(extension);
   };
 
   const handleFiles = (files) => {
     const fileArray = Array.from(files);
-
     const validFiles = fileArray.filter(isValidFile);
-    const invalidFiles = fileArray.filter((file) => !isValidFile(file));
 
-    if (invalidFiles.length > 0) {
-      setError("Solo se permiten archivos .jpg, .jpeg o .png");
+    if (fileArray.length !== validFiles.length) {
+      setError("Las imágenes deben ser en formato .png, .jpg o .jpeg");
     } else {
       setError("");
     }
@@ -34,7 +33,7 @@ export default function ImageUploader({ onChange }) {
 
     const newImages = [...images, ...imagePreviews];
     setImages(newImages);
-    onChange(newImages.map((img) => img.file));
+    notifyChange(newImages);
   };
 
   const handleDrop = (e) => {
@@ -55,6 +54,7 @@ export default function ImageUploader({ onChange }) {
 
   const handleInputChange = (e) => {
     handleFiles(e.target.files);
+    e.target.value = null; // Limpiar el input para permitir subir la misma imagen de nuevo
   };
 
   const handleClick = () => {
@@ -63,11 +63,44 @@ export default function ImageUploader({ onChange }) {
 
   const removeImage = (index) => {
     const newImages = [...images];
-    URL.revokeObjectURL(newImages[index].preview);
-    newImages.splice(index, 1);
+    const removed = newImages.splice(index, 1)[0];
+    if (removed.preview?.startsWith("blob:")) {
+      URL.revokeObjectURL(removed.preview);
+    }
     setImages(newImages);
-    onChange(newImages.map((img) => img.file));
+    notifyChange(newImages);
   };
+
+  const notifyChange = (imagenes) => {
+    const result = imagenes.map((img) => {
+      if (img.original) {
+        return {
+          original: img.original,
+          archivoBase64: img.original.archivoBase64,
+        };
+      } else {
+        return {
+          file: img.file,
+          archivoBase64: img.preview, // se convierte a base64 en el submit
+        };
+      }
+    });
+    onChange(result);
+  };
+
+  useEffect(() => {
+    if (initialImages.length > 0) {
+      const base64Images = initialImages.map((img) => ({
+        file: null,
+        preview: img.archivoBase64.startsWith("data:")
+          ? img.archivoBase64
+          : `data:image/jpeg;base64,${img.archivoBase64}`,
+        original: img,
+      }));
+      setImages(base64Images);
+      notifyChange(base64Images); // notifica al iniciar
+    }
+  }, [initialImages]);
 
   return (
     <div>
@@ -80,7 +113,10 @@ export default function ImageUploader({ onChange }) {
         onDragLeave={handleDragLeave}
         className="image-drop-area"
       >
-        <p>Arrastrá las imágenes o hacé clic para seleccionarlas (.jpg, .jpeg, .png)</p>
+        <p>
+          Arrastrá las imágenes o hacé clic para seleccionarlas (.jpg, .jpeg,
+          .png)
+        </p>
         <input
           ref={inputRef}
           type="file"
@@ -91,13 +127,19 @@ export default function ImageUploader({ onChange }) {
         />
       </div>
 
-      {error && <p className="text-red-600 text-sm mt-1 error-message">{error}</p>}
+      {error && (
+        <p className="text-red-600 text-sm mt-1 error-message">{error}</p>
+      )}
 
       {images.length > 0 && (
         <div className="preview-grid">
           {images.map((img, index) => (
             <div key={index} className="thumbnail-wrapper">
-              <img src={img.preview} alt={`img-${index}`} className="thumbnail" />
+              <img
+                src={img.preview}
+                alt={`img-${index}`}
+                className="thumbnail"
+              />
               <button
                 type="button"
                 onClick={() => removeImage(index)}

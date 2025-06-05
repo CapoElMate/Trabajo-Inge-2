@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './ForgotPassword.css'; 
+import { useNavigate } from 'react-router-dom';
+
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validarInput = (input) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input) || /^\d{10}$/.test(input);
@@ -45,7 +48,7 @@ function ForgotPassword() {
       } else {
         setMessage('Ocurrió un error al procesar tu solicitud. Por favor, inténtalo de nuevo.');
         setIsError(true);
-        console.error('Error al registrar solicitud en JSON Server:', response.status);
+        console.error('Error al registrar solicitud', response.status);
       }
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
@@ -61,6 +64,7 @@ function ForgotPassword() {
     setMessage('');
     setIsError(false);
     setIsLoading(false);
+      navigate("/login");
   };
 
   return (
@@ -86,6 +90,14 @@ function ForgotPassword() {
           )}
           <div className="button-group">
             <button
+                type="submit"
+                className="search-button"
+                disabled={isLoading}
+            >
+                {isLoading ? 'Buscando...' : 'Recuperar contraseña'}
+            </button>
+
+            <button
               type="button"
               className="cancel-button"
               onClick={handleCancel}
@@ -93,13 +105,7 @@ function ForgotPassword() {
             >
               Cancelar
             </button>
-            <button
-              type="submit"
-              className="search-button"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Buscando...' : 'Restablecer contraseña'}
-            </button>
+            
           </div>
         </form>
       </div>

@@ -69,81 +69,86 @@ export default function MaquinariaList() {
       <Header />
       <div className="container">
         <div className="card_container">
-          {maquinarias.map((maq) => (
-            <div key={maq.idMaquina} className="card">
-              <div className="card_header">
-                <h3>ID: {maq.idMaquina}</h3>
-                <div className="title">
-                  <h3>{maq.modelo.marca.marca}</h3>
-                  <h3>{maq.modelo.modelo}</h3>
-                </div>
-              </div>
-
-              <div className="card_body">
-                <p>Año de fabricación: {maq.anioFabricacion}</p>
-                <p>Tipo de máquina: {maq.tipoMaquina.tipo}</p>
-              </div>
-
-              <div className="mt-2">
-                <p className="text-sm font-medium text-gray-600 tagTitle">Tags</p>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {maq.tagsMaquina?.length > 0 ? (
-                    maq.tagsMaquina.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="bg-blue-100 text-blue-700 text-xs font-medium px-3 py-0.5 rounded-full"
-                      >
-                        {tag.tag}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="bg-gray-200 text-gray-700 text-xs font-medium px-3 py-0.5 rounded-full">
-                      N/A
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-2">
-                <p className="text-sm font-medium text-gray-600 tagTitle">Permisos especiales</p>
-                <div className="flex flex-wrap gap-2 mt-1">
-                  {maq.permisosEspeciales?.length > 0 ? (
-                    maq.permisosEspeciales.map((perm, index) => (
-                      <span
-                        key={index}
-                        className="bg-green-100 text-green-700 text-xs font-medium px-3 py-0.5 rounded-full"
-                      >
-                        {perm.permiso}
-                      </span>
-                    ))
-                  ) : (
-                    <span className="bg-gray-200 text-gray-700 text-xs font-medium px-3 py-0.5 rounded-full">
-                      N/A
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="button-container">
-                <StyledButton
-                  text="Modificar"
-                  onClick={() => navigate(`/ModificarMaquinaria/${maq.idMaquina}`)}
-                />
-                <StyledButton
-                  text="Eliminar"
-                  onClick={() => {
-                    setMaquinaAEliminar(maq.idMaquina);
-                    setMostrarModal(true);
-                  }}
-                />
-                <StyledButton
-                  text="Duplicar"
-                  onClick={() => handleDuplicar(maq.idMaquina)}
-                />
-              </div>
-            </div>
-          ))}
+  {maquinarias.map((maq) => (
+    <div key={maq.idMaquina} className="card">
+      <div className="card_header">
+        <h3>ID: {maq.idMaquina}</h3>
+        <div className="title">
+          <h3>{maq.modelo.marca.marca}</h3>
+          <h3>{maq.modelo.modelo}</h3>
         </div>
+      </div>
+
+      {/* Esta sección ocupa el espacio disponible */}
+      <div style={{ flex: 1 }}>
+        <div className="card_body">
+          <p>Año de fabricación: {maq.anioFabricacion}</p>
+          <p>Tipo de máquina: {maq.tipoMaquina.tipo}</p>
+        </div>
+
+        <div className="mt-2">
+          <p className="text-sm font-medium text-gray-600 tagTitle">Tags</p>
+          <div className="tags-container">
+            {maq.tagsMaquina?.length > 0 ? (
+              maq.tagsMaquina.map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-blue-100 text-blue-700 text-xs font-medium px-3 py-0.5 rounded-full"
+                >
+                  {tag.tag}
+                </span>
+              ))
+            ) : (
+              <span className="bg-gray-200 text-gray-700 text-xs font-medium px-3 py-0.5 rounded-full">
+                Ninguno
+              </span>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-2">
+          <p className="text-sm font-medium text-gray-600 tagTitle">Permisos especiales</p>
+          <div className="permisos-container">
+            {maq.permisosEspeciales?.length > 0 ? (
+              maq.permisosEspeciales.map((perm, index) => (
+                <span
+                  key={index}
+                  className="bg-green-100 text-green-700 text-xs font-medium px-3 py-0.5 rounded-full"
+                >
+                  {perm.permiso}
+                </span>
+              ))
+            ) : (
+              <span className="bg-gray-200 text-gray-700 text-xs font-medium px-3 py-0.5 rounded-full">
+                Ninguno
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Esto queda pegado al fondo de la tarjeta */}
+      <div className="button-container">
+        <StyledButton
+          text="Modificar"
+          onClick={() => navigate(`/ModificarMaquinaria/${maq.idMaquina}`)}
+        />
+        <StyledButton
+          text="Eliminar"
+          onClick={() => {
+            setMaquinaAEliminar(maq.idMaquina);
+            setMostrarModal(true);
+          }}
+        />
+        <StyledButton
+          text="Duplicar"
+          onClick={() => handleDuplicar(maq.idMaquina)}
+        />
+      </div>
+    </div>
+  ))}
+</div>
+
       </div>
 
       <ConfirmModal

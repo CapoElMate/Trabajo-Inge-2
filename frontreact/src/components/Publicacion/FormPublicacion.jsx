@@ -4,8 +4,6 @@ import SelectInput from "../SelectInput";
 import TagSelector from "../TagSelector";
 import FormButtons from "../FormButtons";
 import ImageUploader from "../ImageUploader";
-import ImagePreviewList from "../ImagePreviwList";
-import Header from "../Header";
 import "../FormStructure.css";
 import "./FormPublicacion.css";
 
@@ -15,16 +13,14 @@ export default function PublicacionForm({
   onCancel = {},
   modo = "Crear",
 }) {
-  const [tags, setTags] = useState(initialData.tags?.map((t) => t.tag) || []);
-  const [imagenes, setImagenes] = useState(
-    initialData.imagenes?.map((t) => t.img) || []
-  );
-  const [maquinaria, setMaquinaria] = useState(initialData.maquinaria || null);
-  const [politica, setPolitica] = useState(initialData.politica || "");
-  const [ubicacion, setUbicacion] = useState(initialData.ubicacion || "");
-  const [precio, setPrecio] = useState(initialData.precio || "");
-  const [titulo, setTitulo] = useState(initialData.titulo || "");
-  const [descripcion, setDescripcion] = useState(initialData.descripcion || "");
+  const [tags, setTags] = useState([]);
+  //const [imagenes, setImagenes] = useState([]);
+  const [maquinaria, setMaquinaria] = useState(null);
+  const [politica, setPolitica] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [titulo, setTitulo] = useState("");
+  const [descripcion, setDescripcion] = useState("");
 
   const [opcionesMaquinaria, setOpcionesMaquinaria] = useState([]);
   const [maquinarias, setMaquinarias] = useState([]);
@@ -33,72 +29,51 @@ export default function PublicacionForm({
   const [opcionesPoliticas, setOpcionesPoliticas] = useState([]);
   const [errores, setErrores] = useState({});
 
-  const getMaquinas = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/Maquinas/all");
-      const data = await res.json();
-      setOpcionesMaquinaria(
-        data.map((m) => ({
-          label: `${m.modelo.marca.marca} ${m.modelo.modelo}`,
-          value: m.idMaquina,
-        }))
-      );
-      setMaquinarias(data);
-    } catch (error) {
-      console.error("Error al obtener máquinas:", error);
-    }
-  };
-
-  const getTags = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/TagsPublicacion/all");
-      const data = await res.json();
-      setOpcionesDeTags(data.map((t) => t.tag));
-    } catch (error) {
-      console.error("Error al obtener tags:", error);
-    }
-  };
-
-  const getUbicaciones = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/Ubicacion/all");
-      const data = await res.json();
-      setUbicaciones(data.map((u) => u.ubicacionName));
-    } catch (error) {
-      console.error("Error al obtener ubicaciones:", error);
-    }
-  };
-
-  const getPoliticas = async () => {
-    try {
-      const res = await fetch(
-        "http://localhost:5000/api/PoliticaDeCancelacion/all"
-      );
-      const data = await res.json();
-      setOpcionesPoliticas(data);
-    } catch (error) {
-      console.error("Error al obtener ubicaciones:", error);
-    }
-  };
-
+  // 🔄 Fetch data
   useEffect(() => {
-    const cargarDatos = async () => {
-      await Promise.all([
-        getMaquinas(),
-        getTags(),
-        getUbicaciones(),
-        getPoliticas(),
-      ]);
+    const fetchData = async () => {
+      try {
+        const [resMaq, resTags, resUbic, resPol] = await Promise.all([
+          fetch("http://localhost:5000/api/Maquinas/all"),
+          fetch("http://localhost:5000/api/TagsPublicacion/all"),
+          fetch("http://localhost:5000/api/Ubicacion/all"),
+          fetch("http://localhost:5000/api/PoliticaDeCancelacion/all"),
+        ]);
+
+        const [maq, tags, ubic, politicas] = await Promise.all([
+          resMaq.json(),
+          resTags.json(),
+          resUbic.json(),
+          resPol.json(),
+        ]);
+
+        setOpcionesMaquinaria(
+          maq.map((m) => ({
+            label: `${m.modelo.marca.marca} ${m.modelo.modelo}`,
+            value: m.idMaquina,
+          }))
+        );
+        setMaquinarias(maq);
+        setOpcionesDeTags(tags.map((t) => t.tag));
+        setUbicaciones(ubic.map((u) => u.ubicacionName));
+        setOpcionesPoliticas(politicas);
+      } catch (error) {
+        console.error("Error al cargar datos:", error);
+      }
     };
-    cargarDatos();
+
+    fetchData();
   }, []);
 
   useEffect(() => {
-    if (
-      initialData &&
-      Object.keys(initialData).length > 0 &&
-      modo === "Editar"
-    ) {
+    if (initialData.imagenes?.length) {
+      setImagenesOriginales(initialData.imagenes); // info completa
+    }
+  }, [initialData]);
+
+  // 🔄 Modo edición
+  useEffect(() => {
+    if (initialData && modo === "Editar") {
       setMaquinaria({
         label: `${initialData.maquina.modelo.marca.marca} ${initialData.maquina.modelo.modelo}`,
         value: initialData.maquina.idMaquina,
@@ -109,8 +84,27 @@ export default function PublicacionForm({
       setTitulo(initialData.titulo);
       setPrecio(initialData.precioPorDia);
       setTags(initialData.tagsPublicacion.map((t) => t.tag));
+      //setImagenes(initialData.imagenes || []);
     }
   }, [initialData, modo]);
+
+  const [imagenesActuales, setImagenesActuales] = useState([]);
+  const [imagenesOriginales, setImagenesOriginales] = useState([]);
+
+  const handleImageChange = (imagenes) => {
+    if (!imagenes || imagenes.length === 0) {
+      setErrores((prev) => ({
+        ...prev,
+        imagenes: "Debes subir al menos una imagen.",
+      }));
+    } else {
+      setErrores((prev) => ({
+        ...prev,
+        imagenes: "", // Limpia el error aquí
+      }));
+    }
+    setImagenesActuales(imagenes);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -137,26 +131,22 @@ export default function PublicacionForm({
     if (!ubicacion) nuevosErrores.ubicacion = "La ubicación es obligatoria.";
 
     // Precio
-    if (!precio || isNaN(parseFloat(precio))) {
+    const regexPrecio = /^-?\d+(?:[.,]\d+)?$/;
+
+    const precioFormateado = precio.replace(",", ".");
+    const precioNumerico = parseFloat(precioFormateado);
+
+    if (!precio || isNaN(precioNumerico)) {
       nuevosErrores.precio = "El precio debe ser un número válido.";
-    } else if (parseFloat(precio) <= 0) {
+    } else if (!regexPrecio.test(precio)) {
+      nuevosErrores.precio = "Solo se permiten números y decimales.";
+    } else if (precioNumerico <= 0) {
       nuevosErrores.precio = "El precio debe ser mayor a 0.";
     }
 
     // Validación de imágenes
-    if (!imagenes || imagenes.length === 0) {
+    if (!imagenesActuales || imagenesActuales.length === 0) {
       nuevosErrores.imagenes = "Debes subir al menos una imagen.";
-    } else {
-      const extensionesValidas = [".png", ".jpg", ".jpeg"];
-      const imagenesInvalidas = imagenes.filter((img) => {
-        const ext = img.name?.toLowerCase().split(".").pop();
-        return !extensionesValidas.includes(`.${ext}`);
-      });
-
-      if (imagenesInvalidas.length > 0) {
-        nuevosErrores.imagenes =
-          "Solo se permiten imágenes .png, .jpg o .jpeg.";
-      }
     }
 
     if (Object.keys(nuevosErrores).length > 0) {
@@ -166,9 +156,10 @@ export default function PublicacionForm({
 
     setErrores({}); // limpiar errores
 
+    // Datos de la publicación
     const publicacionData = {
       ...(modo === "Editar" && { idPublicacion: initialData?.idPublicacion }),
-      status: "Activa",
+      status: "Disponible",
       titulo,
       precioPorDia: parseFloat(precio),
       descripcion,
@@ -182,7 +173,25 @@ export default function PublicacionForm({
       },
     };
 
-    onSubmit(publicacionData, imagenes);
+    // Separar imágenes originales mantenidas, eliminadas y nuevas
+    const originalesEnviadas = imagenesActuales
+      .filter((img) => img.original)
+      .map((img) => img.original);
+
+    const imagenesEliminadas = imagenesOriginales.filter(
+      (orig) =>
+        !originalesEnviadas.some((img) => img.idArchivo === orig.idArchivo)
+    );
+
+    const imagenesNuevas = imagenesActuales
+      .filter((img) => !img.original)
+      .map((img) => img.file);
+
+    onSubmit(publicacionData, {
+      imagenesOriginales: originalesEnviadas,
+      imagenesNuevas,
+      imagenesEliminadas,
+    });
   };
 
   return (
@@ -294,13 +303,19 @@ export default function PublicacionForm({
             opciones={opcionesDeTags}
           />
 
-          <ImageUploader onChange={(files) => setImagenes(files)} />
+          <ImageUploader
+            onChange={handleImageChange}
+            initialImages={initialData.imagenes}
+          />
           {errores.imagenes && (
             <p className="text-red-500 text-sm error-message">
               {errores.imagenes}
             </p>
           )}
-          <FormButtons modo={modo} onCancel={onCancel} />
+          <FormButtons
+            modo={modo === "Editar" ? "Confirmar modificacion" : modo}
+            onCancel={onCancel}
+          />
         </form>
       </div>
     </>

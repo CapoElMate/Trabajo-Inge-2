@@ -26,25 +26,31 @@ export default function CrearPublicacion() {
       if (!res.ok) throw new Error("Error al crear publicación");
 
       const nuevaPublicacion = await res.json();
+      
+      // Paso 2: Subir imágenes
+      for (const [i, nuevaImg] of imagenes.imagenesNuevas.entries()) {
+        const formData = new FormData();
+        formData.append("EntidadID", nuevaPublicacion.idPublicacion);
+        formData.append("TipoEntidad", 0); // o el que corresponda
+        formData.append("Nombre", nuevaImg.name || `Imagen ${i + 1}`);
+        formData.append("Descripcion", `Imagen ${i + 1} de la publicación`);
+        formData.append("Archivo", nuevaImg);
+
+        try {
+          const uploadRes = await fetch("http://localhost:5000/api/Archivo", {
+            method: "POST",
+            body: formData,
+          });
+          if (!uploadRes.ok) {
+            console.error(
+              `Error al subir imagen ${i + 1}: ${uploadRes.statusText}`
+            );
+          }
+        } catch (error) {
+          console.error(`Error al subir imagen ${i + 1}:`, error);
+        }
+      }
       navigate(`/DetallePublicacion/${nuevaPublicacion.idPublicacion}`);
-      // // Paso 2: Subir imágenes
-      // for (let i = 0; i < imagenes.length; i++) {
-      //   const formData = new FormData();
-      //   formData.append("EntidadID", publicacionId);
-      //   formData.append("TipoEntidad", 0);
-      //   formData.append("Nombre", `Imagen ${i + 1}`);
-      //   formData.append("Descripcion", `Imagen ${i + 1} de la publicación`);
-      //   formData.append("Archivo", imagenes[i]);
-
-      //   const imgRes = await fetch("http://localhost:5000/api/Archivo", {
-      //     method: "POST",
-      //     body: formData,
-      //   });
-
-      //   if (!imgRes.ok) {
-      //     console.error(`Error al subir imagen ${i + 1}`);
-      //   }
-      // }
     } catch (error) {
       console.error("Error al crear publicación:", error);
     }

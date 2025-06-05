@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
 import SidebarFilters from './SidebarFilters';
+import logo from "../assets/bobElAlquiladorLogoCompleto.svg";
 
 function HomePage() {
     const [publicaciones, setPubs] = useState([]);
@@ -103,7 +104,9 @@ function HomePage() {
                         gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                         gap: '20px'
                     }}>
-                        {publicacionesParaMostrar.map(pub => (
+                        {publicacionesParaMostrar
+                        .filter(pub => (pub.status !== "Eliminada") && (pub.status !== "No disponible"))
+                        .map(pub => (
                             <div
                                 key={pub.idPublicacion}
                                 onClick={() => handlePublicacionClick(pub.idPublicacion)}
@@ -123,7 +126,7 @@ function HomePage() {
                             >
                                 {imagenes[pub.idPublicacion] ? (
                                     <img
-                                        src={`data:image/jpeg;base64,${imagenes[pub.idPublicacion]}`}
+                                        src={`data:image/jpeg;base64,${imagenes[pub.idPublicacion].archivoBase64}`}
                                         alt="Máquina"
                                         style={{ width: '100%', height: '200px', objectFit: 'cover' }}
                                     />
@@ -136,7 +139,7 @@ function HomePage() {
                                         alignItems: 'center',
                                         justifyContent: 'center'
                                     }}>
-                                        <p>Cargando imagen...</p>
+                                        <img src={logo} alt="Vista previa" className="preview-img"  style={{ width: '100%', height: '200px', objectFit: 'contain' }}/>
                                     </div>
                                 )}
                                 <div style={{ padding: '15px' }}>
