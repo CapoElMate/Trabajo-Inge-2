@@ -58,7 +58,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(opciones => opciones.UseSqli
 
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 //configuro identity
 builder.Services.Configure<IdentityOptions>(options =>
