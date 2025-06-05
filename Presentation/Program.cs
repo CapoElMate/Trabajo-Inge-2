@@ -34,8 +34,8 @@ builder.Services.AddSingleton<IMailjetClient>(serviceProvider =>
     return new MailjetClient(mailjetOptions.ApiKey, mailjetOptions.SecretKey);
 });
 
-//builder.Services.AddSingleton<IEmailSender<IdentityUser>, MailjetEmailSender>();
-builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
+builder.Services.AddSingleton<IEmailSender<IdentityUser>, MailjetEmailSender>();
+//builder.Services.AddSingleton<IEmailSender<IdentityUser>, DummyEmailSender>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.

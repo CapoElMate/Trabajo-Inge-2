@@ -277,7 +277,7 @@ namespace API_Layer.Controllers.Usuarios
 
             var user = await _userManager.FindByEmailAsync(model.Email);
             // No reveles si el usuario existe o no por razones de seguridad
-            if (user == null || !await _userManager.IsEmailConfirmedAsync(user)) // Descomenta si necesitas email confirmado
+            if (user == null) // Descomenta si necesitas email confirmado
             {
                 _logger.LogInformation("Solicitud de restablecimiento de contraseña para email '{Email}' (usuario no encontrado o no confirmado, pero se envía OK para evitar enumeración).", model.Email);
                 // Siempre devuelve OK para evitar que un atacante sepa si un email está registrado o no.
@@ -287,11 +287,10 @@ namespace API_Layer.Controllers.Usuarios
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
-            var callbackUrl = Url.Action(
-                "ResetPassword", // Nombre de la acción en tu AuthController
-                "Auth",          // Nombre del controlador
-                new { userId = user.Id, code = code },
-                protocol: HttpContext.Request.Scheme); // O "https" en producción
+            var frontendBaseUrl = "http://localhost:5173";
+            var changePasswordPath = "/resetPassword";
+            var queryParams = $"?userName={Uri.EscapeDataString(user.UserName)}&token={Uri.EscapeDataString(code)}";
+            var callbackUrl = $"{frontendBaseUrl}{changePasswordPath}{queryParams}";
 
             await _emailSender.SendPasswordResetLinkAsync(user, user.Email, callbackUrl);
             _logger.LogInformation("Enlace de restablecimiento de contraseña enviado a '{Email}'.", user.Email);

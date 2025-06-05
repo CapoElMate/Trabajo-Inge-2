@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Header from "./Header";
+import './ResetPassword.css'; // Import your CSS for styling
 
 function ResetPassword() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  const email = searchParams.get('email');
+  const email = searchParams.get('userName');
 
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
+  // const location = useLocation();
+  // const query = new URLSearchParams(location.search);
+  // const userName = query.get("userName");
+  // const token = query.get("token");
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,7 +71,10 @@ function ResetPassword() {
   }
 
   return (
-    <div className="reset-password-container">
+    <>
+  {/* <Header /> */}
+  <div className="reset-password-container">
+    <div className="reset-password-card">
       <h2>Restablecer contraseña</h2>
       <form onSubmit={handleSubmit}>
         <input
@@ -73,6 +83,7 @@ function ResetPassword() {
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           disabled={loading}
+          className={isError && !newPassword ? 'input-error' : ''}
         />
         <input
           type="password"
@@ -80,15 +91,20 @@ function ResetPassword() {
           value={confirmNewPassword}
           onChange={(e) => setConfirmNewPassword(e.target.value)}
           disabled={loading}
+          className={isError && !confirmNewPassword ? 'input-error' : ''}
         />
         {message && (
-          <p style={{ color: isError ? 'red' : 'green' }}>{message}</p>
+          <div className={`message ${isError ? 'error' : 'success'}`}>
+            {message}
+          </div>
         )}
         <button type="submit" disabled={loading}>
           {loading ? 'Cambiando...' : 'Restaurar contraseña'}
         </button>
       </form>
     </div>
+  </div>
+</>
   );
 }
 
