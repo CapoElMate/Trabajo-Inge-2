@@ -10,5 +10,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="certificados\" />
+    <Folder Include="src\components\Reserva\PagoMeLi\" />
   </ItemGroup>
 </Project>

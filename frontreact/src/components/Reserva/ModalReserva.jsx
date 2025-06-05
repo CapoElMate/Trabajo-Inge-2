@@ -4,15 +4,16 @@ import "./ModalReserva.css";
 import SelectInput from "../SelectInput";
 import TextInput from "../TextInput";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
-import { useAuth } from "../../AuthContext";
+import { generarPreferenciaPago } from "./PagoMeLi/generarPreferenciaPago";
+
 
 export default function ModalReserva({
-  idPublicacion,
+  publicacion,
   precioPorDia,
   isOpen,
   onClose,
   onReservar,
-}) {
+}) {                
   initMercadoPago("APP_USR-17034ece-e13c-4fa1-9151-a1e3335e6f39");
   const [fechaInicio, setFechaInicio] = useState("");
   const [fechaFin, setFechaFin] = useState("");
@@ -27,6 +28,7 @@ export default function ModalReserva({
   const [opcionesTipoEntrega, setOpcionesTipoEntrega] = useState();
   const { user, loadAuth } = useAuth();
   const [ cliente, setCliente ] = useState();
+  const [MyPreferenciaPago, setMyPreferenciaPago] = useState();
 
   useEffect(() => {
     if (!user?.userName) return; // Espera a que user esté definido
@@ -86,7 +88,7 @@ export default function ModalReserva({
     e.target.style.backgroundColor = "#dc3545";
   };
 
-  const handleReservarClick = () => {
+  const handleReservarClick = async () => {
     if (!fechaInicio || !fechaFin) {
       alert("Por favor, selecciona ambas fechas.");
       return;
@@ -95,15 +97,35 @@ export default function ModalReserva({
       alert("La fecha fin debe ser mayor o igual a la fecha inicio.");
       return;
     }
-    // setFechaInicio("");
-    // setFechaFin("");
-    // setEntrega("");
-    // setCalle("");
-    // setAltura("");
-    // setPiso("");
-    // setDpto("");
-    //setMostrarBotonPago(true);
+    //setFechaInicio("");
+    //setFechaFin("");
+    //setEntrega("");
+    //setCalle("");
+    //setAltura("");
+    //setPiso("");
+    //setDpto("");
+
+      let fecInicioObj = new Date(fechaInicio);
+      let fecFinObj = new Date(fechaFin);
+
+      // Calcular la diferencia en milisegundos
+      let diffMs = fecFinObj - fecInicioObj;
+
+      // Convertir la diferencia a días
+      let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+      // Calcular el monto final
+      let monto = dias * precioPorDia;
+
+      const idPrefPago = await generarPreferenciaPago(publicacion.titulo, monto, publicacion.idPublicacion);
+
+      console.log(idPrefPago);
+
+    setMyPreferenciaPago(idPrefPago);
+
+    setMostrarBotonPago(true);
     handlePago();
+
   };
 
   const handlePago = () => {
@@ -255,13 +277,8 @@ export default function ModalReserva({
 
         <div style={{ display: "flex", justifyContent: "center" }}>
           {mostrarBotonPago ? (
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <Wallet
-                initialization={{
-                  preferenceId:
-                    "2462257991-513c4341-fc38-41fb-9e91-5e2fc02edb37",
-                }}
-              />
+                      <div style={{ display: "flex", justifyContent: "center" }}>
+                          <Wallet initialization={{ preferenceId: MyPreferenciaPago }} />
             </div>
           ) : mostrarPagoExitoso ? (
             <div style={{ textAlign: "center" }}>

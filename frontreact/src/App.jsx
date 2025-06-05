@@ -49,7 +49,9 @@ function App() {
 
         {/* Vistas Cliente -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
-          <Route path="/Perfil" element={<Perfil />} />
+            <Route path="DetallePublicacion/:id/success" element={<DetallePublicacion />} />
+            <Route path="DetallePublicacion/:id/failure" element={<DetallePublicacion />} />
+            <Route path="DetallePublicacion/:id/pending" element={<DetallePublicacion />} />
         </Route>
 
         {/* Vistas Dueño -------------------------------------------------------------*/}

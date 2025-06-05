@@ -12,17 +12,18 @@ using Data_Access_Layer.Interfaces;
 using Data_Access_Layer.Repositorios.SQL;
 using Bussines_Logic_Layer.Mapping;
 using MercadoPago.Config;
-using Bussines_Logic_Layer.DTOs.Usuarios;
 using Bussines_Logic_Layer.Managers;
-using Microsoft.Extensions.Options;
-using System.Configuration;
 using Mailjet.Client;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
 
 
 //añado el acces token de MeLi:
-MercadoPagoConfig.AccessToken = "APP_USR-7358553432925364-052814-bea62fcaedc85041522284dcca5d1ad2-363087617";
+MercadoPagoConfig.AccessToken = "APP_USR-4881163094293484-052818-fc4523c66bcc46bbe3fe8b914c3dea29-2462257991";
 
+//var rp = new GenerarPreferenciaDePago();
+//var pref = rp.getPreferencia("aaaa",1,1999.1m,"https://localhost/success", "http://localhost/failure", "http://localhost/pending"); //no recomienda awaiter, solo para pruebas,
+
+//Console.WriteLine("idPreferencia: " + pref.Id);
 
 //localhost:5000/swagger
 var builder = WebApplication.CreateBuilder(args);
@@ -39,10 +40,10 @@ builder.Services.AddSingleton<IEmailSender<IdentityUser>, MailjetEmailSender>();
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.ListenAnyIP(5000); // ESCUCHA EN EL PUERTO 5000 SOLO HTTP.
-    //options.ListenAnyIP(5001, listenOptions =>
-    //{
-    //    listenOptions.UseHttps("cert.pfx", "contraseña"); // Cambia el nombre y la contraseña según tu certificado
-    //});
+    options.ListenAnyIP(5001, listenOptions =>
+    {
+        listenOptions.UseHttps("cert.pfx", "contraseña"); // Cambia el nombre y la contraseña según tu certificado
+    });
 });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -105,7 +106,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:5173") // Permite el origen de tu frontend
+                          policy.WithOrigins(   "http://localhost:5173",
+                                                "http://192.168.1.0",
+                                                "https://localhost:5173"
+                                                )
                                 .AllowAnyHeader()
                                 .AllowAnyMethod()
                                 .AllowCredentials();
@@ -124,6 +128,8 @@ builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
 builder.Services.AddScoped<IPublicacionRepository, PublicacionRepository>();
 builder.Services.AddScoped<ITagPublicacionRepository, TagPublicacionRepository>();
+builder.Services.AddScoped<IReservaRepository, ReservaRespository>();
+
 builder.Services.AddScoped<IAlquilerRepository, AlquilerRepository>();
 builder.Services.AddScoped<IReembolsoRepository, ReembolsoRepository>();
 builder.Services.AddScoped<IUbicacionRepository, UbicacionRepository>();
@@ -333,4 +339,24 @@ app.UseAuthorization();
 //app.MapIdentityApi<IdentityUser>();
 
 app.MapControllers();
+
+
+
+//redireccion (parche para que ande la reputamadre que lo pario galperin -» Mercado Libre)
+
+app.MapGet("/mapeo", (HttpContext context) =>
+{
+    var idPublicacion = context.Request.Query["idPublicacion"].ToString(); //id de la publicacion
+    var state = context.Request.Query["state"].ToString(); //state = success, failure, pending
+    if (string.IsNullOrEmpty(idPublicacion))
+    {
+        return Results.BadRequest("Falta el parámetro idPublicacion");
+    }
+                      //http://localhost:5173/detallePublicacion/14/
+    var redirectUrl = $"http://localhost:5173/detallePublicacion/{idPublicacion}/{state}";
+    return Results.Redirect(redirectUrl, permanent: false);
+});
+
+
+
 app.Run();

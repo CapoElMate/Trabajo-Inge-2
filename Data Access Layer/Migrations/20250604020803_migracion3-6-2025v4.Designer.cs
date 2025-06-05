@@ -3,6 +3,7 @@ using System;
 using Data_Access_Layer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access_Layer.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250604020803_migracion3-6-2025v4")]
+    partial class migracion362025v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.5");
@@ -327,7 +330,7 @@ namespace Data_Access_Layer.Migrations
 
             modelBuilder.Entity("Domain_Layer.Entidades.Pago", b =>
                 {
-                    b.Property<long>("nroPago")
+                    b.Property<int>("nroPago")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -534,7 +537,7 @@ namespace Data_Access_Layer.Migrations
                     b.Property<double>("montoTotal")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long?>("nroPago")
+                    b.Property<int?>("nroPago")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("idReserva");

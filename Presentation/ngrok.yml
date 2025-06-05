@@ -1,0 +1,10 @@
+﻿version: 3
+agent:
+  authtoken: 2dWjG9e9Vf8wlq6hcl4vxA9MQQ3_jwWMe7u8qmH84DguxsnH
+endpoints:
+  - name: your_tunnel_name
+    url: pumped-asp-enjoyed.ngrok-free.app
+    upstream:
+      url: https://localhost:5001
+      protocol: http1
+      

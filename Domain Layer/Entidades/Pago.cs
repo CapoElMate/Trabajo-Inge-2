@@ -8,7 +8,7 @@ namespace Domain_Layer.Entidades
 {
     public class Pago
     {
-        public int nroPago { get; set; }
+        public long nroPago { get; set; }
         public DateTime fecPago { get; set; }
         public int idReserva { get; set; }
         public Reserva Reserva { get; set; } = null!;
