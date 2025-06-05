@@ -33,9 +33,9 @@ export default function PublicacionDetail() {
     const state = params.get("state");
 
     if (state === "success") {
-      const reserva = {
-        fecInicio: params.get("fecInicio"),
-        fecFin: params.get("fecFin"),
+        const reserva = {
+          fecInicio: new Date(params.get("fecInicio")).toISOString(),
+          fecFin: new Date(params.get("fecFin")).toISOString(),
         status: params.get("status"),
         calle: params.get("calle"),
         altura: params.get("altura"),
@@ -47,9 +47,11 @@ export default function PublicacionDetail() {
         idAlquiler:
           params.get("idAlquiler") === "null" ? null : params.get("idAlquiler"),
         dniCliente: params.get("dniCliente"),
-        idPublicacion: Number(params.get("idPublicacion")),
-        montoTotal: Number(params.get("montoTotal")),
-      };
+          idPublicacion: Number(params.get("idPublicacion")),
+          montoTotal: parseFloat(params.get("montoTotal")),
+        };
+
+        
 
       fetch("http://localhost:5000/api/Reserva", {
         method: "POST",
@@ -64,7 +66,13 @@ export default function PublicacionDetail() {
           }
           return response.json();
         })
-        .then((data) => {
+          .then((data) => {
+
+            setMostrarRtdoModal(true);
+            setTimeout(() => {
+                setMostrarRtdoModal(false);
+            }, 1500);
+
           console.log("Reserva creada con éxito:", data);
           setRtdo("Reserva realizada con éxito");
           setColorRtdo("#28a745"); // Verde para éxito
@@ -73,9 +81,21 @@ export default function PublicacionDetail() {
           console.error("Error en la petición:", error);
         });
     } else if (state === "pending") {
+
+        setMostrarRtdoModal(true);
+        setTimeout(() => {
+            setMostrarRtdoModal(false);
+        }, 1500);
+
       setRtdo("Espere que se efectivice el pago");
       setColorRtdo("#b5a604"); // Amarillo para pendiente
     } else if (state === "failure") {
+
+        setMostrarRtdoModal(true);
+        setTimeout(() => {
+            setMostrarRtdoModal(false);
+        }, 1500);
+
       setRtdo("Reserva fallida, pago invalido");
       setColorRtdo("#e60243"); // Rojo para error
     }
