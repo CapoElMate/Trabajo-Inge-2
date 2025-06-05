@@ -88,6 +88,7 @@ namespace API_Layer.Controllers
             var permisos = await _service.GetAllUsuariosAsync();
             return Ok(permisos);
         }
+
         [HttpPut("confirmPermisoEspecial")]
         public async Task<IActionResult> actualizarPermisoUsuario(string DNI, string permisoEspecial)
         {

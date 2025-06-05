@@ -216,7 +216,7 @@ namespace Bussines_Logic_Layer.Managers
             </body>
             </html>";
 
-            return SendEmailAsync(email, "Restablecer contraseña de " + appName, htmlMessage);
+            return SendEmailAsync("mateo.terpolilli.2003@gmail.com", "Restablecer contraseña de " + appName, htmlMessage);
         }
         public Task SendConfirmationLinkAsync(IdentityUser user, string email, string confirmationLink)
         {

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Header from "./Header";
 import './ResetPassword.css'; // Import your CSS for styling
+import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const email = searchParams.get('userName');
-
+  const navigate = useNavigate();
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -54,6 +55,7 @@ function ResetPassword() {
 
       if (response.ok) {
         setMessage('Contraseña cambiada correctamente. Ya puedes iniciar sesión.');
+        navigate(`/Login`);  
       } else {
         setMessage(result.message || 'Hubo un error al cambiar la contraseña.');
         setIsError(true);
