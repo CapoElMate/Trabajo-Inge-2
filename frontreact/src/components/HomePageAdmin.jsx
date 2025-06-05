@@ -34,7 +34,19 @@ function HomePageAdmin() {
           ) : ( */}
             <span className="card-text">Crear Maquinaria</span>
           {/* )} */}
-        </div>
+              </div>
+              <div
+                  className="admin-action-card"
+                  onClick={() => navigate("/ListarMaquinaria")}
+              // onMouseEnter={() => setIsHoveredAnother(true)}
+              // onMouseLeave={() => setIsHoveredAnother(false)}
+              >
+            <span className="card-text">Ir a Crear Publicacion</span> */}
+                  {/* ) : ( */}
+                  <span className="card-text">Listar Maquinaria</span>
+                  {/* )} */}
+              </div>
+
         <div
           className="admin-action-card"
           onClick={() => navigate("/ListarMaquinaria")}
@@ -58,7 +70,8 @@ function HomePageAdmin() {
           {/* ) : ( */}
             <span className="card-text">Crear Publicacion</span>
           {/* )} */}
-        </div>
+              </div>
+              
         <div
           className="admin-action-card"
           onClick={() => navigate("/HomePage")}
