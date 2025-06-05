@@ -12,6 +12,7 @@ namespace Domain_Layer.Entidades
     {
         [Key, ForeignKey(nameof(Cliente))]
         public string DNI { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int nroEmpleado { get; set; }
         public Cliente Cliente { get; set; }
         public ICollection<Empleado_Maquina>? Empleado_Maquinas { get; set; } = new List<Empleado_Maquina>();

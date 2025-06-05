@@ -45,6 +45,11 @@ namespace Data_Access_Layer.Repositorios.SQL
 
         public async Task AddAsync(Empleado usuario)
         {
+            var ultimoNro = await _context.Empleados.MaxAsync(e => (int?)e.nroEmpleado) ?? 0;
+            var nuevoNro = ultimoNro + 1;
+
+            usuario.nroEmpleado = nuevoNro; // Asignar el nuevo número de empleado
+
             await _context.Empleados.AddAsync(usuario);
             await _context.SaveChangesAsync();
         }
