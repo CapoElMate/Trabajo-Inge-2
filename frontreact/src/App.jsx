@@ -34,47 +34,41 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
+        {/*Vistas publicas-------------------------------------------------------------*/}
         <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/DetallePublicacion/:id"
-          element={<DetallePublicacion />}
-        />
+        <Route path="/DetallePublicacion/:id" element={<DetallePublicacion />}/>
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        <Route path="/Rentals" element={<Rentals />} />
-        <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
-        <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
-        <Route path="/Perfil" element={<Perfil />} />
+        
 
-        {/* Cliente */}
+        {/* Vistas Cliente -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
+          <Route path="/Perfil" element={<Perfil />} />
         </Route>
 
-        {/* Dueño */}
+        {/* Vistas Dueño -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>
           <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
           <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
-          <Route
-            path="/ModificarPublicacion/:id"
-            element={<ModificarPublicacion />}
-          />
+          <Route path="/ModificarPublicacion/:id" element={<ModificarPublicacion />}/>
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />
-          <Route
-            path="/ModificarMaquinaria/:id"
-            element={<EditarMaquinaria />}
-          />
+          <Route path="/ModificarMaquinaria/:id" element={<EditarMaquinaria />}/>
           <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
+          <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
         </Route>
 
-        {/* Emleado */}
+
+        {/* Empleado-------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Empleado"]} />}>
           <Route path="/EmployeeHome" element={<EmployeeHome />} />
+          <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
+          <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
         </Route>
         {/*
           Una forma de tener una vista para distintos roles
