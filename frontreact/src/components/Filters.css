@@ -33,3 +33,11 @@
 .filter-sidebar button:hover {
   background-color: #cc0000;
 }
+
+.container
+{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

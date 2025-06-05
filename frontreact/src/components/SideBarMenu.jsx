@@ -29,23 +29,28 @@ function SideBarMenu() {
       { label: "Inicio", path: "/HomePage", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: true },
       { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
-      // { label: "Mis reservas", path: "/rentals", restricted: true },
-      // { label: "Mis alquileres", path: "/Leases", restricted: true }
+      { label: "Publicaciones", path: "/HomePage", restricted: false },
     );
   } else if (user.roles.includes("Empleado")) {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: false },
-      // { label: "Mis reservas", path: "/rentals", restricted: false },
-      // { label: "Mis alquileres", path: "/Leases", restricted: false },
       { label: "Publicaciones", path: "/HomePage", restricted: false },
-      // {label: "Reservas pendientes", path: "/ReservasPendientes", restricted: false}
+      { label: "Filtrar Reservas", path: "/FiltrarReservas", restricted: false },
+      { label: "Filtrar Alquileres", path: "/FiltrarAlquileres", restricted: false },
+      { title: "Efectivizar reservas", path: "/ConfirmReservations" },
+      { title: "Validar Usuarios", path: "/ValidateUser" },
     );
   } else if (user.roles.includes("Dueño")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePageAdmin", restricted: false },
-      // { label: "Mi perfil", path: "/Profile", restricted: false },
-      { label: "Publicaciones", path: "/HomePage", restricted: false }
+      { label: "Publicaciones", path: "/HomePage", restricted: false },
+      { label: "Maquinarias", path: "/ListarMaquinaria", restricted: false },
+      { label: "Crear Maquinaria", path: "/CrearMaquinaria", restricted: false },
+      { label: "Crear Publicacion", path: "/CrearPublicacion", restricted: false },
+      { label: "Filtrar Reservas", path: "/FiltrarReservas", restricted: false },
+      { label: "Filtrar Alquileres", path: "/FiltrarAlquileres", restricted: false },
+      { label: "Registrar empleado", path: "/SignUpEmpleado", restricted: false },
     );
   }
 

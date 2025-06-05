@@ -25,6 +25,8 @@ import ListarMaquinaria from "./components/Maquinaria/ListarMaquinaria";
 
 import DetalleReserva from "./components/Reserva/DetalleReserva";
 import DetalleAlquiler from "./components/Alquiler/DetalleAlquiler";
+import FiltrarAlquiler from "./components/Alquiler/FiltrarAlquileres";
+import ReservaFilter from "./components/Reserva/FiltrarReservas";
 
 import Perfil from "./components/Perfil/Perfil";
 import ResetPassword from "./components/ResetPassword";
@@ -68,6 +70,8 @@ function App() {
           <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
           <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
           <Route path="/SignUpEmpleado" element={<SignUpEmpleado />} />
+          <Route path="/FiltrarAlquileres" element={<FiltrarAlquiler />} />
+          <Route path="/FiltrarReservas" element={<ReservaFilter />} />
         </Route>
 
 
@@ -76,6 +80,8 @@ function App() {
           <Route path="/EmployeeHome" element={<EmployeeHome />} />
           <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
           <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
+          <Route path="/FiltrarAlquileres" element={<FiltrarAlquiler />} />
+          <Route path="/FiltrarReservas" element={<ReservaFilter />} />
         </Route>
         {/*
           Una forma de tener una vista para distintos roles

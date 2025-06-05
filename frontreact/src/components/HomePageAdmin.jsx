@@ -25,6 +25,30 @@ function HomePageAdmin() {
         </div>
         <div
           className="admin-action-card"
+          onClick={() => navigate("/FiltrarReservas")}
+          onMouseEnter={() => setIsHovered(true)} // Set hovered to true on mouse enter
+          onMouseLeave={() => setIsHovered(false)} // Set hovered to false on mouse leave
+        >
+          {/* {isHovered ? (
+            <span className="card-text">Ir a Registrar un Empleado</span>
+          ) : ( */}
+          <span className="card-text">Filtrar reservas</span>
+          {/* )} */}
+        </div>
+        <div
+          className="admin-action-card"
+          onClick={() => navigate("/FiltrarAlquileres")}
+          onMouseEnter={() => setIsHovered(true)} // Set hovered to true on mouse enter
+          onMouseLeave={() => setIsHovered(false)} // Set hovered to false on mouse leave
+        >
+          {/* {isHovered ? (
+            <span className="card-text">Ir a Registrar un Empleado</span>
+          ) : ( */}
+          <span className="card-text">Filtrar alquileres</span>
+          {/* )} */}
+        </div>
+        <div
+          className="admin-action-card"
           onClick={() => navigate("/CrearMaquinaria")}
           // onMouseEnter={() => setIsHoveredAnother(true)}
           // onMouseLeave={() => setIsHoveredAnother(false)}

@@ -37,6 +37,8 @@ function EmployeeHome() {
   const cards = [
     { title: "Efectivizar reservas", path: "/ConfirmReservations" },
     { title: "Validar Usuarios", path: "/ValidateUser" },
+    { title: "Filtrar Reservas", path: "/FiltrarReservas" },
+    { title: "Filtrar Alquileres", path: "/FiltrarAlquileres" },
   ];
 
   return (
