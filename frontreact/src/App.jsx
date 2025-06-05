@@ -45,7 +45,6 @@ function App() {
         <Route path="/DetallePublicacion/:id" element={<DetallePublicacion />}/>
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
-        
 
         {/* Vistas Cliente -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>

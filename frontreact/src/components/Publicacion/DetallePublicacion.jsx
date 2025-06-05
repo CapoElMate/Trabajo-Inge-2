@@ -8,7 +8,7 @@ import logo from "../../assets/bobElAlquiladorLogoCompleto.svg";
 import ConfirmModal from "../Modal";
 import ModalReserva from "../Reserva/ModalReserva";
 import { useAuth } from "../../AuthContext";
-import ModalResultado from "./ModalResultado"
+import ModalResultado from "./ModalResultado";
 
 export default function PublicacionDetail() {
   const { id } = useParams();
@@ -22,42 +22,64 @@ export default function PublicacionDetail() {
   const [exito, setExito] = useState(false);
   const [imagenes, setImagenes] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { user } = useAuth();
-    const location = useLocation();
-
+  const { user, loadAuth } = useAuth();
+  const location = useLocation();
   const [mostrarRtdoModal, setMostrarRtdoModal] = useState(false);
   const [colorRtdo, setColorRtdo] = useState("#dc3545");
   const [rtdo, setRtdo] = useState("rtdo");
 
-    useEffect(() => {
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const state = params.get("state");
 
-        if (!location.pathname.endsWith('/')) {
+    if (state === "success") {
+      const reserva = {
+        fecInicio: params.get("fecInicio"),
+        fecFin: params.get("fecFin"),
+        status: params.get("status"),
+        calle: params.get("calle"),
+        altura: params.get("altura"),
+        dpto: params.get("dpto"),
+        piso: params.get("piso"),
+        tipoEntrega: {
+          entrega: params.get("entrega"),
+        },
+        idAlquiler:
+          params.get("idAlquiler") === "null" ? null : params.get("idAlquiler"),
+        dniCliente: params.get("dniCliente"),
+        idPublicacion: Number(params.get("idPublicacion")),
+        montoTotal: Number(params.get("montoTotal")),
+      };
 
-            if (location.pathname.endsWith('/success'))
-            {
-                setRtdo("Reserva realizada con éxito");
-                setColorRtdo("#28a745"); // Verde para éxito"
-            }
-            else if (location.pathname.endsWith('/pending'))
-            {
-                setRtdo("Espere que se efectivice el pago");
-                setColorRtdo("#b5a604"); // Amarillo para pendiente
-            }
-            else if (location.pathname.endsWith('/failure'))
-            {
-                setRtdo("Reserva fallida, pago invalido");
-                setColorRtdo("#e60243"); // Rojo para error
-            }
-
-            setMostrarRtdoModal(true);
-
-
-            setTimeout(() => {
-                setMostrarRtdoModal(false);
-            }, 3000);  
-        }
-
-    }, [location])
+      fetch("http://localhost:5000/api/Reserva", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reserva),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error al crear la reserva");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Reserva creada con éxito:", data);
+          setRtdo("Reserva realizada con éxito");
+          setColorRtdo("#28a745"); // Verde para éxito
+        })
+        .catch((error) => {
+          console.error("Error en la petición:", error);
+        });
+    } else if (state === "pending") {
+      setRtdo("Espere que se efectivice el pago");
+      setColorRtdo("#b5a604"); // Amarillo para pendiente
+    } else if (state === "failure") {
+      setRtdo("Reserva fallida, pago invalido");
+      setColorRtdo("#e60243"); // Rojo para error
+    }
+  }, [location]);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`)
@@ -88,7 +110,7 @@ export default function PublicacionDetail() {
       .catch((error) => {
         console.error("Error al cargar la publicación o imágenes:", error);
       });
-  }, [id]);
+  }, [id, user?.roles]);
 
   const handlePrev = () => {
     setCurrentImageIndex((prev) =>
@@ -133,11 +155,6 @@ export default function PublicacionDetail() {
         });
     }
   };
-
-  // const handlePago = () =>
-  // {
-  //   setMostrarPagoModal(false);
-  // }
 
   const verificarReservas = async (idPublicacion) => {
     try {
@@ -286,7 +303,7 @@ export default function PublicacionDetail() {
     }
   };
 
-  if (!publicacion) return <p>Cargando...</p>;
+  if (!publicacion && !loadAuth) return <p>Cargando...</p>;
 
   return (
     <>
@@ -302,9 +319,12 @@ export default function PublicacionDetail() {
             <div className="header">
               <div className="title-container">
                 <h2>{publicacion.titulo}</h2>
+                
+                {user?.roles?.includes("Dueño") && (
                 <p>
                   <strong>Estado: </strong> {publicacion.status}
                 </p>
+                )}
               </div>
               <div className="button-container">
                 {user?.roles?.includes("Dueño") && (
@@ -332,13 +352,13 @@ export default function PublicacionDetail() {
                     />
                   </>
                 )}
-                {user?.roles?.includes("Cliente") ||
-                  (user?.roles?.includes("Empleado") && (
-                    <StyledButton
-                      text="Reservar"
-                      onClick={() => setMostrarReservaModal(true)}
-                    />
-                  ))}
+                {(user?.roles?.includes("Cliente") ||
+                  user?.roles?.includes("Empleado")) && (
+                  <StyledButton
+                    text="Reservar"
+                    onClick={() => setMostrarReservaModal(true)}
+                  />
+                )}
               </div>
             </div>
 
@@ -463,7 +483,13 @@ export default function PublicacionDetail() {
                 ? "No se puede eliminar esta publicación. Tiene alquileres o reservas activas."
                 : ""
             }
-            mensajeExito={exito ? "Se eliminó la publicación exitosamente" : mostrarRtdoModal ? "se aprobo el pago" : ""}
+            mensajeExito={
+              exito
+                ? "Se eliminó la publicación exitosamente"
+                : mostrarRtdoModal
+                ? "se aprobo el pago"
+                : ""
+            }
           />
 
           <ModalReserva
@@ -472,10 +498,13 @@ export default function PublicacionDetail() {
             isOpen={mostrarReservaModal}
             onClose={() => setMostrarReservaModal(false)}
             onReservar={handleReservar}
-                      />
+          />
 
-         <ModalResultado isOpen={mostrarRtdoModal} estado={rtdo} colorFondo={colorRtdo} />
-
+          <ModalResultado
+            isOpen={mostrarRtdoModal}
+            estado={rtdo}
+            colorFondo={colorRtdo}
+          />
 
           {/* 
           <ModalPago

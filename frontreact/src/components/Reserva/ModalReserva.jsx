@@ -5,7 +5,7 @@ import SelectInput from "../SelectInput";
 import TextInput from "../TextInput";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 import { generarPreferenciaPago } from "./PagoMeLi/generarPreferenciaPago";
-
+import { useAuth } from "../../AuthContext";
 
 export default function ModalReserva({
   publicacion,
@@ -105,26 +105,27 @@ export default function ModalReserva({
     //setPiso("");
     //setDpto("");
 
-      let fecInicioObj = new Date(fechaInicio);
-      let fecFinObj = new Date(fechaFin);
+      // let fecInicioObj = new Date(fechaInicio);
+      // let fecFinObj = new Date(fechaFin);
 
-      // Calcular la diferencia en milisegundos
-      let diffMs = fecFinObj - fecInicioObj;
+      // // Calcular la diferencia en milisegundos
+      // let diffMs = fecFinObj - fecInicioObj;
 
-      // Convertir la diferencia a días
-      let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+      // // Convertir la diferencia a días
+      // let dias = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-      // Calcular el monto final
-      let monto = dias * precioPorDia;
+      // // Calcular el monto final
+      // let monto = dias * precioPorDia;
 
-      const idPrefPago = await generarPreferenciaPago(publicacion.titulo, monto, publicacion.idPublicacion);
+      const reserva = handlePago();
+      const idPrefPago = await generarPreferenciaPago(publicacion.titulo, reserva);
 
       console.log(idPrefPago);
 
     setMyPreferenciaPago(idPrefPago);
 
     setMostrarBotonPago(true);
-    handlePago();
+    //handlePago();
 
   };
 
@@ -157,39 +158,11 @@ export default function ModalReserva({
       },
       idAlquiler: null,
       dniCliente: cliente.usuarioRegistrado.dni,
-      idPublicacion,
+      idPublicacion: publicacion.idPublicacion,
       montoTotal: monto,
     };
 
-    //Crear reserva
-    fetch("http://localhost:5000/api/Reserva", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(reserva),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error al crear la reserva");
-        }
-        console.log(response.json());
-      })
-      .then((data) => {
-        console.log("Reserva creada con éxito:", data);
-        setMostrarBotonPago(false);
-        setMostrarPagoExitoso(true);
-        // Aquí podrías actualizar UI, setear estado de éxito, etc.
-      })
-      .catch((error) => {
-        console.error("Error en la petición:", error);
-        // Aquí podrías setear estado de error para mostrar mensaje al usuario.
-      });
-    // }
-    // else
-    // {
-    //     setMostrarPagoError(true);
-    // }
+    return reserva;
   };
 
   return (

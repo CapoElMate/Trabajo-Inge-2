@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import React, { useState } from 'react'; // Import useState for hover effect
+import React, { useState } from "react"; // Import useState for hover effect
 import Header from "./Header";
-import './HomePageAdmin.css'; // We'll create this CSS file
+import "./HomePageAdmin.css"; // We'll create this CSS file
 
 function HomePageAdmin() {
   const navigate = useNavigate();
@@ -20,32 +20,21 @@ function HomePageAdmin() {
           {/* {isHovered ? (
             <span className="card-text">Ir a Registrar un Empleado</span>
           ) : ( */}
-            <span className="card-text">Registrar un Empleado</span>
+          <span className="card-text">Registrar un Empleado</span>
           {/* )} */}
         </div>
-          <div
+        <div
           className="admin-action-card"
           onClick={() => navigate("/CrearMaquinaria")}
           // onMouseEnter={() => setIsHoveredAnother(true)}
           // onMouseLeave={() => setIsHoveredAnother(false)}
         >
           {/* {isHovered ? ( */}
-            {/* <span className="card-text">Ir a Crear una Maquinaria</span>
+          {/* <span className="card-text">Ir a Crear una Maquinaria</span>
           ) : ( */}
-            <span className="card-text">Crear Maquinaria</span>
+          <span className="card-text">Crear Maquinaria</span>
           {/* )} */}
-              </div>
-              <div
-                  className="admin-action-card"
-                  onClick={() => navigate("/ListarMaquinaria")}
-              // onMouseEnter={() => setIsHoveredAnother(true)}
-              // onMouseLeave={() => setIsHoveredAnother(false)}
-              >
-            <span className="card-text">Ir a Crear Publicacion</span> */}
-                  {/* ) : ( */}
-                  <span className="card-text">Listar Maquinaria</span>
-                  {/* )} */}
-              </div>
+        </div>
 
         <div
           className="admin-action-card"
@@ -54,9 +43,9 @@ function HomePageAdmin() {
           // onMouseLeave={() => setIsHoveredAnother(false)}
         >
           {/* {isHovered ? ( */}
-            {/* <span className="card-text">Ir a Crear una Maquinaria</span>
+          {/* <span className="card-text">Ir a Crear una Maquinaria</span>
           ) : ( */}
-            <span className="card-text">Maquinaria</span>
+          <span className="card-text">Maquinaria</span>
           {/* )} */}
         </div>
         <div
@@ -68,10 +57,10 @@ function HomePageAdmin() {
           {/* {isHovered ? (
             <span className="card-text">Ir a Crear Publicacion</span> */}
           {/* ) : ( */}
-            <span className="card-text">Crear Publicacion</span>
+          <span className="card-text">Crear Publicacion</span>
           {/* )} */}
-              </div>
-              
+        </div>
+
         <div
           className="admin-action-card"
           onClick={() => navigate("/HomePage")}
@@ -81,7 +70,7 @@ function HomePageAdmin() {
           {/* {isHovered ? (
             <span className="card-text">Ir a Publicaciones</span>
           ) : ( */}
-            <span className="card-text">Publicaciones</span>
+          <span className="card-text">Publicaciones</span>
           {/* )} */}
         </div>
         {/* You can add more action cards here if needed */}

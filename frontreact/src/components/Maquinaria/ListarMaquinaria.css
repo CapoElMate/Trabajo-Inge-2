@@ -90,3 +90,12 @@ h1 {
 .button-container > * {
   width: 100px;
 }
+
+.filtros
+{
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-top: 1rem;
+}

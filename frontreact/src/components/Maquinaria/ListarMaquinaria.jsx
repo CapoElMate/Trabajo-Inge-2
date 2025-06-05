@@ -156,12 +156,7 @@ export default function MaquinariaList() {
     <div className="container" style={{ display: "flex", gap: "2rem" }}>
       {/* Filtros */}
       <div
-        style={{
-          width: "300px",
-          display: "flex",
-          flexDirection: "column",
-          gap: "0.5rem",
-        }}
+        className="filtros"
       >
         <select
           value={filtros.marca}
