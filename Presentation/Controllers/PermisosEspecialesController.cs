@@ -81,6 +81,13 @@ namespace API_Layer.Controllers
 
         //    return NoContent();
         //}
+        
+        [HttpGet("AllPermisosUsuarios")]
+        public async Task<IActionResult> getAllPermisosUsuarios()
+        {
+            var permisos = await _service.GetAllUsuariosAsync();
+            return Ok(permisos);
+        }
         [HttpPut("confirmPermisoEspecial")]
         public async Task<IActionResult> actualizarPermisoUsuario(string DNI, string permisoEspecial)
         {
