@@ -29,12 +29,14 @@ import Perfil from "./components/Perfil/Perfil";
 import ResetPassword from "./components/ResetPassword";
 import SolicitudesDeRegistro from "./components/SolicitudesDeRegistro";
 import DetalleUsuario from "./components/DetalleUsuario";
+import PermitFileUploeader from "./components/PermitFileUploader";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
         {/*Vistas publicas-------------------------------------------------------------*/}
+        <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
         <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
@@ -49,6 +51,7 @@ function App() {
         {/* Vistas Cliente -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
           <Route path="/Perfil" element={<Perfil />} />
+          <Route path="/PermitFileUploeader" element={<PermitFileUploeader/>}/>
         </Route>
 
         {/* Vistas Dueño -------------------------------------------------------------*/}
@@ -60,7 +63,7 @@ function App() {
           <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />
           <Route path="/ModificarMaquinaria/:id" element={<EditarMaquinaria />}/>
           <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
-          <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
+          
         </Route>
 
 

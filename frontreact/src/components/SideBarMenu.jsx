@@ -28,6 +28,7 @@ function SideBarMenu() {
     menuItems.push(
       { label: "Inicio", path: "/HomePage", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: true },
+      { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
       // { label: "Mis reservas", path: "/rentals", restricted: true },
       // { label: "Mis alquileres", path: "/Leases", restricted: true }
     );
