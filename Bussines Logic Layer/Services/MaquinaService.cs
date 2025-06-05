@@ -68,7 +68,7 @@ namespace Bussines_Logic_Layer.Services
             if (maquina == null)
                 return false;
 
-            maquina.isDeleted = true;
+            maquina.status = "Eliminada";
             await _repo.UpdateAsync(maquina);
             return true;
         }

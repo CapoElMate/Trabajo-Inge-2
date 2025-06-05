@@ -111,3 +111,14 @@
   gap: 10px;
   align-items: center;
 }
+
+.title-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.title-container > p{
+  margin: 0;
+}

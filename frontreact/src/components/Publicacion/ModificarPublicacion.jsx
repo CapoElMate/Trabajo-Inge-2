@@ -120,7 +120,9 @@ export default function ModificarPublicacion() {
       }
 
       // 4. Navegar a detalle
-      navigate(`/DetallePublicacion/${data.idPublicacion}`);
+      setTimeout(() => {
+        navigate(`/DetallePublicacion/${data.idPublicacion}`);
+      }, 2000);
     } catch (error) {
       console.error(error);
       alert("No se pudo guardar la publicación");

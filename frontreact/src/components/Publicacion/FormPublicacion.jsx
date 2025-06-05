@@ -28,6 +28,7 @@ export default function PublicacionForm({
   const [ubicaciones, setUbicaciones] = useState([]);
   const [opcionesPoliticas, setOpcionesPoliticas] = useState([]);
   const [errores, setErrores] = useState({});
+  const [mensajeExito, setMensajeExito] = useState("");
 
   // 🔄 Fetch data
   useEffect(() => {
@@ -48,10 +49,12 @@ export default function PublicacionForm({
         ]);
 
         setOpcionesMaquinaria(
-          maq.map((m) => ({
-            label: `${m.modelo.marca.marca} ${m.modelo.modelo}`,
-            value: m.idMaquina,
-          }))
+          maq
+            .filter((m) => m.status !== "Eliminada")
+            .map((m) => ({
+              label: `${m.modelo.marca.marca} ${m.modelo.modelo}`,
+              value: m.idMaquina,
+            }))
         );
         setMaquinarias(maq);
         setOpcionesDeTags(tags.map((t) => t.tag));
@@ -133,7 +136,11 @@ export default function PublicacionForm({
     // Precio
     const regexPrecio = /^-?\d+(?:[.,]\d+)?$/;
 
-    const precioFormateado = precio.replace(",", ".");
+    const precioStr = String(precio);
+    const precioFormateado = precioStr.includes(",")
+      ? precioStr.replace(",", ".")
+      : precioStr;
+
     const precioNumerico = parseFloat(precioFormateado);
 
     if (!precio || isNaN(precioNumerico)) {
@@ -186,6 +193,12 @@ export default function PublicacionForm({
     const imagenesNuevas = imagenesActuales
       .filter((img) => !img.original)
       .map((img) => img.file);
+
+    setMensajeExito(
+      modo === "Crear"
+        ? "La publicación de la maquinaria se creó correctamente"
+        : "La modificación de la publicación se realizó exitosamente."
+    );
 
     onSubmit(publicacionData, {
       imagenesOriginales: originalesEnviadas,
@@ -312,10 +325,15 @@ export default function PublicacionForm({
               {errores.imagenes}
             </p>
           )}
-          <FormButtons
-            modo={modo === "Editar" ? "Confirmar modificacion" : modo}
-            onCancel={onCancel}
-          />
+
+          {!mensajeExito ? (
+            <FormButtons
+              modo={modo === "Editar" ? "Confirmar modificacion" : modo}
+              onCancel={onCancel}
+            />
+          ) : (
+            <div className="success-message">{mensajeExito}</div>
+          )}
         </form>
       </div>
     </>

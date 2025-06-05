@@ -8,6 +8,8 @@ export default function ModalReembolso({
   onConfirmar,
   dataAlquiler,
   dataCliente,
+  mensajeError = "",
+  mensajeExito = "",
 }) {
   const [motivo, setMotivo] = useState("");
   const [fecCancelacion, setFecCancelacion] = useState("");
@@ -15,6 +17,8 @@ export default function ModalReembolso({
   const [cliente, setCliente] = useState(null);
   const [reembolso, setReembolso] = useState(null);
   const [confirmado, setConfirmado] = useState(false);
+  const [fechaError, setFechaError] = useState("");
+  const [formError, setFormError] = useState("");
 
   useEffect(() => {
     if (isOpen) {
@@ -24,6 +28,8 @@ export default function ModalReembolso({
       setFecCancelacion("");
       setReembolso(null);
       setConfirmado(false);
+      setFechaError("");
+      setFormError("");
     }
   }, [isOpen, dataAlquiler, dataCliente]);
 
@@ -31,7 +37,7 @@ export default function ModalReembolso({
 
   const handleConfirmar = () => {
     if (!motivo || !fecCancelacion) {
-      alert("Por favor, completa todos los campos.");
+      setFormError("Por favor, completa todos los campos.");
       return;
     }
 
@@ -39,9 +45,28 @@ export default function ModalReembolso({
     const fin = new Date(alquiler.reserva.fecFin);
     const cancelacion = new Date(fecCancelacion);
 
-    const totalDias = Math.ceil((fin - inicio) / (1000 * 60 * 60 * 24));
-    const diasRestantes = Math.ceil((fin - cancelacion) / (1000 * 60 * 60 * 24));
+    if (cancelacion > fin) {
+      setFechaError(
+        "La fecha de cancelación no puede ser posterior a la fecha de fin del alquiler."
+      );
+      return;
+    }
 
+    if (cancelacion < inicio) {
+      setFechaError(
+        "La fecha de cancelación no puede ser anterior a la fecha de inicio del alquiler."
+      );
+      return;
+    }
+
+    // Todo correcto, limpiar errores
+    setFechaError("");
+    setFormError("");
+
+    const totalDias = Math.ceil((fin - inicio) / (1000 * 60 * 60 * 24));
+    const diasRestantes = Math.ceil(
+      (fin - cancelacion) / (1000 * 60 * 60 * 24)
+    );
     const montoPorDia = alquiler.reserva.montoTotal / totalDias;
     const montoADevolver = montoPorDia * diasRestantes;
 
@@ -56,6 +81,21 @@ export default function ModalReembolso({
 
     setReembolso(generado);
     setConfirmado(true);
+  };
+
+  const handleMotivoChange = (e) => {
+    setMotivo(e.target.value);
+    if (e.target.value && fecCancelacion) {
+      setFormError("");
+    }
+  };
+
+  const handleFechaChange = (e) => {
+    setFecCancelacion(e.target.value);
+    setFechaError("");
+    if (motivo && e.target.value) {
+      setFormError("");
+    }
   };
 
   const buttonStyle = {
@@ -83,76 +123,102 @@ export default function ModalReembolso({
   return (
     <div className="modal-overlay">
       <div className="modal-content" style={{ maxWidth: 400 }}>
-        <h2>Gestión de Reembolso</h2>
-
-        <label htmlFor="motivo">Motivo:</label>
-        <textarea
-          id="motivo"
-          value={motivo}
-          onChange={(e) => setMotivo(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 8,
-            marginBottom: 12,
-            boxSizing: "border-box",
-            minHeight: 80,
-            resize: "vertical",
-          }}
-          disabled={confirmado}
-        />
-
-        <label htmlFor="fechaCancelacion">Fecha de cancelación:</label>
-        <input
-          type="date"
-          id="fechaCancelacion"
-          value={fecCancelacion}
-          onChange={(e) => setFecCancelacion(e.target.value)}
-          style={{
-            width: "100%",
-            padding: 8,
-            marginBottom: 20,
-            boxSizing: "border-box",
-          }}
-          disabled={confirmado}
-        />
-
-        {confirmado && reembolso && (
-          <div style={{ marginBottom: 16 }}>
-            <strong>Monto a devolver:</strong> ${reembolso.monto}
+        {mensajeError ? (
+          <div
+            className="error-message"
+            style={{ color: "red", marginBottom: 16 }}
+          >
+            {mensajeError}
           </div>
-        )}
+        ) : mensajeExito ? (
+          <div
+            className="success-message"
+            style={{ color: "green", marginBottom: 16 }}
+          >
+            {mensajeExito}
+          </div>
+        ) : (
+          <>
+            <h2>Gestión de Reembolso</h2>
 
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          {!confirmado ? (
-            <>
-              <button
-                style={buttonStyle}
-                onMouseOver={handleMouseOver}
-                onMouseOut={handleMouseOut}
-                onClick={onClose}
-              >
-                Atrás
-              </button>
-              <button
-                style={buttonStyle}
-                onMouseOver={handleMouseOver}
-                onMouseOut={handleMouseOut}
-                onClick={handleConfirmar}
-              >
-                Confirmar
-              </button>
-            </>
-          ) : (
-            <button
-              style={buttonStyle}
-              onMouseOver={handleMouseOver}
-              onMouseOut={handleMouseOut}
-              onClick={() => onConfirmar(reembolso)}
-            >
-              Generar Reembolso
-            </button>
-          )}
-        </div>
+            <label htmlFor="motivo">Motivo:</label>
+            <textarea
+              id="motivo"
+              value={motivo}
+              onChange={handleMotivoChange}
+              style={{
+                width: "100%",
+                padding: 8,
+                marginBottom: 12,
+                boxSizing: "border-box",
+                minHeight: 80,
+                resize: "vertical",
+              }}
+              disabled={confirmado}
+            />
+
+            <label htmlFor="fechaCancelacion">Fecha de cancelación:</label>
+            <input
+              type="date"
+              id="fechaCancelacion"
+              value={fecCancelacion}
+              onChange={handleFechaChange}
+              style={{
+                width: "100%",
+                padding: 8,
+                marginBottom: 8,
+                boxSizing: "border-box",
+              }}
+              disabled={confirmado}
+            />
+
+            {fechaError && (
+              <div style={{ color: "red", marginBottom: 12 }}>{fechaError}</div>
+            )}
+
+            {formError && (
+              <div style={{ color: "red", marginBottom: 12 }}>{formError}</div>
+            )}
+
+            {confirmado && reembolso && (
+              <div style={{ marginBottom: 16 }}>
+                <strong>Monto a devolver:</strong> ${reembolso.monto}
+              </div>
+            )}
+
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              {!confirmado ? (
+                <>
+                  <button
+                    style={buttonStyle}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                    onClick={onClose}
+                  >
+                    Atrás
+                  </button>
+                  <button
+                    style={buttonStyle}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                    onClick={handleConfirmar}
+                  >
+                    Confirmar
+                  </button>
+                </>
+              ) : (
+                <button
+                  style={buttonStyle}
+                  onMouseOver={handleMouseOver}
+                  onMouseOut={handleMouseOut}
+                  onClick={() => onConfirmar(reembolso)}
+                >
+                  Generar Reembolso
+                </button>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

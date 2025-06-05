@@ -16,7 +16,7 @@ export default function MaquinariaList() {
   const handleEliminar = async (idMaquina) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/Maquinas/byId?id=${idMaquina}`,
+        `http://localhost:5000/api/Maquinas/byId/logic?id=${idMaquina}`,
         { method: "DELETE" }
       );
       if (!res.ok) throw new Error("Error al eliminar la máquina");
@@ -69,7 +69,7 @@ export default function MaquinariaList() {
       <Header />
       <div className="container">
         <div className="card_container">
-  {maquinarias.map((maq) => (
+  {maquinarias.filter(m => m.status !== "Eliminada").map((maq) => (
     <div key={maq.idMaquina} className="card">
       <div className="card_header">
         <h3>ID: {maq.idMaquina}</h3>

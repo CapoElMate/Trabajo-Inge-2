@@ -13,7 +13,35 @@ export default function DetalleReserva() {
   const [reserva, setReserva] = useState(null);
   const [publicacion, setPublicacion] = useState();
   const [confirmModal, setConfirmModal] = useState(false);
-  const { user } = useAuth();
+  const { user, loadAuth } = useAuth();
+  const [error, setError] = useState(null);
+  const [exito, setExito] = useState(null);
+  const [empleado, setEmpleado] = useState();
+
+  useEffect(() => {
+    if (!user?.userName) return; // Espera a que user esté definido
+
+    const fetchCliente = async () => {
+      try {
+        const getDNI = await fetch(
+          `http://localhost:5000/api/Usuario/byEmail?email=${user.userName}`
+        )
+          .then((res) => res.json())
+          .then((data) => data.dni);
+
+        const response = await fetch(
+          `http://localhost:5000/api/Cliente/byDNI?DNI=${getDNI}`
+        );
+        if (!response.ok) throw new Error("Error al obtener el cliente");
+        const data = await response.json();
+        setEmpleado(data);
+      } catch (error) {
+        console.error("Error al cargar el cliente:", error);
+      }
+    };
+
+    fetchCliente();
+  }, [user?.userName]);
 
   const handleEfectivizar = async () => {
     // 1 - Tomar reserva y pasarla a efectivizada
@@ -25,14 +53,30 @@ export default function DetalleReserva() {
 
     const reservaData = await reservaResponse.json();
 
-    // 2 - Crear alquiler
+    // 2 - Validar que la reserva no es del empleado.
+    const empleadoResponse = await fetch(
+      `http://localhost:5000/api/Empleado/byEmail?email=${user.userName}`
+    );
+    if (!empleadoResponse.ok) throw new Error("Error al obtener el empleado");
+    const empleadoData = await empleadoResponse.json();
+    if (empleadoData.cliente.usuarioRegistrado.dni === reservaData.dniCliente) {
+      setError("No puedes efectivizar tus propias reservas.");
+      setTimeout(() => {
+        setConfirmModal(false);
+        setError(false);
+      }, 1000);
+
+      return;
+    }
+
+    // 3 - Crear alquiler
     const now = new Date().toISOString();
 
     const newAlquiler = {
       fecEfectivizacion: now,
       status: "Efectivizado",
       dniCliente: reservaData.dniCliente,
-      dniEmpleadoEfectivizo: "44500999",
+      dniEmpleadoEfectivizo: empleado.dni,
       infoAsentada: [],
       reserva: reservaData,
     };
@@ -57,8 +101,15 @@ export default function DetalleReserva() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reservaData),
       }
-    );
+    ).then((res) => {
 
+      setExito("El alquiler se efectivizo satisfactoriamente.");
+      setTimeout(() => {
+        setConfirmModal(false);
+        setExito(false);
+      }, 1000);
+
+    });
     if (!updateReservaResponse.ok)
       throw new Error("Error al actualizar la reserva");
   };
@@ -209,9 +260,10 @@ export default function DetalleReserva() {
         onClose={() => setConfirmModal(false)}
         onConfirm={() => {
           handleEfectivizar();
-          setConfirmModal(false);
         }}
         mensaje="¿Estás seguro de desea efectivizar este alquiler?"
+        mensajeError={error}
+        mensajeExito={exito}
       />
     </>
   );

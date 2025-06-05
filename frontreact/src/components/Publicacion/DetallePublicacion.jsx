@@ -27,7 +27,7 @@ export default function PublicacionDetail() {
     fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`)
       .then((res) => res.json())
       .then((data) => {
-        if (data.status === "Eliminada") {
+        if (data.status === "Eliminada" && !user?.roles?.includes("Dueño")) {
           setNoRenderizar(true);
         }
         setPublicacion(data);
@@ -184,11 +184,13 @@ export default function PublicacionDetail() {
 
   const handleDuplicar = async (idPublicacion) => {
     try {
+      //Duplica la publicacion
       const res = await fetch(
         `http://localhost:5000/api/Publicacion/byId?id=${idPublicacion}`
       );
       if (!res.ok)
         throw new Error("Error al obtener la publicacion para duplicar");
+
       const publicacionOriginal = await res.json();
 
       const publicacionDuplicada = {
@@ -204,6 +206,41 @@ export default function PublicacionDetail() {
       });
 
       let duplicarJson = await createRes.json();
+
+      //Duplica los archivos
+      // 1. Obtener imágenes desde la publicación original
+      const imagenesRes = await fetch(
+        `http://localhost:5000/api/Archivo/byEntidad?entidadId=${idPublicacion}&tipoEntidad=0`
+      );
+      const imagenesData = await imagenesRes.json();
+
+      // 2. Subir imágenes nuevas a la nueva publicación duplicada
+      for (const [i, img] of imagenesData.entries()) {
+        // Convertir base64 a Blob
+        const byteCharacters = atob(img.archivoBase64);
+        const byteNumbers = new Array(byteCharacters.length)
+          .fill(0)
+          .map((_, idx) => byteCharacters.charCodeAt(idx));
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: "image/jpeg" });
+
+        // Crear FormData
+        const formData = new FormData();
+        formData.append("EntidadID", duplicarJson.idPublicacion);
+        formData.append("TipoEntidad", 0);
+        formData.append("Nombre", img.nombre || `Imagen ${i + 1}`);
+        formData.append(
+          "Descripcion",
+          img.descripcion || `Imagen ${i + 1} de la publicación`
+        );
+        formData.append("Archivo", blob, `imagen${i + 1}.jpg`);
+
+        // Enviar al backend
+        await fetch("http://localhost:5000/api/Archivo", {
+          method: "POST",
+          body: formData,
+        });
+      }
 
       navigate(`/ModificarPublicacion/${duplicarJson.idPublicacion}`);
       if (!createRes.ok) throw new Error("Error al duplicar la publicacion");
@@ -227,7 +264,12 @@ export default function PublicacionDetail() {
         <>
           <div className="p-4 detalle-contenedor">
             <div className="header">
-              <h2>{publicacion.titulo}</h2>
+              <div className="title-container">
+                <h2>{publicacion.titulo}</h2>
+                <p>
+                  <strong>Estado: </strong> {publicacion.status}
+                </p>
+              </div>
               <div className="button-container">
                 {user?.roles?.includes("Dueño") && (
                   <>
@@ -254,12 +296,13 @@ export default function PublicacionDetail() {
                     />
                   </>
                 )}
-                {user?.roles?.includes("Cliente") && (
-                  <StyledButton
-                    text="Reservar"
-                    onClick={() => setMostrarReservaModal(true)}
-                  />
-                )}
+                {user?.roles?.includes("Cliente") ||
+                  (user?.roles?.includes("Empleado") && (
+                    <StyledButton
+                      text="Reservar"
+                      onClick={() => setMostrarReservaModal(true)}
+                    />
+                  ))}
               </div>
             </div>
 

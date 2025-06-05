@@ -56,7 +56,7 @@ export default function ConfirmModal({
                 onMouseOut={handleMouseOut}
                 onClick={onConfirm}
               >
-                Aceptar
+                Confirmar
               </button>
               <button
                 style={buttonStyle}

@@ -21,7 +21,7 @@ export default function ImageUploader({ onChange, initialImages = [] }) {
     const validFiles = fileArray.filter(isValidFile);
 
     if (fileArray.length !== validFiles.length) {
-      setError("Las imágenes deben ser en formato .png, .jpg o .jpeg");
+      setError("Las imágenes a cargar deben ser en formato “.png”o “.jpg” o “.jpge");
     } else {
       setError("");
     }

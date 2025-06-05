@@ -4,6 +4,7 @@ import "./ModalReserva.css";
 import SelectInput from "../SelectInput";
 import TextInput from "../TextInput";
 import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
+import { useAuth } from "../../AuthContext";
 
 export default function ModalReserva({
   idPublicacion,
@@ -24,6 +25,33 @@ export default function ModalReserva({
   const [mostrarPagoExitoso, setMostrarPagoExitoso] = useState(false);
   const [mostrarPagoError, setMostrarPagoError] = useState(false);
   const [opcionesTipoEntrega, setOpcionesTipoEntrega] = useState();
+  const { user, loadAuth } = useAuth();
+  const [ cliente, setCliente ] = useState();
+
+  useEffect(() => {
+    if (!user?.userName) return; // Espera a que user esté definido
+
+    const fetchCliente = async () => {
+      try {
+        const getDNI = await fetch(
+          `http://localhost:5000/api/Usuario/byEmail?email=${user.userName}`
+        )
+          .then((res) => res.json())
+          .then((data) => data.dni);
+
+        const response = await fetch(
+          `http://localhost:5000/api/Cliente/byDNI?DNI=${getDNI}`
+        );
+        if (!response.ok) throw new Error("Error al obtener el cliente");
+        const data = await response.json();
+        setCliente(data);
+      } catch (error) {
+        console.error("Error al cargar el cliente:", error);
+      }
+    };
+
+    fetchCliente();
+  }, [user?.userName]);
 
   useEffect(() => {
     fetch(`http://localhost:5000/api/TipoEntrega/all`)
@@ -67,14 +95,14 @@ export default function ModalReserva({
       alert("La fecha fin debe ser mayor o igual a la fecha inicio.");
       return;
     }
-    setFechaInicio("");
-    setFechaFin("");
-    setEntrega("");
-    setCalle("");
-    setAltura("");
-    setPiso("");
-    setDpto("");
-    setMostrarBotonPago(true);
+    // setFechaInicio("");
+    // setFechaFin("");
+    // setEntrega("");
+    // setCalle("");
+    // setAltura("");
+    // setPiso("");
+    // setDpto("");
+    //setMostrarBotonPago(true);
     handlePago();
   };
 
@@ -102,15 +130,11 @@ export default function ModalReserva({
       altura,
       dpto,
       piso,
-      // pago: {
-      //   nroPago: ,
-      //   fecPago: new Date().toISOString(),
-      // },
       tipoEntrega: {
         entrega,
       },
       idAlquiler: null,
-      dniCliente: "2050022",
+      dniCliente: cliente.usuarioRegistrado.dni,
       idPublicacion,
       montoTotal: monto,
     };

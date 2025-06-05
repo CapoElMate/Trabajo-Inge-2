@@ -50,7 +50,10 @@ export default function CrearPublicacion() {
           console.error(`Error al subir imagen ${i + 1}:`, error);
         }
       }
-      navigate(`/DetallePublicacion/${nuevaPublicacion.idPublicacion}`);
+
+      setTimeout(() => {
+        navigate(`/DetallePublicacion/${nuevaPublicacion.idPublicacion}`);
+      }, 2000);
     } catch (error) {
       console.error("Error al crear publicación:", error);
     }

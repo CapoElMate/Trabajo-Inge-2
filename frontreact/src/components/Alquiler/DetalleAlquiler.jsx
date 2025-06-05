@@ -15,8 +15,37 @@ export default function DetalleAlquiler() {
   const [modalReembolsoAbierto, setModalReembolsoAbierto] = useState(false);
   const [empleado, setEmpleado] = useState();
   const [cliente, setCliente] = useState();
+  const [userEmpleado, setUserEmpleado] = useState();
   const [publicacion, setPublicacion] = useState();
   const { user } = useAuth();
+  const [error, setError] = useState(null);
+  const [exito, setExito] = useState(null);
+  
+  useEffect(() => {
+    if (!user?.userName) return; // Espera a que user esté definido
+
+    const fetchCliente = async () => {
+      try {
+        const getDNI = await fetch(
+          `http://localhost:5000/api/Usuario/byEmail?email=${user.userName}`
+        )
+          .then((res) => res.json())
+          .then((data) => data.dni);
+
+        const response = await fetch(
+          `http://localhost:5000/api/Cliente/byDNI?DNI=${getDNI}`
+        );
+        if (!response.ok) throw new Error("Error al obtener el cliente");
+        const data = await response.json();
+        setUserEmpleado(data);
+      } catch (error) {
+        console.error("Error al cargar el cliente:", error);
+      }
+    };
+
+    fetchCliente();
+  }, [user?.userName]);
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -140,6 +169,19 @@ export default function DetalleAlquiler() {
     cancelarYReembolsar();
   };
 
+  const handleCancelar = () => {
+    
+    if(alquiler.reserva.dniCliente === userEmpleado.usuarioRegistrado.dni) {
+      setError("No puede cancelar alquileres que le pertenezcan.");
+      setModalReembolsoAbierto(true);
+      setTimeout(() => {
+        setModalReembolsoAbierto(false);
+        setError(false);
+      }, 2000);
+      return;   
+    }
+  }
+
   if (loading) return <p className="detalle-loading">Cargando...</p>;
   if (!alquiler)
     return <p className="detalle-error">No se encontró el alquiler.</p>;
@@ -153,7 +195,7 @@ export default function DetalleAlquiler() {
           user?.roles?.includes("Empleado") && (
             <StyledButton
               text="Cancelar"
-              onClick={() => setModalReembolsoAbierto(true)}
+              onClick={() => handleCancelar()}
             />
           )}
         <div
@@ -236,7 +278,9 @@ export default function DetalleAlquiler() {
             <div className="maquinaria-item">
               <h4>Tags</h4>
               <p>
-                {alquiler.publicacion.maquina.tagsMaquina
+                {alquiler.publicacion.maquina.tagsMaquina.length === 0
+                ? "N/A"
+                : alquiler.publicacion.maquina.tagsMaquina
                   .map((t) => t.tag)
                   .join(", ")}
               </p>
@@ -260,6 +304,8 @@ export default function DetalleAlquiler() {
           onConfirmar={handleReembolso}
           dataAlquiler={alquiler}
           dataCliente={cliente}
+          mensajeError= {error}
+          mensajeExito={exito}
         />
       </div>
     </>

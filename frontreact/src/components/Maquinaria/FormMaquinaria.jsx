@@ -148,10 +148,10 @@ export default function MaquinariaForm({
     };
 
     setMensajeExito(
-    modo === "Crear"
-      ? "La maquinaria fue creada correctamente."
-      : "La máquina se ha modificado satisfactoriamente."
-  );
+      modo === "Crear"
+        ? "La maquinaria fue creada correctamente."
+        : "La máquina se ha modificado satisfactoriamente."
+    );
     onSubmit(data, setErrors);
   };
 
@@ -194,18 +194,6 @@ export default function MaquinariaForm({
         {errors.modelo && <p className="error-message">{errors.modelo}</p>}
 
         <SelectInput
-          label="Año de Fabricación"
-          options={anios}
-          value={anio}
-          onChange={(e) => {
-            setAnio(e.target.value);
-            setErrors({ ...errors, anio: "", maquinaria: "" });
-          }}
-          className={errors.anio ? "input-error" : ""}
-        />
-        {errors.anio && <p className="error-message">{errors.anio}</p>}
-
-        <SelectInput
           label="Tipo Maquinaria"
           options={tiposMaquinaDisponibles.map((t) => t.tipo)}
           value={tipo}
@@ -216,6 +204,18 @@ export default function MaquinariaForm({
           className={errors.tipo ? "input-error" : ""}
         />
         {errors.tipo && <p className="error-message">{errors.tipo}</p>}
+
+        <SelectInput
+          label="Año de Fabricación"
+          options={anios}
+          value={anio}
+          onChange={(e) => {
+            setAnio(e.target.value);
+            setErrors({ ...errors, anio: "", maquinaria: "" });
+          }}
+          className={errors.anio ? "input-error" : ""}
+        />
+        {errors.anio && <p className="error-message">{errors.anio}</p>}
 
         <div className="dropdowns">
           <TagSelector
@@ -232,11 +232,12 @@ export default function MaquinariaForm({
         </div>
 
         {!mensajeExito ? (
-          <FormButtons modo={modo === "Editar" ? "Confirmar modificacion" : modo} onCancel={onCancel} />
+          <FormButtons
+            modo={modo === "Editar" ? "Confirmar modificacion" : modo}
+            onCancel={onCancel}
+          />
         ) : (
-          <div className="success-message">
-            {mensajeExito}
-          </div>
+          <div className="success-message">{mensajeExito}</div>
         )}
 
         {errors.maquinaria && (
