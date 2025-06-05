@@ -13,7 +13,7 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<IEnumerable<EmpleadoDto>> GetAllAsync();
         Task<EmpleadoDto?> GetByDNIAsync(string dni);
         Task<EmpleadoDto?> GetByEmailAsync(string email);
-        Task<EmpleadoDto> CreateAsync(EmpleadoDto dto);
+        Task<EmpleadoDto> CreateAsync(CreateEmpleadoDto dto);
         Task<bool> UpdateAsync(string dni, EmpleadoDto dto);
         Task<bool> DeleteByDNIAsync(string dni);
         Task<bool> DeleteByEmailAsync(string email);

@@ -12,6 +12,8 @@ namespace Bussines_Logic_Layer.Interfaces
         Task<IEnumerable<ReservaDto>> GetAllAsync();
         Task<ReservaDto?> GetByIdAsync(int id);
         Task<IEnumerable<ReservaDto?>>? GetByDNIAsync(string DNI);
+        Task<bool> UpdatePayment(int idReserva, long idPago);
+
         Task<ReservaDto> CreateAsync(CreateReservaDto dto);
         Task<bool> UpdateAsync(int id, ReservaDto dto);
         Task<bool> DeleteAsync(int id);

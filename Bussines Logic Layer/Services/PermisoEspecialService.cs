@@ -29,7 +29,12 @@ namespace Bussines_Logic_Layer.Services
             var permiso = await _repo.GetAllAsync();
             return _mapper.Map<IEnumerable<PermisoEspecialDto>>(permiso);
         }
-
+        public async Task<IEnumerable<PermisoEspecialUsuarioDto>> GetAllUsuariosAsync()
+        {
+            var permiso = await _repo.GetAllUsuariosAsync();
+            return _mapper.Map<IEnumerable<PermisoEspecialUsuarioDto>>(permiso);
+        }
+        
         public async Task<ICollection<PermisoEspecialUsuarioDto>> GetByUserAsync(string dni)
         {
             var permisos = await _repo.GetByUserAsync(dni);

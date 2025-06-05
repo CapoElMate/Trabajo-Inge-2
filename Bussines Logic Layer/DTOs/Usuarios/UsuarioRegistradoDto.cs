@@ -13,14 +13,16 @@ namespace Bussines_Logic_Layer.DTOs.Usuarios
         public string Nombre { get; set; } = null!;
         [StringLength(50, MinimumLength = 2)]
         public string Apellido { get; set; } = null!;
-        [Range(18, 120)]
-        public int Edad { get; set; }
+        //[Range(18, 120)]
+        //public int Edad { get; set; }
+        public DateTime fecNacimiento { get; set; }
         public string Telefono { get; set; } = null!;
         public string Calle { get; set; } = null!;
         public string Altura { get; set; } = null!;
         public string? Dpto { get; set; }
-        public string EntreCalles { get; set; } = null!;
+        public string Piso { get; set; } = null!;
         public ICollection<PermisoEspecialUsuarioDto> PermisosEspeciales { get; set; } = new List<PermisoEspecialUsuarioDto>();
         public string roleName { get; set; } = null!;
+        public bool dniVerificado { get; set; }
     }
 }

@@ -37,8 +37,7 @@ namespace Bussines_Logic_Layer.Services
         public async Task<PublicacionDto> CreateAsync(CreatePublicacionDto dto)
         {
             var publicacion = _mapper.Map<Publicacion>(dto);
-            await _repo.AddAsync(publicacion);
-            return _mapper.Map<PublicacionDto>(publicacion);
+            return _mapper.Map<PublicacionDto>(await _repo.AddAsync(publicacion));
         }
 
         public async Task<bool> UpdateAsync(PublicacionDto dto)
@@ -68,7 +67,7 @@ namespace Bussines_Logic_Layer.Services
             if (publicacion == null)
                 return false;
 
-            publicacion.isDeleted = true;
+            publicacion.Status = "Eliminada";
 
             await _repo.UpdateAsync(publicacion);
             return true;

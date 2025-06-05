@@ -27,7 +27,7 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
 
             if (usuarioExistente == null)
             {
-                throw new Exception("El tipo no existe");
+                throw new Exception("El usuario no existe");
             }
 
             //_mapper.Map(source.UsuarioRegistrado, usuarioExistente);

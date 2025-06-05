@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import './ForgotPassword.css'; 
+import { useNavigate } from 'react-router-dom';
+
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const validarInput = (input) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input) || /^\d{10}$/.test(input);
@@ -27,27 +30,25 @@ function ForgotPassword() {
 
     try {
 
-      const response = await fetch('http://localhost:3000/passwordResetRequests', {
+      const response = await fetch('http://localhost:5000/Auth/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          emailOrPhone: email,
-          timestamp: new Date().toISOString(), 
-          status: 'pending' 
+          email: email, 
         }),
       });
 
       if (response.ok) {
         const result = await response.json();
-        setMessage('Si tu cuenta existe, se te han enviado los pasos para cambiar tu contraseña a tu correo electrónico o celular.');
+        setMessage('En caso de que exista un mail asociado se enviaran los pasos para la restauracion de contraseña');
         setIsError(false);
         console.log('Solicitud de recuperación registrada en JSON Server:', result);
       } else {
         setMessage('Ocurrió un error al procesar tu solicitud. Por favor, inténtalo de nuevo.');
         setIsError(true);
-        console.error('Error al registrar solicitud en JSON Server:', response.status);
+        console.error('Error al registrar solicitud', response.status);
       }
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
@@ -63,6 +64,7 @@ function ForgotPassword() {
     setMessage('');
     setIsError(false);
     setIsLoading(false);
+      navigate("/login");
   };
 
   return (
@@ -88,6 +90,14 @@ function ForgotPassword() {
           )}
           <div className="button-group">
             <button
+                type="submit"
+                className="search-button"
+                disabled={isLoading}
+            >
+                {isLoading ? 'Buscando...' : 'Recuperar contraseña'}
+            </button>
+
+            <button
               type="button"
               className="cancel-button"
               onClick={handleCancel}
@@ -95,13 +105,7 @@ function ForgotPassword() {
             >
               Cancelar
             </button>
-            <button
-              type="submit"
-              className="search-button"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Buscando...' : 'Buscar'}
-            </button>
+            
           </div>
         </form>
       </div>

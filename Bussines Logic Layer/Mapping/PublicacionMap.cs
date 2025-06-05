@@ -34,7 +34,7 @@ namespace Bussines_Logic_Layer.Mapping
                 .ForMember(dest => dest.TagsPublicacion, opt => opt.MapFrom<ListTagDtoAPublicacion>())
                 .ForMember(dest => dest.PoliticaDeCancelacion, opt => opt.MapFrom<PoliticaDeCancelacionDtoToPublicacion>())
                 .ForMember(dest => dest.Ubicacion, opt => opt.MapFrom<UbicacionDtoToPublicacion>());
-                        
+
             CreateMap<CreatePublicacionDto, Publicacion>()
                 .ForMember(dest => dest.Maquina, opt => opt.MapFrom<CreateMaquinaDtoToPublicacion>())
                 .ForMember(dest => dest.TagsPublicacion, opt => opt.MapFrom<CreateListTagDtoAPublicacion>())

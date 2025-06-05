@@ -28,18 +28,19 @@ namespace Data_Access_Layer.Repositorios.SQL
         public async Task<Cliente?> GetByDNIAsync(string dni)
         {
             return await _context.Clientes
+                .Include(u => u.UsuarioRegistrado.PermisosEspeciales)
                 .FirstOrDefaultAsync(u => u.DNI == dni);
         }
 
         public async Task<Cliente?> GetByEmailAsync(string email)
         {
             return await _context.Clientes
+                .Include(u => u.UsuarioRegistrado.PermisosEspeciales)
                 .FirstOrDefaultAsync(u => u.UsuarioRegistrado.Email == email);
         }
 
         public async Task AddAsync(Cliente usuario)
         {
-            await _context.UsuariosRegistrados.AddAsync(usuario.UsuarioRegistrado);
             await _context.Clientes.AddAsync(usuario);
             await _context.SaveChangesAsync();
         }

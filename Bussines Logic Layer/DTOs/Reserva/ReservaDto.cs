@@ -22,12 +22,12 @@ namespace Bussines_Logic_Layer.DTOs.Reserva
         public string Calle { get; set; } = null!;
         public string Altura { get; set; } = null!;
         public string? Dpto { get; set; }
-        public string EntreCalles { get; set; } = null!;
+        public string Piso { get; set; } = null!;
         public TipoEntregaDto TipoEntrega { get; set; } = null!;        
-        public PagoDto Pago { get; set; } = null!;
-        public int IdAlquiler { get; set; }
+        //public PagoDto Pago { get; set; } = null!;
+        public int? IdAlquiler { get; set; }
         public string DNICliente { get; set; }
-        public int IdPublicacion { get; set; }
+        public int IdPublicacion { get; set; } 
         //public AlquilerDto? Alquiler { get; set; }        
         //public ClienteDto Cliente { get; set; } = null!;
         //public PublicacionDto Publicacion { get; set; } = null!;

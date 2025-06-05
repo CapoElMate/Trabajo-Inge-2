@@ -38,7 +38,7 @@ namespace API_Layer.Controllers
         public async Task<ActionResult<PublicacionDto>> PostPublicacion(CreatePublicacionDto dto)
         {
             var created = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetPublicacion), new { id = created }, created);
+            return CreatedAtAction(nameof(GetPublicacion), new { id = created.idPublicacion }, created);
         }
 
         [HttpPut("byId")]

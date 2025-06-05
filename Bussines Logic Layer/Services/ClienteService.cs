@@ -16,11 +16,13 @@ namespace Bussines_Logic_Layer.Services
     {
         private readonly IClienteRepository _repo;
         private readonly IMapper _mapper;
+        private readonly IUsuarioRegistradoRepository _repoUser;
 
-        public ClienteService(IClienteRepository repo, IMapper mapper)
+        public ClienteService(IClienteRepository repo, IUsuarioRegistradoRepository repoUser,IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;
+            _repoUser = repoUser;
         }
 
         public async Task<IEnumerable<ClienteDto>> GetAllAsync()
@@ -66,6 +68,7 @@ namespace Bussines_Logic_Layer.Services
                 return false;
 
             usuario.UsuarioRegistrado.dniVerificado = true; 
+            await _repoUser.UpdateAsync(usuario.UsuarioRegistrado);
             await _repo.UpdateAsync(usuario);
             return true;
         }
