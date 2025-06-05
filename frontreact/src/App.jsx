@@ -49,6 +49,7 @@ function App() {
 
         {/* Cliente */}
         <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
+            <Route path="DetallePublicacion/:id/success" element={<DetallePublicacion />} />
         </Route>
 
         {/* Dueño */}
