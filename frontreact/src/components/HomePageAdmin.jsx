@@ -13,7 +13,7 @@ function HomePageAdmin() {
       <div className="admin-homepage-container">
         <div
           className="admin-action-card"
-          onClick={() => navigate("/SignUp")}
+          onClick={() => navigate("/SignUpEmpleado")}
           onMouseEnter={() => setIsHovered(true)} // Set hovered to true on mouse enter
           onMouseLeave={() => setIsHovered(false)} // Set hovered to false on mouse leave
         >
@@ -33,6 +33,18 @@ function HomePageAdmin() {
             {/* <span className="card-text">Ir a Crear una Maquinaria</span>
           ) : ( */}
             <span className="card-text">Crear Maquinaria</span>
+          {/* )} */}
+        </div>
+        <div
+          className="admin-action-card"
+          onClick={() => navigate("/ListarMaquinaria")}
+          // onMouseEnter={() => setIsHoveredAnother(true)}
+          // onMouseLeave={() => setIsHoveredAnother(false)}
+        >
+          {/* {isHovered ? ( */}
+            {/* <span className="card-text">Ir a Crear una Maquinaria</span>
+          ) : ( */}
+            <span className="card-text">Maquinaria</span>
           {/* )} */}
         </div>
         <div

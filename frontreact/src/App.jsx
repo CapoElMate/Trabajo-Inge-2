@@ -12,6 +12,7 @@ import DetallePublicacion from "./components/publicacion/DetallePublicacion";
 import "./components/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SignUp from "./components/SignUp";
+import SignUpEmpleado from "./components/SignUpEmpledo";
 import ForgotPassword from "./components/ForgotPassword";
 import Rentals from "./components/Rentals";
 
@@ -61,6 +62,7 @@ function App() {
           <Route path="/ModificarMaquinaria/:id" element={<EditarMaquinaria />}/>
           <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
           <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
+          <Route path="/SignUpEmpleado" element={<SignUpEmpleado />} />
         </Route>
 
 

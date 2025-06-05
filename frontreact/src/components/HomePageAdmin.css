@@ -1,40 +1,50 @@
-/* HomePageAdmin.css */
-
+/* Contenedor principal centrado y con buen espaciado */
 .admin-homepage-container {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center;     /* Center vertically */
-  min-height: calc(100vh - 60px); /* Take full viewport height minus Header height */
-  padding: 20px; /* Add some padding around the container */
-  background-color: #f0f2f5; /* Light background for the page */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  padding: 40px;
+  box-sizing: border-box;
+  align-items: start; /* Evita que las tarjetas se estiren en vertical */
 }
 
+/* Tarjetas de acción admin */
 .admin-action-card {
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  padding: 40px 60px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  padding: 40px 20px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  transition: all 0.3s ease;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /* To stack icon/text if needed */
-  min-width: 250px; /* Minimum width for the card */
-  min-height: 150px; /* Minimum height for the card */
-  font-size: 1.5em; /* Larger text */
+  min-height: 180px;
+  font-size: 1.4em;
   font-weight: bold;
-  color: #333; /* Darker text color */
+  color: #333;
+  user-select: none;
 }
 
+/* Hover suave y elegante */
 .admin-action-card:hover {
-  background-color: #e9f0f7; /* Lighter background on hover */
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* More pronounced shadow on hover */
-  transform: translateY(-5px); /* Slightly lift the card */
-  color:  #cc0000; /* Change text color on hover */
+  background-color: #e9f0f7;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  color: #cc0000;
 }
 
-.card-text {
-  /* No specific styles needed here, parent handles it */
+/* Si agregás íconos, que tengan un poco de separación del texto */
+.admin-action-card i, .admin-action-card svg {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #555;
+  transition: color 0.3s ease;
+}
+
+.admin-action-card:hover i,
+.admin-action-card:hover svg {
+  color: #cc0000;
 }

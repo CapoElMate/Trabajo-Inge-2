@@ -1,7 +1,7 @@
 .card_container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas iguales */
-  gap: 16px; /* espacio entre las tarjetas */
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 16px;
   padding: 16px;
 }
 
@@ -10,77 +10,83 @@
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.2s ease;
-  display: flex; /* Hace que el contenido interno se distribuya verticalmente */
+  display: flex;
   flex-direction: column;
-  height: 100%; /* Se ajusta al alto de la fila (grid) */
+  height: 100%;
 }
 
 .card:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.card_header
-{
+.card_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 1rem;
 }
 
-.title
-{
+.title {
   display: flex;
   gap: 1rem;
   flex-direction: row;
 }
 
-.card_body > p
-{
+.card_body {
+  flex-grow: 1; /* Ocupa el espacio restante */
+}
+
+.card_body > p {
   margin: 0;
   padding: 0;
   font-size: 16px;
 }
 
-.tagTitle
-{
-  text-decoration: underline;;
+.tagTitle {
+  text-decoration: underline;
+  margin-top: 1rem;
+  font-weight: bold;
 }
 
-h1
-{
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.tags-container,
+.permisos-container {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
   font-size: 24px;
   margin-bottom: 16px;
   text-align: center;
 }
 
-.buttonStyle
-{
+.buttonStyle {
   margin-top: 1rem;
   background-color: #dc3545;
-  border: 0px;
+  border: 0;
 }
 
-.buttonStyle:hover
-{
-    background-color: #b02a37;
+.buttonStyle:hover {
+  background-color: #b02a37;
 }
 
-.button-container
-{
+.button-container {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap; /* Permite que los botones bajen si no entran */
+  gap: 0.5rem;
   margin-top: 1rem;
 }
 
-.tags-container
-{
-  display: flex;
-  flex-direction: column;
-}
-
-.permisos-container
-{
-  display: flex;
-  flex-direction: column;
+.button-container > * {
+  width: 100px;
 }
