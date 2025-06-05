@@ -27,15 +27,16 @@ export default function PublicacionDetail() {
   const [mostrarRtdoModal, setMostrarRtdoModal] = useState(false);
   const [colorRtdo, setColorRtdo] = useState("#dc3545");
   const [rtdo, setRtdo] = useState("rtdo");
+  const [state, setState] = useState(location.state);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const state = params.get("state");
+    setState(params.get("state"));
 
     if (state === "success") {
-        const reserva = {
-          fecInicio: new Date(params.get("fecInicio")).toISOString(),
-          fecFin: new Date(params.get("fecFin")).toISOString(),
+      const reserva = {
+        fecInicio: new Date(params.get("fecInicio")).toISOString(),
+        fecFin: new Date(params.get("fecFin")).toISOString(),
         status: params.get("status"),
         calle: params.get("calle"),
         altura: params.get("altura"),
@@ -47,11 +48,9 @@ export default function PublicacionDetail() {
         idAlquiler:
           params.get("idAlquiler") === "null" ? null : params.get("idAlquiler"),
         dniCliente: params.get("dniCliente"),
-          idPublicacion: Number(params.get("idPublicacion")),
-          montoTotal: parseFloat(params.get("montoTotal")),
-        };
-
-        
+        idPublicacion: Number(params.get("idPublicacion")),
+        montoTotal: parseFloat(params.get("montoTotal")),
+      };
 
       fetch("http://localhost:5000/api/Reserva", {
         method: "POST",
@@ -66,37 +65,34 @@ export default function PublicacionDetail() {
           }
           return response.json();
         })
-          .then((data) => {
-
-            setMostrarRtdoModal(true);
-            setTimeout(() => {
-                setMostrarRtdoModal(false);
-            }, 1500);
+        .then((data) => {
+          setMostrarRtdoModal(true);
+          setTimeout(() => {
+            setMostrarRtdoModal(false);
+          }, 1500);
 
           console.log("Reserva creada con éxito:", data);
-          setRtdo("Reserva realizada con éxito");
+          setRtdo("La reserva se creo satisfactoriamente.");
           setColorRtdo("#28a745"); // Verde para éxito
         })
         .catch((error) => {
           console.error("Error en la petición:", error);
         });
     } else if (state === "pending") {
-
-        setMostrarRtdoModal(true);
-        setTimeout(() => {
-            setMostrarRtdoModal(false);
-        }, 1500);
+      setMostrarRtdoModal(true);
+      setTimeout(() => {
+        setMostrarRtdoModal(false);
+      }, 1500);
 
       setRtdo("Espere que se efectivice el pago");
       setColorRtdo("#b5a604"); // Amarillo para pendiente
     } else if (state === "failure") {
+      setMostrarRtdoModal(true);
+      setTimeout(() => {
+        setMostrarRtdoModal(false);
+      }, 1500);
 
-        setMostrarRtdoModal(true);
-        setTimeout(() => {
-            setMostrarRtdoModal(false);
-        }, 1500);
-
-      setRtdo("Reserva fallida, pago invalido");
+      setRtdo("Algo salio mal!");
       setColorRtdo("#e60243"); // Rojo para error
     }
   }, [location]);
@@ -339,11 +335,11 @@ export default function PublicacionDetail() {
             <div className="header">
               <div className="title-container">
                 <h2>{publicacion.titulo}</h2>
-                
+
                 {user?.roles?.includes("Dueño") && (
-                <p>
-                  <strong>Estado: </strong> {publicacion.status}
-                </p>
+                  <p>
+                    <strong>Estado: </strong> {publicacion.status}
+                  </p>
                 )}
               </div>
               <div className="button-container">
@@ -372,13 +368,14 @@ export default function PublicacionDetail() {
                     />
                   </>
                 )}
-                {(user?.roles?.includes("Cliente") ||
-                  user?.roles?.includes("Empleado")) && (
-                  <StyledButton
-                    text="Reservar"
-                    onClick={() => setMostrarReservaModal(true)}
-                  />
-                )}
+                {!state &&
+                  (user?.roles?.includes("Cliente") ||
+                    user?.roles?.includes("Empleado")) && (
+                    <StyledButton
+                      text="Reservar"
+                      onClick={() => setMostrarReservaModal(true)}
+                    />
+                  )}
               </div>
             </div>
 
