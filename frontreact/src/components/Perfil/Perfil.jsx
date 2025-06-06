@@ -9,32 +9,46 @@ export default function PerfilCliente() {
   const [reservas, setReservas] = useState([]);
   const [alquileres, setAlquileres] = useState([]);
   const [reembolsos, setReembolsos] = useState([]);
+  const [permisoEspeciales, setPermisoEspeciales] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { user, loadAuth} = useAuth();
+  const { user, loadAuth } = useAuth();
   // const dniCliente = "2050022";
   const navigate = useNavigate();
 
   useEffect(() => {
-    
     const fetchDatos = async () => {
       try {
         const getDNI = await fetch(
-          `http://localhost:5000/api/Usuario/byEmail?email=${user?.userName}`).then((res) => res.json()).then((data) => data.dni);
+          `http://localhost:5000/api/Usuario/byEmail?email=${user?.userName}`
+        )
+          .then((res) => res.json())
+          .then((data) => data.dni);
 
-        const [resCliente, resReservas, resAlquileres, resReembolsos] =
-          await Promise.all([
-            fetch(`http://localhost:5000/api/Cliente/byDNI?DNI=${getDNI}`),
-            fetch(`http://localhost:5000/api/Reserva/byDNI?DNI=${getDNI}`),
-            fetch(`http://localhost:5000/api/Alquiler/byDNI?dni=${getDNI}`),
-            fetch(
-              `http://localhost:5000/api/Reembolso/byDNI?dni=${getDNI}`
-            ),
-          ]);
+        const [
+          resCliente,
+          resReservas,
+          resAlquileres,
+          resReembolsos,
+          resPermisosEspeciales,
+        ] = await Promise.all([
+          fetch(`http://localhost:5000/api/Cliente/byDNI?DNI=${getDNI}`),
+          fetch(`http://localhost:5000/api/Reserva/byDNI?DNI=${getDNI}`),
+          fetch(`http://localhost:5000/api/Alquiler/byDNI?dni=${getDNI}`),
+          fetch(`http://localhost:5000/api/Reembolso/byDNI?dni=${getDNI}`),
+          fetch(
+            "http://localhost:5000/api/PermisosEspeciales/AllPermisosUsuarios"
+          ),
+        ]);
 
         const dataCliente = await resCliente.json();
         const dataReservas = await resReservas.json();
         const dataAlquileres = await resAlquileres.json();
         const dataReembolsos = await resReembolsos.json();
+        const dataPermisosEspeciales = await resPermisosEspeciales.json();
+
+        const permisosFiltrados = dataPermisosEspeciales.filter(
+          (permiso) => permiso.dniCliente === getDNI
+        );
 
         const reservasMasPublicacion = await Promise.all(
           dataReservas.map(async (reserva) => {
@@ -81,7 +95,7 @@ export default function PerfilCliente() {
             }
 
             // Devuelvo reembolso + la publicación + el alquiler relacionado si quieres
-            return { ...reembolso, publicacion};
+            return { ...reembolso, publicacion };
           })
         );
 
@@ -89,6 +103,7 @@ export default function PerfilCliente() {
         setReservas(reservasMasPublicacion);
         setAlquileres(alquiilerMasPublicacion);
         setReembolsos(ReembolsoMasPublicacion);
+        setPermisoEspeciales(permisosFiltrados);
       } catch (error) {
         console.error("Error al cargar los datos del perfil:", error);
       } finally {
@@ -99,7 +114,8 @@ export default function PerfilCliente() {
     fetchDatos();
   }, [loadAuth, user]);
 
-  if (loading && loadAuth) return <p className="text-center">Cargando perfil...</p>;
+  if (loading && loadAuth)
+    return <p className="text-center">Cargando perfil...</p>;
 
   return (
     <div>
@@ -108,16 +124,39 @@ export default function PerfilCliente() {
         <h1>Datos del cliente</h1>
 
         {cliente && (
-          <div className="personalInformacion">
-            <p>
-              <strong>Cliente</strong> {cliente.nombre} {cliente.apellido}
-            </p>
-            <p>
-              <strong>DNI</strong> {cliente.dni}
-            </p>
-            <p>
-              <strong>Email</strong> {cliente.email}
-            </p>
+          <div>
+            <div className="personalInformacion">
+              <p>
+                <strong>Cliente:</strong> {cliente.nombre} {cliente.apellido}
+              </p>
+              <p>
+                <strong>DNI:</strong> {cliente.dni}
+              </p>
+              <p>
+                <strong>Email:</strong> {cliente.email}
+              </p>
+            </div>
+
+            {permisoEspeciales.length > 0 && (
+              <div className="permisos-especiales">
+                <h4>Permisos Especiales</h4>
+                {permisoEspeciales.map((permiso, index) => (
+                  <div key={index} className="permiso-card">
+                    <span>
+                      <strong>Permiso:</strong> {permiso.permiso}
+                    </span>
+                    <span>
+                      <strong>Vigencia:</strong>{" "}
+                      {new Date(permiso.fecEmision).toLocaleDateString()} a{" "}
+                      {new Date(permiso.fecVencimiento).toLocaleDateString()}
+                    </span>
+                    <span>
+                      <strong>Estado:</strong> {permiso.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
 

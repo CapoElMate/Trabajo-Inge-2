@@ -136,3 +136,19 @@
 .reembolso-card:hover {
   background-color: inherit; /* o el color normal sin cambios */
 }
+
+.permiso-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: #ffffff;
+}
+
+.permiso-card span {
+  white-space: nowrap;
+}

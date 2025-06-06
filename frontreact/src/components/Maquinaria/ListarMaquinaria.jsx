@@ -199,7 +199,7 @@ export default function MaquinariaList() {
   return (
     <>
       <Header />
-      <div className="container" style={{ display: "flex", gap: "2rem" }}>
+      <div className="container-maquina" style={{ display: "flex", gap: "2rem" }}>
         {/* Filtros */}
         <div className="filtros">
           <select

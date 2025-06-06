@@ -185,7 +185,7 @@ const PermitFileUploader = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out text-lg font-medium shadow-md"
+          className="permiso-button"
         >
           Enviar permiso
         </button>
