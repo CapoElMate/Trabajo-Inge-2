@@ -1,170 +1,241 @@
-import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './SignUp.css';
 
-const schema = yup.object().shape({
-  dni: yup
-    .string()
-    .matches(/^\d{8}$/, '')
-    .required(''),
-  email: yup
-    .string()
-    .email('Correo inválido')
-    .required(''),
-  birthDate: yup
-    .date()
-    .max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), 'Debes tener al menos 18 años')
-    .required(''),
-  street: yup.string().required(''),
-  height: yup.string().required(''),
-  dpto: yup.string(),
-  nro: yup.string(),
-  phone: yup
-    .string()
-    .matches(/^\d{10}$/, '')
-    .required(''),
-  password: yup
-    .string()
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .matches(/[A-Z]/, 'Debe contener una letra mayúscula')
-    .matches(/[a-z]/, 'Debe contener una letra minúscula')
-    .matches(/\d/, 'Debe contener un número')
-    .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener un símbolo')
-    .required(''),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref('password')], 'Las contraseñas no coinciden')
-    .required('Confirma tu contraseña'),
-  dniImage: yup
-    .mixed()
-    .required('Debes subir una imagen del DNI')
-    .test('', ' Solo JPG, JPEG o PNG.', (value) => {
-      if (!value || !value[0]) return false;
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-      return allowedTypes.includes(value[0].type);
-    }),
-});
-
-export default function SignUp() {
+const SignUp = () => {
     const navigate = useNavigate();
-  const [usuarios, setUsuarios] = useState([]);
-  const [customErrors, setCustomErrors] = useState({ dni: '', email: '' });
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        confirmPassword: '',
+        dni: '',
+        nombre: '',
+        apellido: '',
+        fecNacimiento: '',
+        telefono: '',
+        calle: '',
+        altura: '',
+        dpto: '',
+        piso: '',
+    });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setError,
-    clearErrors,
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+    const [dniImageBase64, setDniImageBase64] = useState('');
+    const [statusMessage, setStatusMessage] = useState('');
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get('http://localhost:5000/api/Usuario/all')
-      .then((res) => setUsuarios(res.data))
-      .catch((err) => console.error('Error al cargar usuarios:', err));
-  }, []);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
-  const onSubmit = (data) => {
-    const dniExists = usuarios.some((u) => u.dni === data.dni);
-    const emailExists = usuarios.some((u) => u.email === data.email);
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
 
-    // Reiniciar errores previos
-    setCustomErrors({ dni: '', email: '' });
-    clearErrors('dni');
-    clearErrors('email');
+        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        if (!validTypes.includes(file.type)) {
+            setError('Formato de imagen inválido. Solo se permiten JPG, JPEG y PNG.');
+            return;
+        }
 
-    if (dniExists || emailExists) {
-      if (dniExists) {
-        setError('dni', { type: 'manual', message: 'El DNI ya está registrado' });
-      }
-      if (emailExists) {
-        setError('email', { type: 'manual', message: 'El correo ya está registrado' });
-      }
-      return;
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result.split(',')[1];
+            setDniImageBase64(base64String);
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isAdult = (dateString) => {
+        const birthDate = new Date(dateString);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDiff = today.getMonth() - birthDate.getMonth();
+        return (
+            age > 18 ||
+            (age === 18 && monthDiff >= 0 && today.getDate() >= birthDate.getDate())
+        );
+    };
+    const verificarUsuarioExistente = async (email, dni) => {
+    try {
+        const response = await fetch('http://localhost:5000/api/Cliente/all');
+        const clientes = await response.json();
+
+        const emailExiste = clientes.some(
+            (c) => c.usuarioRegistrado?.email === email
+        );
+        const dniExiste = clientes.some(
+            (c) => c.usuarioRegistrado?.dni === dni
+        );
+
+        return { emailExiste, dniExiste };
+    } catch (error) {
+        console.error('Error al verificar usuarios existentes:', error);
+        throw new Error('No se pudo verificar si el usuario existe');
     }
+};
 
-    console.log(data);
-    navigate("/Login");
-    // Aquí podrías redirigir al login
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setStatusMessage('');
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4 border rounded-md space-y-4">
-      <h2 className="text-xl font-bold text-center">Registro de Usuario</h2>
+        // Validaciones
+        if (!isValidEmail(formData.email)) {
+            setError('El email ingresado no es válido.');
+            return;
+        }
+        if (!/^\d{8}$/.test(formData.dni)) {
+            setError('El DNI debe tener exactamente 8 dígitos.');
+            return;
+        }
+        if (formData.password.length < 8) {
+            setError('La contraseña debe tener un minimo de 8 caracteres, intentelo nuevamente');
+            return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            setError('Las contraseñas no coinciden.');
+            return;
+        }
+        if (!isAdult(formData.fecNacimiento)) {
+            setError('Debe ser mayor de edad para poder registrarse');
+            return;
+        }
+        
+        if (!/^\d{10}$/.test(formData.telefono)) {
+            setError('El teléfono debe tener exactamente 10 dígitos.');
+            return;
+        }
+        const { emailExiste, dniExiste } = await verificarUsuarioExistente(formData.email, formData.dni);
+          if (emailExiste) {
+              setError('Mail invalido, inténtalo nuevamente.');
+              return;
+          }
+          if (dniExiste) {
+              setError('DNI invalido, inténtalo nuevamente');
+              return;
+          }
 
-      <div>
-        <label>DNI</label>
-        <input {...register('dni')} className="w-full border p-2" />
-        {errors.dni && <p className="text-red-600 text-sm">{errors.dni.message}</p>}
-      </div>
+        setStatusMessage('Registrando usuario...');
 
-      <div>
-        <label>Email</label>
-        <input {...register('email')} className="w-full border p-2" />
-        {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
-      </div>
+        const authData = {
+            email: formData.email,
+            password: formData.password,
+            confirmPassword: formData.confirmPassword,
+            role: 'Cliente',
+        };
 
-      <div>
-        <label>Fecha de nacimiento</label>
-        <input type="date" {...register('birthDate')} className="w-full border p-2" />
-        {errors.birthDate && <p className="text-red-600 text-sm">{errors.birthDate.message}</p>}
-      </div>
+        const userData = {
+            email: formData.email,
+            dni: formData.dni,
+            nombre: formData.nombre,
+            apellido: formData.apellido,
+            fecNacimiento: new Date(formData.fecNacimiento).toISOString(),
+            telefono: formData.telefono,
+            calle: formData.calle,
+            altura: formData.altura,
+            dpto: formData.dpto,
+            piso: formData.piso,
+            permisosEspeciales: [],
+            roleName: 'Cliente',
+            dniVerificado: false,
+        };
 
-      <div>
-        <label>Calle</label>
-        <input {...register('street')} className="w-full border p-2" />
-        {errors.street && <p className="text-red-600 text-sm">{errors.street.message}</p>}
-      </div>
+        try {
+            const authResponse = await fetch('http://localhost:5000/Auth/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(authData),
+            });
 
-      <div>
-        <label>Altura</label>
-        <input {...register('height')} className="w-full border p-2" />
-        {errors.height && <p className="text-red-600 text-sm">{errors.height.message}</p>}
-      </div>
+            if (!authResponse.ok) throw new Error(`Error en Auth: ${await authResponse.text()}`);
 
-      <div>
-        <label>Departamento</label>
-        <input {...register('dpto')} className="w-full border p-2" />
-      </div>
+            const userResponse = await fetch('http://localhost:5000/api/Usuario', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
 
-      <div>
-        <label>Número</label>
-        <input {...register('nro')} className="w-full border p-2" />
-      </div>
+            if (!userResponse.ok) throw new Error(`Error en Usuario: ${await userResponse.text()}`);
 
-      <div>
-        <label>Teléfono</label>
-        <input {...register('phone')} className="w-full border p-2" />
-        {errors.phone && <p className="text-red-600 text-sm">{errors.phone.message}</p>}
-      </div>
+            const clienteResponse = await fetch('http://localhost:5000/api/Cliente', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ usuarioRegistrado: userData }),
+            });
 
-      <div>
-        <label>Contraseña</label>
-        <input type="password" {...register('password')} className="w-full border p-2" />
-        {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
-      </div>
+            if (!clienteResponse.ok) throw new Error(`Error en Cliente: ${await clienteResponse.text()}`);
 
-      <div>
-        <label>Confirmar Contraseña</label>
-        <input type="password" {...register('confirmPassword')} className="w-full border p-2" />
-        {errors.confirmPassword && <p className="text-red-600 text-sm">{errors.confirmPassword.message}</p>}
-      </div>
+            if (dniImageBase64) {
+                const byteCharacters = atob(dniImageBase64);
+                const byteArrays = [];
 
-      <div>
-        <label>Imagen del DNI (JPG, JPEG, PNG)</label>
-        <input type="file" {...register('dniImage')} accept="image/jpeg, image/png, image/jpg" className="w-full" />
-        {errors.dniImage && <p className="text-red-600 text-sm">{errors.dniImage.message}</p>}
-      </div>
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
+                }
 
-      <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 w-full">
-        Registrarse
-      </button>
-    </form>
-  );
-}
+                const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+
+                const formDataArchivo = new FormData();
+                formDataArchivo.append('EntidadID', parseInt(formData.dni));
+                formDataArchivo.append('TipoEntidad', 3);
+                formDataArchivo.append('Nombre', 'Archivo DNI');
+                formDataArchivo.append('Descripcion', `Archivo DNI de ${formData.nombre} ${formData.apellido}`);
+                formDataArchivo.append('Archivo', blob, 'dni.jpg');
+
+                const dniResponse = await fetch('http://localhost:5000/api/Archivo', {
+                    method: 'POST',
+                    body: formDataArchivo,
+                });
+
+                if (!dniResponse.ok) {
+                    throw new Error(`Error al enviar archivo DNI: ${await dniResponse.text()}`);
+                }
+            }
+
+            navigate("/Login");
+        } catch (err) {
+            console.error(err);
+            setError(err.message);
+            setStatusMessage('Ocurrió un error durante el registro.');
+        }
+    };
+
+    return (
+        <div className="signup-container">
+            <h2>Formulario de Registro</h2>
+            <form onSubmit={handleSubmit}>
+                <input name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+                <input type="password" name="password" placeholder="Contraseña" value={formData.password} onChange={handleChange} required />
+                <input type="password" name="confirmPassword" placeholder="Confirmar Contraseña" value={formData.confirmPassword} onChange={handleChange} required />
+                <input name="dni" placeholder="DNI" value={formData.dni} onChange={handleChange} required />
+                <input name="nombre" placeholder="Nombre" value={formData.nombre} onChange={handleChange} required />
+                <input name="apellido" placeholder="Apellido" value={formData.apellido} onChange={handleChange} required />
+                <input type="date" name="fecNacimiento" value={formData.fecNacimiento} onChange={handleChange} required />
+                <input name="telefono" placeholder="Teléfono" value={formData.telefono} onChange={handleChange} required />
+                <input name="calle" placeholder="Calle" value={formData.calle} onChange={handleChange} required />
+                <input name="altura" placeholder="Altura" value={formData.altura} onChange={handleChange} required />
+                <input name="dpto" placeholder="Dpto" value={formData.dpto} onChange={handleChange} required />
+                <input name="piso" placeholder="Piso" value={formData.piso} onChange={handleChange} required />
+
+                <label>Subir imagen del DNI (.jpg, .jpeg, .png):</label>
+                <input type="file" accept="image/jpeg,image/jpg,image/png" onChange={handleFileChange} required />
+
+                <button type="submit">Registrarse</button>
+            </form>
+
+            {statusMessage && <p>{statusMessage}</p>}
+            {error && <p className="error-message">{error}</p>}
+        </div>
+    );
+};
+
+export default SignUp;

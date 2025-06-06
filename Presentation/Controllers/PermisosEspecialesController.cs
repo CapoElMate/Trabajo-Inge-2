@@ -103,6 +103,22 @@ namespace API_Layer.Controllers
             return NoContent();
         }
 
+        [HttpPut("rechazarPermisoEspecial")]
+        public async Task<IActionResult> rechazarPermisoUsuario(string DNI, string permisoEspecial)
+        {
+            var permisos = await _service.GetByUserAsync(DNI);
+            if (permisos == null || !permisos.Any(p => p.Permiso.Equals(permisoEspecial)))
+                return BadRequest("El permiso no existe.");
+
+            var updated = await _service.rechazarPermisoEspecial(DNI, permisoEspecial);
+            if (!updated)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        
+
         [HttpDelete("borrarPermiso")]
         public async Task<IActionResult> DeletePermiso(string permiso)
         {
