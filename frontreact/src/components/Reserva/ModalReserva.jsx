@@ -137,14 +137,14 @@ export default function ModalReserva({
         .filter(
           (p) =>
             p.dniCliente === cliente.usuarioRegistrado.dni &&
-            p.status === "Vigente"
+            p.status === "Validado"
         )
         .map((p) => p.permiso);
 
       const permisosRequeridos = publicacion.maquina.permisosEspeciales || [];
 
       const tieneTodosLosPermisos = permisosRequeridos.every((pr) =>
-        permisosCliente.includes(pr)
+        permisosCliente.includes(pr.permiso)
       );
 
       if (!tieneTodosLosPermisos) {

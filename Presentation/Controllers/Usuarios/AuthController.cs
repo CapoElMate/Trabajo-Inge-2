@@ -266,6 +266,17 @@ namespace API_Layer.Controllers.Usuarios
             return Ok("Contraseña cambiada");
         }
 
+        [HttpPost("cambiarContraseñaDesdePerfil")]
+        [AllowAnonymous]
+        public async Task<IActionResult> cambiarContraseñaDesdePerfil(string email, string contraseña)
+        {
+            var user = await _userManager.FindByNameAsync(email);
+
+            await _userManager.RemovePasswordAsync(user); // Elimina la actual (si existe)
+            var result = await _userManager.AddPasswordAsync(user, contraseña);
+            return Ok("Contraseña cambiada");
+        }
+
         [HttpPost("forgot-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
