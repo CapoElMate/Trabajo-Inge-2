@@ -131,13 +131,13 @@ export default function PublicacionForm({
     const precioNumerico = parseFloat(precioFormateado);
 
     if (!precio || isNaN(precioNumerico)) {
-      nuevosErrores.precio = "El precio debe ser un número válido.";
+      nuevosErrores.precio = "El precio debe ser un numero entero o decimal mayor a 0.";
     } else if (!regexPrecio.test(precio)) {
-      nuevosErrores.precio = "Solo se permiten números y decimales.";
+      nuevosErrores.precio = "El precio debe ser un numero entero o decimal mayor a 0.";
     } else if (precioNumerico <= 0) {
-      nuevosErrores.precio = "El precio debe ser mayor a 0.";
+      nuevosErrores.precio = "El precio debe ser un numero entero o decimal mayor a 0.";
     }
-
+     
     if (!imagenesActuales || imagenesActuales.length === 0) {
       nuevosErrores.imagenes = "Debes subir al menos una imagen.";
     }
@@ -298,7 +298,7 @@ export default function PublicacionForm({
           onAceptar={handleSubmit}
         />
         {mensajeExito && (
-          <p className="text-green-600 text-center mt-2">{mensajeExito}</p>
+          <p className="mensaje-exito">{mensajeExito}</p>
         )}
       </form>
     </div>

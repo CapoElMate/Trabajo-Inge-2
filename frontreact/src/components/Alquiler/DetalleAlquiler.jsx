@@ -93,7 +93,7 @@ export default function DetalleAlquiler() {
   const handleReembolso = (reembolso) => {
     const cancelarYReembolsar = async () => {
       try {
-        // 1. Crear reembolso
+        //1. Crear reembolso
         const resReembolso = await fetch(
           "http://localhost:5000/api/Reembolso",
           {
@@ -157,9 +157,11 @@ export default function DetalleAlquiler() {
 
         // 5. Actualizar el estado si lo necesitás
         setPublicacion(publicacionActualizada);
-
-        // 6. Navegar
-        navigate("/HomePage");
+        setExito("Reembolso generado exitosamente.");
+        setTimeout(() => {
+          navigate("/HomePage");
+        }, 2000);
+        // // 6. Navegar
       } catch (error) {
         console.error("Error en proceso de cancelación:", error);
         // mostrar alerta o toast si querés
@@ -180,6 +182,7 @@ export default function DetalleAlquiler() {
       }, 2000);
       return;   
     }
+    setModalReembolsoAbierto(true);
   }
 
   if (loading) return <p className="detalle-loading">Cargando...</p>;

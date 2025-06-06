@@ -35,6 +35,7 @@ function SideBarMenu() {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: false },
+      { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
       { label: "Publicaciones", path: "/HomePage", restricted: false },
       { label: "Filtrar Reservas", path: "/FiltrarReservas", restricted: false },
       { label: "Filtrar Alquileres", path: "/FiltrarAlquileres", restricted: false },

@@ -7,19 +7,18 @@ export default function TextInput({
   onChange: onChangeProp,
   ...props
 }) {
-  const [value, setValue] = useState(valueProp || "");
+  const [value, setValue] = useState(String(valueProp ?? ""));
 
   useEffect(() => {
-    // Sincroniza el estado si cambian las props externas (controlado)
-    setValue(valueProp || "");
-  }, [valueProp]);
+  setValue(String(valueProp ?? ""));
+}, [valueProp]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
     if (onChangeProp) onChangeProp(e);
   };
 
-  const asteriscoColor = isRequired && value.trim() === "" ? "red" : "black";
+  const asteriscoColor = isRequired && String(value).trim() === "" ? "red" : "black";
 
   return (
     <div>

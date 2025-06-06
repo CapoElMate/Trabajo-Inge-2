@@ -32,7 +32,11 @@ export default function PublicacionDetail() {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     setState(params.get("state"));
-    
+  }, [location.search]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+
     if (params.get("state") === "success") {
       const reserva = {
         fecInicio: new Date(params.get("fecInicio")).toISOString(),
@@ -65,16 +69,54 @@ export default function PublicacionDetail() {
           }
           return response.json();
         })
-        .then((data) => {
-          setMostrarRtdoModal(true);
-          setTimeout(() => {
-            setMostrarRtdoModal(false);
-            navigate("/HomePage")
-          }, 2000);
+        .then((dataReserva) => {
+          const id = dataReserva.idPublicacion;
 
-          console.log("Reserva creada con éxito:", data);
-          setRtdo("La reserva se creo satisfactoriamente.");
-          setColorRtdo("#28a745"); // Verde para éxito
+          // Obtener publicación actualizada
+          fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`)
+            .then((res) => res.json())
+            .then((publicacion) => {
+              const publicacionActualizada = {
+                ...publicacion,
+                status: "No disponible",
+              };
+
+              // Actualizar publicación
+              fetch(`http://localhost:5000/api/Publicacion/byId?id=${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(publicacionActualizada),
+              })
+                .then(() => {
+                  const maquinariaActualizada = {
+                    ...publicacion.maquina,
+                    status: "No disponible",
+                  };
+
+                  // Actualizar máquina
+                  fetch(
+                    `http://localhost:5000/api/Maquinas/byId?id=${publicacion.maquina.idMaquina}`,
+                    {
+                      method: "PUT",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(maquinariaActualizada),
+                    }
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error al actualizar la publicación:", error);
+                });
+
+              setPublicacion(publicacion);
+              setMostrarRtdoModal(true);
+              setTimeout(() => {
+                setMostrarRtdoModal(false);
+                navigate("/HomePage");
+              }, 2000);
+              console.log("Reserva creada con éxito:", dataReserva);
+              setRtdo("La reserva se creó satisfactoriamente.");
+              setColorRtdo("#28a745"); // Verde para éxito
+            });
         })
         .catch((error) => {
           console.error("Error en la petición:", error);
@@ -83,7 +125,7 @@ export default function PublicacionDetail() {
       setMostrarRtdoModal(true);
       setTimeout(() => {
         setMostrarRtdoModal(false);
-        navigate("/HomePage")
+        navigate("/HomePage");
       }, 2000);
 
       setRtdo("Espere que se efectivice el pago");
@@ -92,10 +134,10 @@ export default function PublicacionDetail() {
       setMostrarRtdoModal(true);
       setTimeout(() => {
         setMostrarRtdoModal(false);
-        navigate("/HomePage")
+        navigate("/HomePage");
       }, 2000);
 
-      setRtdo("Algo salio mal!");
+      setRtdo("Algo salió mal!");
       setColorRtdo("#e60243"); // Rojo para error
     }
   }, [location]);
@@ -141,38 +183,6 @@ export default function PublicacionDetail() {
     setCurrentImageIndex((prev) =>
       prev === imagenes.length - 1 ? 0 : prev + 1
     );
-  };
-
-  const handleReservar = (state) => {
-    if (state === "success" || state === "error") {
-      publicacion.status = "No disponible";
-      fetch(
-        `http://localhost:5000/api/Publicacion/byId?id=${publicacion.idPublicacion}`,
-        {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(publicacion),
-        }
-      )
-        .then(() => {
-          const maquinariaActualizada = {
-            ...publicacion.maquina,
-            status: "No disponible",
-          };
-          fetch(
-            `http://localhost:5000/api/Maquinas/byId?id=${publicacion.maquina.idMaquina}`,
-            {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(maquinariaActualizada),
-            }
-          );
-          navigate("/HomePage");
-        })
-        .catch((error) => {
-          console.error("Error al actualizar la publicación:", error);
-        });
-    }
   };
 
   const verificarReservas = async (idPublicacion) => {
@@ -517,7 +527,7 @@ export default function PublicacionDetail() {
             precioPorDia={publicacion.precioPorDia}
             isOpen={mostrarReservaModal}
             onClose={() => setMostrarReservaModal(false)}
-            onReservar={handleReservar}
+            onReservar={console.log("reservando")}
           />
 
           <ModalResultado

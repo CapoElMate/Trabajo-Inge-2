@@ -64,7 +64,7 @@ export default function DetalleReserva() {
       setTimeout(() => {
         setConfirmModal(false);
         setError(false);
-      }, 1000);
+      }, 2000);
 
       return;
     }
@@ -76,7 +76,7 @@ export default function DetalleReserva() {
       fecEfectivizacion: now,
       status: "Efectivizado",
       dniCliente: reservaData.dniCliente,
-      dniEmpleadoEfectivizo: empleado.dni,
+      dniEmpleadoEfectivizo: empleado.usuarioRegistrado.dni,
       infoAsentada: [],
       reserva: reservaData,
     };
@@ -107,7 +107,8 @@ export default function DetalleReserva() {
       setTimeout(() => {
         setConfirmModal(false);
         setExito(false);
-      }, 1000);
+        navigate("/FiltrarReservas");
+      }, 2000);
 
     });
     if (!updateReservaResponse.ok)

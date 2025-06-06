@@ -13,3 +13,12 @@ textarea.error {
   outline: none;
   box-shadow: 0 0 0 1px #dc2626;
 }
+
+.mensaje-exito
+{
+  color: #16a34a; /* verde-600 de Tailwind */
+  font-size: 0.875rem; /* text-sm */
+  margin-top: 0.5rem;
+  margin-left: 0.25rem;
+  font-weight: 500;
+}

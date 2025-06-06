@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import { AuthProvider } from "./AuthContext";
 
@@ -39,57 +44,95 @@ function App() {
   return (
     <AuthProvider>
       <Routes>
-        
         {/*Crear un empleado, la dejo aqui para no tener que loguearse*/}
         <Route path="/SignUpEmpleado" element={<SignUpEmpleado />} />
         {/*Vistas publicas-------------------------------------------------------------*/}
-        
-        <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
-        
-        <Route path="/resetPassword" element={<ResetPassword/>}/>
+
+        {/* <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} /> */}
+
+        <Route path="/resetPassword" element={<ResetPassword />} />
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/" element={<HomePage />} />
-        <Route path="/DetallePublicacion/:id" element={<DetallePublicacion />}/>
+        <Route
+          path="/DetallePublicacion/:id"
+          element={<DetallePublicacion />}
+        />
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/ForgotPassword" element={<ForgotPassword />} />
 
         {/* Vistas Cliente -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Cliente"]} />}>
-            <Route path="DetallePublicacion/:id/success" element={<DetallePublicacion />} />
-            <Route path="DetallePublicacion/:id/failure" element={<DetallePublicacion />} />
-            <Route path="DetallePublicacion/:id/pending" element={<DetallePublicacion />} />
-          <Route path="/Perfil" element={<Perfil />} />
-          <Route path="/PermitFileUploeader" element={<PermitFileUploeader/>}/>
+          
         </Route>
 
         {/* Vistas Dueño -------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Dueño"]} />}>
           <Route path="/HomePageAdmin" element={<HomePageAdmin />} />
           <Route path="/CrearPublicacion" element={<CrearPublicacion />} />
-          <Route path="/ModificarPublicacion/:id" element={<ModificarPublicacion />}/>
-          <Route path="/HomePage" element={<HomePage />} />
           <Route path="/CrearMaquinaria" element={<CrearMaquinaria />} />
-          <Route path="/ModificarMaquinaria/:id" element={<EditarMaquinaria />}/>
+          <Route
+            path="/ModificarPublicacion/:id"
+            element={<ModificarPublicacion />}
+          />
+          <Route
+            path="/ModificarMaquinaria/:id"
+            element={<EditarMaquinaria />}
+          />
           <Route path="/ListarMaquinaria" element={<ListarMaquinaria />} />
-          <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
           <Route path="/SignUpEmpleado" element={<SignUpEmpleado />} />
-          <Route path="/FiltrarAlquileres" element={<FiltrarAlquiler />} />
-          <Route path="/FiltrarReservas" element={<ReservaFilter />} />
         </Route>
-
 
         {/* Empleado-------------------------------------------------------------*/}
         <Route element={<PrivateRoute rolesPermitidos={["Empleado"]} />}>
           <Route path="/EmployeeHome" element={<EmployeeHome />} />
-          <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
-          <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
+          <Route path="/PermisosDeUsuarios" element={<PermisosDeUsuarios />} />
+          <Route
+            path="/solicitudesDeRegistro"
+            element={<SolicitudesDeRegistro />}
+          />
+        </Route>
+
+        <Route
+          element={<PrivateRoute rolesPermitidos={["Dueño", "Empleado"]} />}
+        >
           <Route path="/FiltrarAlquileres" element={<FiltrarAlquiler />} />
           <Route path="/FiltrarReservas" element={<ReservaFilter />} />
-          <Route path="/PermisosDeUsuarios" element={<PermisosDeUsuarios />} />
-          <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
+          <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
         </Route>
+
+        <Route
+          element={
+            <PrivateRoute rolesPermitidos={["Dueño", "Empleado", "Cliente"]} />
+          }
+        >
+          <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
+          <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
+        </Route>
+
+        <Route
+          element={<PrivateRoute rolesPermitidos={["Empleado", "Cliente"]} />}
+        >
+          <Route path="/Perfil" element={<Perfil />} />
+          <Route
+            path="DetallePublicacion/:id/success"
+            element={<DetallePublicacion />}
+          />
+          <Route
+            path="DetallePublicacion/:id/failure"
+            element={<DetallePublicacion />}
+          />
+          <Route
+            path="DetallePublicacion/:id/pending"
+            element={<DetallePublicacion />}
+          />
+          <Route
+            path="/PermitFileUploeader"
+            element={<PermitFileUploeader />}
+          />
+        </Route>
+
         {/*
           Una forma de tener una vista para distintos roles
           <Route element={<PrivateRoute rolesPermitidos={["Dueño", "Empleado"]} />}>
