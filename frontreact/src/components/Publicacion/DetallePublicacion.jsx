@@ -27,13 +27,11 @@ export default function PublicacionDetail() {
   const [mostrarRtdoModal, setMostrarRtdoModal] = useState(false);
   const [colorRtdo, setColorRtdo] = useState("#dc3545");
   const [rtdo, setRtdo] = useState("rtdo");
-  const [state, setState] = useState(location.state);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    setState(params.get("state"));
 
-    if (state === "success") {
+    if (params.get("state") === "success") {
       const reserva = {
         fecInicio: new Date(params.get("fecInicio")).toISOString(),
         fecFin: new Date(params.get("fecFin")).toISOString(),
@@ -79,7 +77,7 @@ export default function PublicacionDetail() {
         .catch((error) => {
           console.error("Error en la petición:", error);
         });
-    } else if (state === "pending") {
+    } else if (params.get("state") === "pending") {
       setMostrarRtdoModal(true);
       setTimeout(() => {
         setMostrarRtdoModal(false);
@@ -88,7 +86,7 @@ export default function PublicacionDetail() {
 
       setRtdo("Espere que se efectivice el pago");
       setColorRtdo("#b5a604"); // Amarillo para pendiente
-    } else if (state === "failure") {
+    } else if (params.get("state") === "failure") {
       setMostrarRtdoModal(true);
       setTimeout(() => {
         setMostrarRtdoModal(false);
