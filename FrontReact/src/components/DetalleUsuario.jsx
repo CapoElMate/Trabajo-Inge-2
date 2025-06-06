@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TbHandClick } from 'react-icons/tb';
 import { useParams, useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const DetalleUsuario = () => {
     const { dni } = useParams();
@@ -88,9 +89,10 @@ const DetalleUsuario = () => {
 
     const base64Valida = archivo.archivoBase64?.length > 100;
 
-    return (
+    return (<>
+        <Header/>
         <div style={{ padding: '2rem' }}>
-            <h2>Detalle del Usuario</h2>
+            <h2>Detalles del Usuario</h2>
 
             <div style={{ marginBottom: '2rem' }}>
                 <p><strong>Nombre:</strong> {usuario.nombre} {usuario.apellido}</p>
@@ -127,7 +129,7 @@ const DetalleUsuario = () => {
                 </button>
             </div>
         </div>
-    );
+    </>);
 };
 
 export default DetalleUsuario;
