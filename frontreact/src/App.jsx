@@ -19,7 +19,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import SignUp from "./components/SignUp";
 import SignUpEmpleado from "./components/SignUpEmpledo";
 import ForgotPassword from "./components/ForgotPassword";
-import Rentals from "./components/Rentals";
+
 
 import CrearPublicacion from "./components/Publicacion/CrearPublicacion";
 import ModificarPublicacion from "./components/Publicacion/ModificarPublicacion";

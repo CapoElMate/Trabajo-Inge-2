@@ -29,13 +29,16 @@ function SideBarMenu() {
       { label: "Inicio", path: "/HomePage", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: true },
       { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
-      { label: "Publicaciones", path: "/HomePage", restricted: false },
+      { label: "Cambiar contraseña", path: "/CambiarContraseña", restricted: true },
+      // { label: "Mis alquileres", path: "/Leases", restricted: true }
     );
   } else if (user.roles.includes("Empleado")) {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: false },
-      { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
+      { label: "Cambiar contraseña", path: "/CambiarContraseña", restricted: true },
+      // { label: "Mis reservas", path: "/rentals", restricted: false },
+      // { label: "Mis alquileres", path: "/Leases", restricted: false },
       { label: "Publicaciones", path: "/HomePage", restricted: false },
       { label: "Filtrar Reservas", path: "/FiltrarReservas", restricted: false },
       { label: "Filtrar Alquileres", path: "/FiltrarAlquileres", restricted: false },
@@ -52,6 +55,9 @@ function SideBarMenu() {
       { label: "Filtrar Reservas", path: "/FiltrarReservas", restricted: false },
       { label: "Filtrar Alquileres", path: "/FiltrarAlquileres", restricted: false },
       { label: "Registrar empleado", path: "/SignUpEmpleado", restricted: false },
+      { label: "Cambiar contraseña", path: "/CambiarContraseña", restricted: true },
+      // { label: "Mi perfil", path: "/Profile", restricted: false },
+      //{ label: "Publicaciones", path: "/HomePage", restricted: false }
     );
   }
 

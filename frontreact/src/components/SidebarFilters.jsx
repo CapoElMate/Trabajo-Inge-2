@@ -1,54 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-// Las funciones para obtener datos desde la API
-const getMarcas = async () => {
-  try {
-    const response = await fetch("http://localhost:5000/api/Marcas/all");
-    if (!response.ok) throw new Error("Error al obtener las marcas");
-    const data = await response.json();
-    return data.map(m => m.marca);
-  } catch (error) {
-    console.error("Error fetching marcas:", error);
-    return [];
-  }
-};
-
-const getModelos = async (marca = "") => {
-  if (!marca) return [];
-  try {
-    const response = await fetch("http://localhost:5000/api/Modelos/all");
-    if (!response.ok) throw new Error("Error al obtener los modelos");
-    const data = await response.json();
-    return data.filter(m => m.marca.marca === marca).map(m => m.modelo);
-  } catch (error) {
-    console.error("Error fetching modelos:", error);
-    return [];
-  }
-};
-
-const getTipos = async () => {
-  try {
-    const response = await fetch("http://localhost:5000/api/TiposMaquina/all");
-    if (!response.ok) throw new Error("Error al obtener los tipos");
-    const data = await response.json();
-    return data.map(t => t.tipo);
-  } catch (error) {
-    console.error("Error fetching tipos:", error);
-    return [];
-  }
-};
-
-const getUbicaciones = async () => {
-  try {
-    const response = await fetch("http://localhost:5000/api/Ubicacion/all");
-    if (!response.ok) throw new Error("Error al obtener las ubicaciones");
-    const data = await response.json();
-    return data.map(u => u.ubicacionName);
-  } catch (error) {
-    console.error("Error fetching ubicaciones:", error);
-    return [];
-  }
-};
+// Opciones para los filtros
+const opcionesTipo = ['Transporte', 'Construccion', 'Agricola'];
+const opcionesMarca = ['John Deere', 'Case IH', 'New Holland'];
+const opcionesModelo = ['Serie A', 'Serie B', 'Serie C'];
+const opcionesUbicacion = ['La Plata', 'Quilmes', 'Beriso'];
 
 function SidebarFilters({ onFiltrar }) {
   const [filtros, setFiltros] = useState({
@@ -60,28 +16,53 @@ function SidebarFilters({ onFiltrar }) {
     ubicacion: ''
   });
 
-  // Estados para opciones dinámicas
-  const [opcionesTipo, setOpcionesTipo] = useState([]);
-  const [opcionesMarca, setOpcionesMarca] = useState([]);
-  const [opcionesModelo, setOpcionesModelo] = useState([]);
-  const [opcionesUbicacion, setOpcionesUbicacion] = useState([]);
+  const [tipos, setTipos] = useState([]);
+  const [marcas, setMarcas] = useState([]);
+  const [modelos, setModelos] = useState([]);
+  const [ubicaciones] = useState(['La Plata', 'Quilmes', 'Beriso']); // Si querés, esto también puede venir de la API
 
+  // Obtener tipos de máquinas y marcas al iniciar
   useEffect(() => {
-    // Cargar tipos, marcas y ubicaciones al montar el componente
-    getTipos().then(setOpcionesTipo);
-    getMarcas().then(setOpcionesMarca);
-    getUbicaciones().then(setOpcionesUbicacion);
+    fetch("http://localhost:5000/api/Maquinas/all")
+      .then((res) => res.json())
+      .then((data) => {
+        const tiposUnicos = [...new Set(data.map((m) => m.tipoMaquina.tipo))];
+        setTipos(tiposUnicos);
+      });
+
+    getMarcas().then(setMarcas);
   }, []);
 
+  // Actualizar modelos al cambiar la marca
   useEffect(() => {
-    // Cuando cambia la marca, obtener los modelos asociados
     if (filtros.marca) {
-      getModelos(filtros.marca).then(setOpcionesModelo);
+      getModelos(filtros.marca).then(setModelos);
     } else {
-      setOpcionesModelo([]);
-      setFiltros(prev => ({ ...prev, modelo: '' })); // Limpiar modelo si no hay marca
+      setModelos([]);
     }
   }, [filtros.marca]);
+
+  const getMarcas = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/Marcas/all");
+      const data = await response.json();
+      return data.map((m) => m.marca);
+    } catch (error) {
+      console.error("Error al obtener las marcas", error);
+      return [];
+    }
+  };
+
+  const getModelos = async (marca) => {
+    try {
+      const response = await fetch("http://localhost:5000/api/Modelos/all");
+      const data = await response.json();
+      return data.filter((m) => m.marca.marca === marca).map((m) => m.modelo);
+    } catch (error) {
+      console.error("Error al obtener los modelos", error);
+      return [];
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -93,18 +74,7 @@ function SidebarFilters({ onFiltrar }) {
     onFiltrar(filtros);
   };
 
-  const handleReset = () => {
-    const filtrosVacios = {
-      tipo: '',
-      marca: '',
-      modelo: '',
-      precioMin: '',
-      precioMax: '',
-      ubicacion: ''
-    };
-    setFiltros(filtrosVacios);
-    onFiltrar(filtrosVacios);
-  };
+ 
 
   return (
     <aside style={{ width: '250px', padding: '20px', borderRight: '1px solid #ddd', backgroundColor: '#fafafa' }}>
@@ -115,9 +85,7 @@ function SidebarFilters({ onFiltrar }) {
           Tipo de máquina
           <select name="tipo" value={filtros.tipo} onChange={handleChange}>
             <option value="">Todos</option>
-            {opcionesTipo.map(op => (
-              <option key={op} value={op}>{op}</option>
-            ))}
+            {tipos.map(tipo => <option key={tipo} value={tipo}>{tipo}</option>)}
           </select>
         </label>
 
@@ -125,9 +93,7 @@ function SidebarFilters({ onFiltrar }) {
           Marca
           <select name="marca" value={filtros.marca} onChange={handleChange}>
             <option value="">Todas</option>
-            {opcionesMarca.map(op => (
-              <option key={op} value={op}>{op}</option>
-            ))}
+            {marcas.map(marca => <option key={marca} value={marca}>{marca}</option>)}
           </select>
         </label>
 
@@ -135,9 +101,7 @@ function SidebarFilters({ onFiltrar }) {
           Modelo
           <select name="modelo" value={filtros.modelo} onChange={handleChange} disabled={!filtros.marca}>
             <option value="">Todos</option>
-            {opcionesModelo.map(op => (
-              <option key={op} value={op}>{op}</option>
-            ))}
+            {modelos.map(modelo => <option key={modelo} value={modelo}>{modelo}</option>)}
           </select>
         </label>
 
@@ -167,18 +131,14 @@ function SidebarFilters({ onFiltrar }) {
           Ubicación
           <select name="ubicacion" value={filtros.ubicacion} onChange={handleChange}>
             <option value="">Todas</option>
-            {opcionesUbicacion.map(op => (
-              <option key={op} value={op}>{op}</option>
-            ))}
+            {ubicaciones.map(ubic => <option key={ubic} value={ubic}>{ubic}</option>)}
           </select>
         </label>
 
         <button type="submit" style={{ backgroundColor: '#cc0000', color: 'white', padding: '10px', border: 'none' }}>
           Filtrar
         </button>
-        {/* <button type="button" onClick={handleReset} style={{ padding: '10px', border: '1px solid #ccc' }}>
-          Limpiar filtros
-        </button> */}
+        
       </form>
     </aside>
   );

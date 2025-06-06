@@ -38,72 +38,85 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, []);
 
-  const login = async (email, password) => {
-    try {
-      const response = await fetch(`http://localhost:5000/api/Usuario/byEmail?email=${encodeURIComponent(email)}`);
-      if (!response.ok) {
-        throw new Error(
-          `Error en la conexión o el servidor respondió con estado: ${response.status}`
-        );
-      }const data=await response.json();
-      console.log(data);
-      if(data.dniVerificado == false){
-        alert("No esta verificado");// cambiar esto por un pop up
-      }else{
-        try {
-      const response = await fetch(`http://localhost:5000/Auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password, rememberMe: true }),
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        throw new Error(
-          `Error en la conexión o el servidor respondió con estado: ${response.status}`
-        );
+ const login = async (email, password) => {
+  try {
+    // Verificar si el usuario existe
+    const response = await fetch(`http://localhost:5000/api/Usuario/byEmail?email=${encodeURIComponent(email)}`);
+    
+    if (!response.ok) {
+      if (response.status === 404) {
+        setError("Mail o Contraseña incorrectas.");
+        return;
       }
-
-      await response.json(); // consumir para evitar errores de cuerpo ya leído
-
-      const responseMe = await fetch(`http://localhost:5000/Auth/me`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-
-      const usersFound = await responseMe.json();
-
-      if (usersFound) {
-        setUser(usersFound);
-        setError(null);
-        console.log(usersFound);
-        if (usersFound.roles.includes("Dueño")) {
-          navigate("/HomePageAdmin");
-        } else if (usersFound.roles.includes("Cliente")) {
-          navigate("/HomePage");
-        } else if (usersFound.roles.includes("Empleado")) {
-          navigate("/EmployeeHome");
-        }
-      } else {
-        setError("Email o contraseña incorrectos. Por favor, inténtalo de nuevo.");
-      }
-    } catch (error) {
-      console.error("Error durante el login:", error);
-      setError("Hubo un problema al intentar iniciar sesión. Por favor, inténtalo de nuevo más tarde.");
+      throw new Error(`Error al buscar usuario. Estado: ${response.status}`);
     }
 
-      }
-    } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-      return null;
+    const data = await response.json();
+
+    if (!data || Object.keys(data).length === 0) {
+      setError("Mail o Contraseña incorrectas.");
+      return;
     }
-  
-  };
+
+    if (data.dniVerificado === false) {
+      setError("Tu cuenta aún no fue verificada. Revisa tu correo.");
+      return;
+    }
+
+    // Intentar iniciar sesión
+    const loginResponse = await fetch(`http://localhost:5000/Auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password, rememberMe: true }),
+      credentials: "include",
+    });
+
+    if (loginResponse.status === 401) {
+      setError("Mail o Contraseña incorrectas.");
+      return;
+    }
+
+    if (!loginResponse.ok) {
+      throw new Error(`Error durante el login. Estado: ${loginResponse.status}`);
+    }
+
+    await loginResponse.json(); // consumir cuerpo
+
+    // Obtener datos del usuario logueado
+    const responseMe = await fetch(`http://localhost:5000/Auth/me`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (!responseMe.ok) {
+      throw new Error("Error al obtener el usuario luego del login.");
+    }
+
+    const usersFound = await responseMe.json();
+
+    if (usersFound) {
+      setUser(usersFound);
+      setError(null);
+      if (usersFound.roles.includes("Dueño")) {
+        navigate("/HomePageAdmin");
+      } else if (usersFound.roles.includes("Cliente")) {
+        navigate("/HomePage");
+      } else if (usersFound.roles.includes("Empleado")) {
+        navigate("/EmployeeHome");
+      }
+    } else {
+      setError("Error inesperado. Intenta nuevamente.");
+    }
+  } catch (error) {
+    console.error("Error en login:", error);
+    setError("Hubo un problema al iniciar sesión. Intenta más tarde.");
+  }
+};
 
   const logout = async () => {
     try {

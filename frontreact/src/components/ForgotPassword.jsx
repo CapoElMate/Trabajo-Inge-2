@@ -42,17 +42,18 @@ function ForgotPassword() {
 
       if (response.ok) {
         const result = await response.json();
-        setMessage('En caso de que exista un mail asociado se enviaran los pasos para la restauracion de contraseña');
+        setMessage('En caso de que exista un mail asociado se enviaran los pasos para la recuperacion de la contraseña');
         setIsError(false);
         console.log('Solicitud de recuperación registrada en JSON Server:', result);
       } else {
-        setMessage('Ocurrió un error al procesar tu solicitud. Por favor, inténtalo de nuevo.');
+        setMessage('En caso de que exista un mail asociado se enviaran los pasos para la recuperacion de la contraseña');
         setIsError(true);
         console.error('Error al registrar solicitud', response.status);
       }
+      navigate("/Login");
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
-      setMessage('Hubo un problema de conexión. Por favor, verifica que JSON Server esté corriendo.');
+      setMessage('En caso de que exista un mail asociado se enviaran los pasos para la recuperacion de la contraseña');
       setIsError(true);
     } finally {
       setIsLoading(false);
@@ -64,7 +65,7 @@ function ForgotPassword() {
     setMessage('');
     setIsError(false);
     setIsLoading(false);
-      navigate("/login");
+      navigate("/Login");
   };
 
   return (
