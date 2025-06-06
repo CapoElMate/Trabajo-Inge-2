@@ -18,6 +18,11 @@ namespace Data_Access_Layer.Repositorios.SQL
         {
             return await _context.PermisosEspeciales.ToListAsync();
         }
+        public async Task<IEnumerable<UsuarioRegistrado_PermisoEspecial>> GetAllUsuariosAsync()
+        {
+            return await _context.UsuarioRegistrado_PermisoEspecial.ToListAsync();
+        }
+        
 
         public async Task<PermisoEspecial?> GetByNameAsync(string permisoEspecial)
         {

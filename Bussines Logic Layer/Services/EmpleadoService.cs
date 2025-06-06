@@ -46,7 +46,7 @@ namespace Bussines_Logic_Layer.Services
             return usuario == null ? null : _mapper.Map<EmpleadoDto>(usuario);
         }
 
-        public async Task<EmpleadoDto> CreateAsync(EmpleadoDto dto)
+        public async Task<EmpleadoDto> CreateAsync(CreateEmpleadoDto dto)
         {
             var usuario = _mapper.Map<Empleado>(dto);
             await _repo.AddAsync(usuario);

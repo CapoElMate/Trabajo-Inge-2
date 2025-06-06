@@ -10,6 +10,8 @@ namespace Data_Access_Layer.Interfaces
     public interface IPermisoEspecialRepository
     {
         Task<IEnumerable<PermisoEspecial>> GetAllAsync();
+        Task<IEnumerable<UsuarioRegistrado_PermisoEspecial>> GetAllUsuariosAsync();
+        
         Task<PermisoEspecial?> GetByNameAsync(string permisoEspecial);
         Task<ICollection<UsuarioRegistrado_PermisoEspecial>> GetByUserAsync(string dni);
         Task AddAsync(PermisoEspecial permisoEspecial);

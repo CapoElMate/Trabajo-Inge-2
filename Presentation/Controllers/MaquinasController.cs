@@ -37,10 +37,17 @@ namespace API_Layer.Controllers
         public async Task<ActionResult<MaquinaDto>> PostMaquina(CreateMaquinaDto dto)
         {
             var created = await _service.CreateAsync(dto);
-            return CreatedAtAction(nameof(GetMaquina), new { id = created }, created);
+            if(created == null)
+            {
+                return Conflict("La maquina ya existe.");
+            }
+            else
+            {
+                return CreatedAtAction(nameof(GetMaquina), new { id = created.IdMaquina }, created);
+            }
         }
 
-        [HttpPut]
+        [HttpPut("byId")]
         public async Task<IActionResult> PutMaquina(int id, MaquinaDto dto)
         {
             var maquina = await _service.GetByIdAsync(id);

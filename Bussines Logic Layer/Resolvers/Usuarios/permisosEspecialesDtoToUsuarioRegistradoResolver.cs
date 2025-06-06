@@ -27,7 +27,8 @@ namespace Bussines_Logic_Layer.Resolvers.Usuarios
 
             if (usuarioExistente == null)
             {
-                throw new Exception("El usuario no existe");
+                return null;
+                //throw new Exception("El usuario no existe");
             }
 
             //_mapper.Map(source.PermisosEspeciales, usuarioExistente.PermisosEspeciales);

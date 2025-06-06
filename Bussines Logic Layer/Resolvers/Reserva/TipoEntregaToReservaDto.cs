@@ -27,7 +27,7 @@ namespace Bussines_Logic_Layer.Resolvers.Reserva
                                     , TipoEntregaDto destMember, ResolutionContext context)
         {
 
-            var tipoEntregaExistente = _context.TiposEntrega.FirstOrDefault(te => te.Entrega.Equals(source.TipoEntrega.Entrega));
+            var tipoEntregaExistente = _context.TiposEntrega.FirstOrDefault(te => te.Entrega.Equals(source.Entrega));
 
             if (tipoEntregaExistente == null)
             {

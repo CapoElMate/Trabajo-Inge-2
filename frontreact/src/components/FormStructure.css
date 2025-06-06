@@ -1,0 +1,25 @@
+.detalle-contenedor
+{
+    max-width: 65%;
+}
+
+form
+{
+    display: flex;
+    flex-direction: column;
+}
+
+form > div
+{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dropdowns
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 1rem 1rem 0 1rem;
+}

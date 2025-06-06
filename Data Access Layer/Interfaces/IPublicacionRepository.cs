@@ -11,7 +11,7 @@ namespace Data_Access_Layer.Interfaces
     {
         Task<IEnumerable<Publicacion>> GetAllAsync();
         Task<Publicacion?> GetByIdAsync(int id);
-        Task AddAsync(Publicacion publicacion);
+        Task<Publicacion> AddAsync(Publicacion publicacion);
         Task UpdateAsync(Publicacion publicacion);
         Task DeleteAsync(Publicacion publicacion);
         Task<bool> ExistsAsync(int id);

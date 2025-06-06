@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ValidateUser.css'; 
+import Header from './Header';
 
 const ValidateUser = () => {
   const [pendingUsers, setPendingUsers] = useState([]);
@@ -107,8 +108,10 @@ const ValidateUser = () => {
     return <div className="validate-user-container error-message">Error: {error}</div>;
   }
 
-  return (
-    <div className="validate-user-container">
+  return (<>
+      <Header/>
+      <div className="validate-user-container">
+      
       <h2>Usuarios Pendientes de Validación</h2>
       {pendingUsers.length === 0 ? (
         <p>No hay usuarios pendientes de validación en este momento.</p>
@@ -122,9 +125,16 @@ const ValidateUser = () => {
               <p><strong>Email:</strong> {user.email}</p>
               <p><strong>Teléfono:</strong> {user.telefono}</p>
               <p><strong>Dirección:</strong> {user.calle} {user.altura} {user.departamento && `Dpto: ${user.departamento}`}</p>
-              {user.fotoDNI_name && (
-                <p><strong>Foto DNI:</strong> <a href={`#`} onClick={(e) => { e.preventDefault(); alert(`Simulando descarga de ${user.fotoDNI_name}`); }}>{user.fotoDNI_name}</a></p>
+              <p><strong>Documento de identidad de : </strong> {user.nombre} {user.apellido}</p>
+              {user.fotoDNI && (
+              <img style={{maxWidth:'400px'}}
+                src={user.fotoDNI.replace(/^data:image\/\w+;base64,/, 'data:image/png;base64,')}
+                alt={`DNI de ${user.nombre} ${user.apellido}`}
+                className="dni-image"
+              />
               )}
+
+
               <div className="card-actions">
                 <button
                   className="approve-btn"
@@ -144,7 +154,7 @@ const ValidateUser = () => {
         </div>
       )}
     </div>
-  );
+  </>);
 };
 
 export default ValidateUser;

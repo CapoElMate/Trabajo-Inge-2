@@ -105,3 +105,9 @@
   margin-top: 10px;
   font-style: italic;
 }
+
+.permiso-button
+{
+  background-color: #dc3545;
+  padding: 1rem;
+}

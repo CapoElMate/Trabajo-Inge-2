@@ -22,28 +22,30 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.DNI))
                 .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
                 .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
-                .ForMember(dest => dest.Edad, opt => opt.MapFrom(src => src.Edad))
+                .ForMember(dest => dest.fecNacimiento, opt => opt.MapFrom(src => src.fecNacimiento))
                 .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono))
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso))
                 .ForMember(dest => dest.roleName, opt => opt.MapFrom(src => src.roleName))
-                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesToUsuarioRegistradoDtoResolver>());
+                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesToUsuarioRegistradoDtoResolver>())
+                .ForMember(dest => dest.dniVerificado, opt => opt.MapFrom(src => src.dniVerificado));
 
             CreateMap<UsuarioRegistradoDTO, UsuarioRegistrado>()
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.DNI))
                 .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
                 .ForMember(dest => dest.Apellido, opt => opt.MapFrom(src => src.Apellido))
-                .ForMember(dest => dest.Edad, opt => opt.MapFrom(src => src.Edad))
+                .ForMember(dest => dest.fecNacimiento, opt => opt.MapFrom(src => src.fecNacimiento))
                 .ForMember(dest => dest.Telefono, opt => opt.MapFrom(src => src.Telefono))
                 .ForMember(dest => dest.Calle, opt => opt.MapFrom(src => src.Calle))
                 .ForMember(dest => dest.Altura, opt => opt.MapFrom(src => src.Altura))
                 .ForMember(dest => dest.Dpto, opt => opt.MapFrom(src => src.Dpto))
-                .ForMember(dest => dest.EntreCalles, opt => opt.MapFrom(src => src.EntreCalles))
+                .ForMember(dest => dest.Piso, opt => opt.MapFrom(src => src.Piso))
                 .ForMember(dest => dest.roleName, opt => opt.MapFrom(src => src.roleName))
-                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesDtoToUsuarioRegistradoResolver>());
+                .ForMember(dest => dest.PermisosEspeciales, opt => opt.MapFrom<permisosEspecialesDtoToUsuarioRegistradoResolver>())
+                .ForMember(dest => dest.dniVerificado, opt => opt.Ignore());
         }
     }
 }

@@ -37,8 +37,8 @@ namespace Bussines_Logic_Layer.Services
         public async Task<MaquinaDto> CreateAsync(CreateMaquinaDto dto)
         {
             var maquina = _mapper.Map<Maquina>(dto);
-            await _repo.AddAsync(maquina);
-            return _mapper.Map<MaquinaDto>(maquina);
+            var res = await _repo.AddAsync(maquina);
+            return res != null ? _mapper.Map<MaquinaDto>(res) : null;
         }
 
         public async Task<bool> UpdateAsync(int id, MaquinaDto dto)
@@ -68,7 +68,7 @@ namespace Bussines_Logic_Layer.Services
             if (maquina == null)
                 return false;
 
-            maquina.isDeleted = true;
+            maquina.status = "Eliminada";
             await _repo.UpdateAsync(maquina);
             return true;
         }

@@ -1,189 +1,170 @@
-import React, { useState } from 'react';
-import './SignUp.css';
-import { useNavigate } from "react-router-dom";
-import { useAuth } from '../AuthContext';
-import Header from './Header';
-const SignUp = () => {
-  const {user} = useAuth();
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    nombre: '',
-    apellido: '',
-    dni: '',
-    edad: '',
-    telefono: '',
-    calle: '',
-    altura: '',
-    departamento: '',
-    entreCalles: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    fotoDNI: null,
-    rol:'cliente',
+import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
+const schema = yup.object().shape({
+  dni: yup
+    .string()
+    .matches(/^\d{8}$/, '')
+    .required(''),
+  email: yup
+    .string()
+    .email('Correo inválido')
+    .required(''),
+  birthDate: yup
+    .date()
+    .max(new Date(new Date().setFullYear(new Date().getFullYear() - 18)), 'Debes tener al menos 18 años')
+    .required(''),
+  street: yup.string().required(''),
+  height: yup.string().required(''),
+  dpto: yup.string(),
+  nro: yup.string(),
+  phone: yup
+    .string()
+    .matches(/^\d{10}$/, '')
+    .required(''),
+  password: yup
+    .string()
+    .min(8, 'La contraseña debe tener al menos 8 caracteres')
+    .matches(/[A-Z]/, 'Debe contener una letra mayúscula')
+    .matches(/[a-z]/, 'Debe contener una letra minúscula')
+    .matches(/\d/, 'Debe contener un número')
+    .matches(/[!@#$%^&*(),.?":{}|<>]/, 'Debe contener un símbolo')
+    .required(''),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'Las contraseñas no coinciden')
+    .required('Confirma tu contraseña'),
+  dniImage: yup
+    .mixed()
+    .required('Debes subir una imagen del DNI')
+    .test('', ' Solo JPG, JPEG o PNG.', (value) => {
+      if (!value || !value[0]) return false;
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+      return allowedTypes.includes(value[0].type);
+    }),
+});
+
+export default function SignUp() {
+    const navigate = useNavigate();
+  const [usuarios, setUsuarios] = useState([]);
+  const [customErrors, setCustomErrors] = useState({ dni: '', email: '' });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+    clearErrors,
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
-  const [errors, setErrors] = useState({});
+  useEffect(() => {
+    axios
+      .get('http://localhost:5000/api/Usuario/all')
+      .then((res) => setUsuarios(res.data))
+      .catch((err) => console.error('Error al cargar usuarios:', err));
+  }, []);
 
-  const validarEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const onSubmit = (data) => {
+    const dniExists = usuarios.some((u) => u.dni === data.dni);
+    const emailExists = usuarios.some((u) => u.email === data.email);
 
-  const validarPassword = (pass) =>
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/.test(pass);
+    // Reiniciar errores previos
+    setCustomErrors({ dni: '', email: '' });
+    clearErrors('dni');
+    clearErrors('email');
 
-  const validarArchivo = (file) => {
-    if (!file) return false;
-    const ext = file.name.toLowerCase().split('.').pop();
-    return ['jpg', 'jpeg', 'png', 'pdf'].includes(ext);
-  };
-
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    setFormData({
-      ...formData,
-      [name]: files ? files[0] : value,
-    });
-  };
-
-  const validate = () => {
-    const newErrors = {};
-
-    if (formData.nombre.length < 2 || formData.nombre.length > 50)
-      newErrors.nombre = 'Nombre debe tener entre 2 y 50 caracteres';
-
-    if (formData.apellido.length < 2 || formData.apellido.length > 50)
-      newErrors.apellido = 'Apellido debe tener entre 2 y 50 caracteres';
-
-    const edad = parseInt(formData.edad);
-    if (isNaN(edad) || edad < 18 || edad > 120)
-      newErrors.edad = 'Edad debe ser entre 18 y 120';
-
-    if (!/^\d{3}\s?\d{3,4}\s?\d{3,4}$/.test(formData.telefono))
-      newErrors.telefono = 'Formato: 221 555 5555 o similar';
-
-    if (!formData.calle || !formData.altura)
-      newErrors.direccion = 'Debe ingresar Calle y Altura';
-
-    if (!/^\d{7,8}$/.test(formData.dni))
-      newErrors.dni = 'DNI debe tener 7 u 8 dígitos';
-
-    if (!validarEmail(formData.email) || formData.email.length > 254)
-      newErrors.email = 'Email inválido o demasiado largo';
-
-    if (!formData.fotoDNI || !validarArchivo(formData.fotoDNI))
-      newErrors.fotoDNI = 'Debe adjuntar un archivo .jpg, .jpeg, .png o .pdf';
-
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = 'Las contraseñas no coinciden';
-
-    if (!validarPassword(formData.password))
-      newErrors.password =
-        'Mínimo 6 caracteres. Debe incluir letras, números y un símbolo especial';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    let ruta = 'pendingUsers';
-    if (validate()) {
-      const dataToSend = { ...formData };
-      delete dataToSend.fotoDNI; 
-      delete dataToSend.confirmPassword; 
-      if (formData.fotoDNI) {
-        const simulatedImageName = formData.fotoDNI.name;
-        dataToSend.fotoDNI_name = simulatedImageName; 
+    if (dniExists || emailExists) {
+      if (dniExists) {
+        setError('dni', { type: 'manual', message: 'El DNI ya está registrado' });
       }
-      if(user){
-        if(user.rol==='admin'){
-          dataToSend.rol==='empleado';
-          ruta='users';
-        }
+      if (emailExists) {
+        setError('email', { type: 'manual', message: 'El correo ya está registrado' });
       }
-      try {
-        const response = await fetch(`http://localhost:3001/${ruta}`, {
-          method: 'POST', // Siempre POST para enviar nuevos recursos
-          headers: {
-            'Content-Type': 'application/json', // Importante: Enviamos JSON
-          },
-          body: JSON.stringify(dataToSend), 
-        });
-
-        const result = await response.json();
-
-        if (response.ok) { 
-          if(!user){
-            alert('Sus datos seran validados en breve por un empleado');
-            navigate("/Login");
-          }else{
-            if(user.rol=== 'admin'){
-                alert('Se registro un empleado');
-            }
-          }
-
-        } else {
-          alert(`Error al registrar. Código: ${response.status}`);
-          console.error('Error en el registro:', result);
-        }
-      } catch (error) {
-        console.error('Error al enviar el formulario:', error);
-        alert('Hubo un problema de conexión. Por favor, inténtalo de nuevo.');
-      }
+      return;
     }
+
+    console.log(data);
+    navigate("/Login");
+    // Aquí podrías redirigir al login
   };
 
-  return (<>
-    {user&&(<Header/>)}
-    <div className="signup-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Registro</h2>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4 border rounded-md space-y-4">
+      <h2 className="text-xl font-bold text-center">Registro de Usuario</h2>
 
-        <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} value={formData.nombre} />
-        {errors.nombre && <p className="error-message">{errors.nombre}</p>}
+      <div>
+        <label>DNI</label>
+        <input {...register('dni')} className="w-full border p-2" />
+        {errors.dni && <p className="text-red-600 text-sm">{errors.dni.message}</p>}
+      </div>
 
-        <input type="text" name="apellido" placeholder="Apellido" onChange={handleChange} value={formData.apellido} />
-        {errors.apellido && <p className="error-message">{errors.apellido}</p>}
+      <div>
+        <label>Email</label>
+        <input {...register('email')} className="w-full border p-2" />
+        {errors.email && <p className="text-red-600 text-sm">{errors.email.message}</p>}
+      </div>
 
-        <input type="text" name="dni" placeholder="DNI" onChange={handleChange} value={formData.dni} />
-        {errors.dni && <p className="error-message">{errors.dni}</p>}
+      <div>
+        <label>Fecha de nacimiento</label>
+        <input type="date" {...register('birthDate')} className="w-full border p-2" />
+        {errors.birthDate && <p className="text-red-600 text-sm">{errors.birthDate.message}</p>}
+      </div>
 
-        <label htmlFor="fotoDNI" className="file-label">Foto DNI (frente):</label>
-        <input type="file" name="fotoDNI" id="fotoDNI" accept=".jpg,.jpeg,.png,.pdf" onChange={handleChange} />
-        {errors.fotoDNI && <p className="error-message">{errors.fotoDNI}</p>}
+      <div>
+        <label>Calle</label>
+        <input {...register('street')} className="w-full border p-2" />
+        {errors.street && <p className="text-red-600 text-sm">{errors.street.message}</p>}
+      </div>
 
-        <input type="number" name="edad" placeholder="Edad" onChange={handleChange} value={formData.edad} />
-        {errors.edad && <p className="error-message">{errors.edad}</p>}
+      <div>
+        <label>Altura</label>
+        <input {...register('height')} className="w-full border p-2" />
+        {errors.height && <p className="text-red-600 text-sm">{errors.height.message}</p>}
+      </div>
 
-        <input
-          type="text"
-          name="telefono"
-          placeholder="Código y número (Ej: 221 555 5555)"
-          onChange={handleChange}
-          value={formData.telefono}
-        />
-        {errors.telefono && <p className="error-message">{errors.telefono}</p>}
+      <div>
+        <label>Departamento</label>
+        <input {...register('dpto')} className="w-full border p-2" />
+      </div>
 
-        <input type="text" name="calle" placeholder="Calle" onChange={handleChange} value={formData.calle} />
-        <input type="text" name="altura" placeholder="Altura" onChange={handleChange} value={formData.altura} />
-        <input type="text" name="departamento" placeholder="Departamento (opcional)" onChange={handleChange} value={formData.departamento} />
-        <input type="text" name="entreCalles" placeholder="Entre calles (opcional)" onChange={handleChange} value={formData.entreCalles} />
-        {errors.direccion && <p className="error-message">{errors.direccion}</p>}
+      <div>
+        <label>Número</label>
+        <input {...register('nro')} className="w-full border p-2" />
+      </div>
 
-        <input type="email" name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
-        {errors.email && <p className="error-message">{errors.email}</p>}
+      <div>
+        <label>Teléfono</label>
+        <input {...register('phone')} className="w-full border p-2" />
+        {errors.phone && <p className="text-red-600 text-sm">{errors.phone.message}</p>}
+      </div>
 
-        <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} value={formData.password} />
-        {errors.password && <p className="error-message">{errors.password}</p>}
+      <div>
+        <label>Contraseña</label>
+        <input type="password" {...register('password')} className="w-full border p-2" />
+        {errors.password && <p className="text-red-600 text-sm">{errors.password.message}</p>}
+      </div>
 
-        <input type="password" name="confirmPassword" placeholder="Confirmar Contraseña" onChange={handleChange} value={formData.confirmPassword} />
-        {errors.confirmPassword && <p className="error-message">{errors.confirmPassword}</p>}
+      <div>
+        <label>Confirmar Contraseña</label>
+        <input type="password" {...register('confirmPassword')} className="w-full border p-2" />
+        {errors.confirmPassword && <p className="text-red-600 text-sm">{errors.confirmPassword.message}</p>}
+      </div>
 
-        <button type="submit">Registrarse</button>
-      </form>
-    </div>
-    </>
+      <div>
+        <label>Imagen del DNI (JPG, JPEG, PNG)</label>
+        <input type="file" {...register('dniImage')} accept="image/jpeg, image/png, image/jpg" className="w-full" />
+        {errors.dniImage && <p className="text-red-600 text-sm">{errors.dniImage.message}</p>}
+      </div>
+
+      <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 w-full">
+        Registrarse
+      </button>
+    </form>
   );
-};
-
-export default SignUp;
+}

@@ -30,7 +30,7 @@
   transition: color 0.3s ease; 
 }
 
-.offcanvas-nav-list li a:hover {
+.offcanvas-nav-list li :hover {
   color: white;
   background-color:#cc0000;
 }

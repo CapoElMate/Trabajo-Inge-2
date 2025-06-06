@@ -19,10 +19,13 @@ namespace Bussines_Logic_Layer.Mapping.Usuarios
                 .ForMember(dest => dest.nroEmpleado, opt => opt.MapFrom(src => src.nroEmpleado))
                 .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteDtoToEmpeladoResolver>());
 
-            CreateMap<EmpleadoDto, Empleado>()
-                .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.Cliente.UsuarioRegistrado.DNI))
+            CreateMap<Empleado, EmpleadoDto>()
                 .ForMember(dest => dest.nroEmpleado, opt => opt.MapFrom(src => src.nroEmpleado))
-                .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteDtoToEmpeladoResolver>());
+                .ForMember(dest => dest.Cliente, opt => opt.MapFrom<ClienteToEmpleadoDtoResolver>());
+            
+            CreateMap<CreateEmpleadoDto, Empleado>()
+                .ForMember(dest => dest.DNI, opt => opt.MapFrom(src => src.Cliente.UsuarioRegistrado.DNI))
+                .ForMember(dest => dest.Cliente, opt => opt.MapFrom<CreateClienteDtoToEmpeladoResolver>());
         }
     }
 }
