@@ -4,6 +4,7 @@ import { useAuth } from "../AuthContext";
 
 const PermisosDeUsuarios = () => {
   const [permisos, setPermisos] = useState([]);
+  const [permisosFiltrados, setPermisosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errores, setErrores] = useState(null);
   const [empleadoDNI, setEmpleadoDNI] = useState(null);
@@ -64,6 +65,7 @@ const PermisosDeUsuarios = () => {
         );
 
         setPermisos(permisosConImagenes);
+        setPermisosFiltrados(permisosConImagenes);
       } catch (error) {
         console.error("Error al cargar permisos:", error);
         setErrores("Error al obtener permisos.");
