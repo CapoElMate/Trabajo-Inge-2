@@ -27,10 +27,12 @@ export default function PublicacionDetail() {
   const [mostrarRtdoModal, setMostrarRtdoModal] = useState(false);
   const [colorRtdo, setColorRtdo] = useState("#dc3545");
   const [rtdo, setRtdo] = useState("rtdo");
+  const [state, setState] = useState();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-
+    setState(params.get("state"));
+    
     if (params.get("state") === "success") {
       const reserva = {
         fecInicio: new Date(params.get("fecInicio")).toISOString(),
