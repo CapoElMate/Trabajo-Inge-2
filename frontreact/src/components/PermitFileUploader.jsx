@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useAuth } from "../AuthContext"; 
+import { useAuth } from "../AuthContext";
 import Header from "./Header";
 
 const PermitFileUploader = () => {
-  const { user } = useAuth(); 
+  const { user } = useAuth();
 
   const [cliente, setCliente] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const PermitFileUploader = () => {
   const [permiso, setPermiso] = useState("");
   const [fecEmision, setFecEmision] = useState("");
   const [fecVencimiento, setFecVencimiento] = useState("");
-  const [imagen, setImagen] = useState(null); 
+  const [imagen, setImagen] = useState(null);
 
   const [mensaje, setMensaje] = useState("");
 
@@ -65,41 +65,66 @@ const PermitFileUploader = () => {
 
     if (!permiso || !fecEmision || !fecVencimiento || !imagen) {
       setMensaje("Por favor completá todos los campos y subí la imagen.");
-      return; 
+      return;
+    }
+
+    // Validación Regla 1: formato de imagen
+    const nombreArchivo = imagen.name.toLowerCase();
+    if (!/\.(png|jpg|jpeg)$/i.test(nombreArchivo)) {
+      setMensaje("La imagen debe estar en formato .png, .jpg o .jpeg.");
+      return;
+    }
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    const emision = new Date(fecEmision);
+    const vencimiento = new Date(fecVencimiento);
+
+    // Regla 2: Emisión no posterior a hoy
+    if (emision > hoy) {
+      setMensaje("La fecha de emisión no puede ser posterior a hoy.");
+      return;
+    }
+
+    // Regla 3: Vencimiento no anterior a hoy
+    if (vencimiento < hoy) {
+      setMensaje("La fecha de vencimiento no puede ser anterior a hoy.");
+      return;
     }
 
     try {
       const permisoResponse = await fetch("http://localhost:5000/api/PermisosEspeciales/agregarPermisoUsuario", {
         method: "POST",
-        headers: { "Content-Type": "application/json" }, 
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          dniCliente: cliente.dni, 
+          dniCliente: cliente.dni,
           fecEmision,
           fecVencimiento,
-          status: "Pendiente de validacion", 
-          permiso 
+          status: "Pendiente de validacion",
+          permiso
         })
       });
 
       if (!permisoResponse.ok) {
-        const errorData = await permisoResponse.json(); 
+        const errorData = await permisoResponse.json();
         throw new Error(`Error al guardar el permiso: ${errorData.message || permisoResponse.statusText}`);
       }
 
       const formData = new FormData();
-      formData.append("entidadID", cliente.dni); 
-      formData.append("tipoEntidad", "2"); 
-      formData.append("nombre", permiso); 
-      formData.append("descripcion", "Permiso especial cargado por el cliente"); 
-      formData.append("archivo", imagen); 
+      formData.append("entidadID", cliente.dni);
+      formData.append("tipoEntidad", "2");
+      formData.append("nombre", permiso);
+      formData.append("descripcion", "Permiso especial cargado por el cliente");
+      formData.append("archivo", imagen);
 
       const archivoResponse = await fetch("http://localhost:5000/api/Archivo", {
         method: "POST",
-        body: formData 
+        body: formData
       });
 
       if (!archivoResponse.ok) {
-        const errorText = await archivoResponse.text(); 
+        const errorText = await archivoResponse.text();
         throw new Error(`Error al subir la imagen del permiso: ${errorText}`);
       }
 
@@ -107,8 +132,8 @@ const PermitFileUploader = () => {
       setPermiso("");
       setFecEmision("");
       setFecVencimiento("");
-      setImagen(null); 
-      e.target.reset(); 
+      setImagen(null);
+      e.target.reset();
     } catch (err) {
       setMensaje(err.message);
     }
@@ -118,80 +143,82 @@ const PermitFileUploader = () => {
   if (error) return <p className="text-center p-4 text-red-500">Error: {error}</p>;
   if (!cliente) return <p className="text-center p-4 text-orange-500">No se encontró el cliente.</p>;
 
-  return (<>
-     <Header/>
-    <div className="p-4 max-w-md mx-auto border border-gray-200 rounded-lg shadow-lg bg-white font-inter">
-      <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Subir Permiso Especial</h2>
-      {mensaje && (
-        <p className={`mb-4 text-center p-2 rounded-md ${mensaje.includes("éxito") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-          {mensaje}
-        </p>
-      )}
+  return (
+    <>
+      <Header />
+      <div className="p-4 max-w-md mx-auto border border-gray-200 rounded-lg shadow-lg bg-white font-inter">
+        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Subir Permiso Especial</h2>
+        {mensaje && (
+          <p className={`mb-4 text-center p-2 rounded-md ${mensaje.includes("éxito") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
+            {mensaje}
+          </p>
+        )}
 
-      <form onSubmit={handleSubmit} className="space-y-5">
-        <div>
-          <label htmlFor="permiso-select" className="block text-sm font-medium text-gray-700 mb-1">Tipo de permiso</label>
-          <select
-            id="permiso-select"
-            value={permiso}
-            onChange={(e) => setPermiso(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out shadow-sm"
-            required
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label htmlFor="permiso-select" className="block text-sm font-medium text-gray-700 mb-1">Tipo de permiso</label>
+            <select
+              id="permiso-select"
+              value={permiso}
+              onChange={(e) => setPermiso(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out shadow-sm"
+              required
+            >
+              <option value="">Seleccioná un permiso</option>
+              {permisosDisponibles.map((p, index) => (
+                <option key={index} value={p.permiso}>
+                  {p.permiso}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="fecEmision" className="block text-sm font-medium text-gray-700 mb-1">Fecha de emisión</label>
+            <input
+              type="date"
+              id="fecEmision"
+              value={fecEmision}
+              onChange={(e) => setFecEmision(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out shadow-sm"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="fecVencimiento" className="block text-sm font-medium text-gray-700 mb-1">Fecha de vencimiento</label>
+            <input
+              type="date"
+              id="fecVencimiento"
+              value={fecVencimiento}
+              onChange={(e) => setFecVencimiento(e.target.value)}
+              className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out shadow-sm"
+              required
+            />
+          </div>
+
+          <div>
+            <label htmlFor="image-upload" className="block text-sm font-medium text-gray-700 mb-1">Subir imagen del permiso</label>
+            <input
+              type="file"
+              id="image-upload"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 transition duration-150 ease-in-out cursor-pointer"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-700 transition"
           >
-            <option value="">Seleccioná un permiso</option>
-            {permisosDisponibles.map((p, index) => (
-              <option key={index} value={p.permiso}>
-                {p.permiso}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label htmlFor="fecEmision" className="block text-sm font-medium text-gray-700 mb-1">Fecha de emisión</label>
-          <input
-            type="date"
-            id="fecEmision"
-            value={fecEmision}
-            onChange={(e) => setFecEmision(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out shadow-sm"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="fecVencimiento" className="block text-sm font-medium text-gray-700 mb-1">Fecha de vencimiento</label>
-          <input
-            type="date"
-            id="fecVencimiento"
-            value={fecVencimiento}
-            onChange={(e) => setFecVencimiento(e.target.value)}
-            className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-800 focus:ring-blue-500 focus:border-blue-500 transition duration-150 ease-in-out shadow-sm"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="image-upload" className="block text-sm font-medium text-gray-700 mb-1">Subir imagen del permiso</label>
-          <input
-            type="file"
-            id="image-upload"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full p-2 border border-gray-300 rounded-md bg-gray-50 hover:bg-gray-100 transition duration-150 ease-in-out cursor-pointer"
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="permiso-button"
-        >
-          Enviar permiso
-        </button>
-      </form>
-    </div>
-  </>);
+            Enviar permiso
+          </button>
+        </form>
+      </div>
+    </>
+  );
 };
 
 export default PermitFileUploader;

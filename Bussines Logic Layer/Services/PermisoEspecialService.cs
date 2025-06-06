@@ -62,6 +62,19 @@ namespace Bussines_Logic_Layer.Services
             await _repo.ActualizarPermisoUsuarioAsync(permiso);
             return true;
         }
+
+        public async Task<bool> rechazarPermisoEspecial(string dni, string permisoEspecial)
+        {
+            var permisos = await _repo.GetByUserAsync(dni);
+            var permiso = permisos.FirstOrDefault(p => p.Permiso.Equals(permisoEspecial));
+            if (permisos == null)
+                return false;
+
+            permiso.status = "Rechazado";
+            await _repo.ActualizarPermisoUsuarioAsync(permiso);
+            return true;
+        }
+
         public async Task<bool> borrarPermisoUsuarioAsync(PermisoEspecialUsuarioDto dto)
         {
             var permisos = await _repo.GetByUserAsync(dto.DNICliente);
