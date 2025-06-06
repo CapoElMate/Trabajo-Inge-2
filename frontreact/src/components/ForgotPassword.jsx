@@ -50,7 +50,9 @@ function ForgotPassword() {
         setIsError(true);
         console.error('Error al registrar solicitud', response.status);
       }
-      navigate("/Login");
+      setTimeout(() => {
+        navigate("/Login");
+      }, 3500);
     } catch (error) {
       console.error('Error al enviar solicitud:', error);
       setMessage('En caso de que exista un mail asociado se enviaran los pasos para la recuperacion de la contraseña');

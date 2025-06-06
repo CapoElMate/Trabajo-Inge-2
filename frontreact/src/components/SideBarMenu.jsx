@@ -29,14 +29,14 @@ function SideBarMenu() {
       { label: "Inicio", path: "/HomePage", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: true },
       { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
-      { label: "Cambiar contraseña", path: "/CambiarContraseña", restricted: true },
+      { label: "Cambiar contraseña", path: "/ForgotPassword", restricted: true },
       // { label: "Mis alquileres", path: "/Leases", restricted: true }
     );
   } else if (user.roles.includes("Empleado")) {
     menuItems.push(
       { label: "Inicio", path: "/EmployeeHome", restricted: false },
       { label: "Mi perfil", path: "/Perfil", restricted: false },
-      { label: "Cambiar contraseña", path: "/CambiarContraseña", restricted: true },
+      { label: "Cambiar contraseña", path: "/ForgotPassword", restricted: true },
       { label: "Subir permiso de maquinaria", path: "/PermitFileUploeader", restricted: true },
       // { label: "Mis reservas", path: "/rentals", restricted: false },
       // { label: "Mis alquileres", path: "/Leases", restricted: false },
@@ -49,7 +49,7 @@ function SideBarMenu() {
   } else if (user.roles.includes("Dueño")) {
     menuItems.push(
       { label: "Inicio", path: "/HomePageAdmin", restricted: false },
-      { label: "Cambiar contraseña", path: "/CambiarContraseña", restricted: true },
+      { label: "Cambiar contraseña", path: "/ForgotPassword", restricted: true },
       { label: "Publicaciones", path: "/HomePage", restricted: false },
       { label: "Maquinarias", path: "/ListarMaquinaria", restricted: false },
       { label: "Crear Maquinaria", path: "/CrearMaquinaria", restricted: false },
