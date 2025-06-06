@@ -30,11 +30,10 @@ const Login = () => {
   };
 
   // Limpiar errores al tipear nuevamente
-  useEffect(() => {
-    if (errorMessage || error) {
-      setErrorMessage("");
-    }
-  }, [email, password]);
+ useEffect(() => {
+  setErrorMessage(""); // solo borra tu propio estado, no el del context
+}, [email, password]);
+
 
   return (
     <div className="login-container"> 
@@ -56,8 +55,9 @@ const Login = () => {
             required
           />
           {(errorMessage || error) && (
-            <p className="error-message">{errorMessage || error}</p>
-          )}
+  <p className="error-message">{errorMessage || error}</p>
+)}
+
 
           <button type="submit">Ingresar</button>
         </form>

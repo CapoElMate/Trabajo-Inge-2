@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 function ResetPassword() {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const email = searchParams.get('email');
@@ -18,13 +19,13 @@ function ResetPassword() {
     setIsError(false);
 
     if (newPassword !== confirmNewPassword) {
-      setMessage('Las contraseñas no coinciden.');// cambiar como en la HU
+      setMessage('Contraseña de confirmación incorrecta, inténtalo nuevamente');// cambiar como en la HU
       setIsError(true);
       return;
     }
 
     if (!newPassword || newPassword.length < 8) {
-      setMessage('La nueva contraseña debe tener al menos 8 caracteres.');
+      setMessage('La contraseña debe tener un minimo de 8 caracteres');
       setIsError(true);
       return;
     }
@@ -46,7 +47,8 @@ function ResetPassword() {
       const result = await response.json();
 
       if (response.ok) {
-        setMessage('Contraseña cambiada correctamente. Ya puedes iniciar sesión.');
+        setMessage('Cambio de contraseña exitoso');
+        navigate("/Login")
       } else {
         setMessage(result.message || 'Hubo un error al cambiar la contraseña.');
         setIsError(true);
@@ -65,7 +67,7 @@ function ResetPassword() {
 
   return (
     <div className="reset-password-container">
-      <h2>Restablecer contraseña</h2>
+      <h2>Cambiar Contraseña</h2>
       <form onSubmit={handleSubmit}>
         <input
           type="password"
@@ -85,7 +87,7 @@ function ResetPassword() {
           <p style={{ color: isError ? 'red' : 'green' }}>{message}</p>
         )}
         <button type="submit" disabled={loading}>
-          {loading ? 'Cambiando...' : 'Restaurar contraseña'}
+          {loading ? 'Cambiando...' : 'Cambiar contraseña'}
         </button>
       </form>
     </div>

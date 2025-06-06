@@ -13,7 +13,7 @@ import "./components/App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import SignUp from "./components/SignUp";
 import ForgotPassword from "./components/ForgotPassword";
-import Rentals from "./components/Rentals";
+
 
 import CrearPublicacion from "./components/Publicacion/CrearPublicacion";
 import ModificarPublicacion from "./components/Publicacion/ModificarPublicacion";
@@ -41,8 +41,8 @@ function App() {
         <Route path="/SignUpEmpleado" element={<SignUpEmpleado />} />
         {/*Vistas publicas-------------------------------------------------------------*/}
         
+          <Route path="/PermisosDeUsuarios" element={<PermisosDeUsuarios />} />
         <Route path="/DetalleUsuario/:dni" element={<DetalleUsuario />} />
-        
         <Route path="/resetPassword" element={<ResetPassword/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/noautorizado" element={<NoAutorizado />} />
@@ -77,7 +77,6 @@ function App() {
           <Route path="/EmployeeHome" element={<EmployeeHome />} />
           <Route path="/DetalleReserva/:id" element={<DetalleReserva />} />
           <Route path="/DetalleAlquiler/:id" element={<DetalleAlquiler />} />
-          <Route path="/PermisosDeUsuarios" element={<PermisosDeUsuarios />} />
           <Route path="/solicitudesDeRegistro" element={<SolicitudesDeRegistro/>}/>
         </Route>
         {/*
